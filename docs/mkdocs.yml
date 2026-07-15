@@ -1,0 +1,36 @@
+site_name: SolidaryTech — Hackathon Fase 5
+site_description: Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)
+site_author: Juliano da Silva Lopes
+
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: teal
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.sections
+    - content.code.copy
+    - toc.integrate
+
+nav:
+  - Início: index.md
+  - Cronograma: cronograma.md
+  - 0. Fundação DevOps: 00-fundacao-devops.md
+  - 1. SRE: 01-sre.md
+  - 2. FinOps: 02-finops.md
+  - 3. ITSM e AIOps: 03-itsm-aiops.md
+  - 4. DR e Segurança: 04-dr-seguranca.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+  - attr_list
