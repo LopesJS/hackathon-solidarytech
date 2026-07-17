@@ -1,0 +1,79 @@
+# =============================================================================
+# Stage 1 — Builder
+# Instala dependências em um ambiente isolado para não poluir a imagem final
+# =============================================================================
+FROM python:3.11-slim AS builder
+
+# Evita que o Python crie arquivos .pyc e garante stdout/stderr sem buffer
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+WORKDIR /build
+
+# Copia apenas o arquivo de dependências primeiro (aproveita cache do Docker)
+COPY requirements.txt .
+
+# Instala as dependências em um diretório isolado (wheel install)
+RUN pip install --upgrade pip \
+    && pip install --prefix=/install -r requirements.txt
+
+
+# =============================================================================
+# Stage 2 — Runtime
+# Imagem final enxuta, sem ferramentas de build, sem cache de pip
+# =============================================================================
+FROM python:3.11-slim AS runtime
+
+# Metadata da imagem (OCI image spec)
+LABEL org.opencontainers.image.title="ngo-service" \
+      org.opencontainers.image.description="SolidaryTech — Serviço de cadastro de ONGs" \
+      org.opencontainers.image.version="1.0.0"
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    # Adiciona as libs instaladas no stage builder ao PYTHONPATH
+    PYTHONPATH=/app/libs
+
+WORKDIR /app
+
+# Cria usuário não-root para execução (principle of least privilege)
+RUN groupadd --gid 1001 appgroup \
+    && useradd --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+
+# Copia as dependências do stage builder
+COPY --from=builder /install /usr/local
+
+# Copia o código da aplicação
+COPY --chown=appuser:appgroup app.py .
+
+# Remove arquivos desnecessários e instala apenas libs de sistema mínimas
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libpq5 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Troca para o usuário não-root
+USER appuser
+
+# Porta exposta pelo serviço
+EXPOSE 8081
+
+# Health check nativo do Docker (usado pelo ECS/EKS para liveness)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8081/health')" || exit 1
+
+# Utiliza Gunicorn em modo produção:
+# - 2 workers por núcleo de CPU é a recomendação padrão (ajustar via env)
+# - timeout de 30s evita workers travados
+# - acesso via 0.0.0.0 permite tráfego do container
+CMD ["gunicorn", \
+     "--bind", "0.0.0.0:8081", \
+     "--workers", "2", \
+     "--timeout", "30", \
+     "--access-logfile", "-", \
+     "--error-logfile", "-", \
+     "--log-level", "info", \
+     "app:app"]

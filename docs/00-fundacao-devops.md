@@ -8,6 +8,8 @@ Registro da comprovação de utilização das disciplinas das Fases 1 a 4 no nov
 - [ ] Dockerfile otimizado — `donation-service`
 - [ ] Dockerfile otimizado — `volunteer-service`
 
+[01 - Docker](./fundacao/docker.md)   
+[02 - Solidarytech Local](./fundacao/solidarytech-local.md  )
 
 ## Kubernetes
 
@@ -24,8 +26,8 @@ Registro da comprovação de utilização das disciplinas das Fases 1 a 4 no nov
 - [ ] Módulo de registry (ACR/ECR)
 - [ ] Tags FinOps aplicadas em todos os recursos (`Project`, `Environment`, `CostCenter`)
 
-[01 - Infra](./fundacao/infra.md)
-[02 - Deploy Infra](./fundacao/deploy-infra.md)
+[01 - Infra](./fundacao/infra.md)  
+[02 - Deploy Infra](./fundacao/deploy-infra.md)  
 
 ## CI/CD e DevSecOps
 

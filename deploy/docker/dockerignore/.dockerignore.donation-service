@@ -1,0 +1,43 @@
+# Binários e artefatos de build
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+donation-service
+
+# Testes
+*.test
+*.out
+coverage.txt
+
+# Vendor (se usado)
+vendor/
+
+# Segredos e configurações locais
+.env
+.env.*
+!.env.example
+
+# IDEs e editores
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docs e CI
+*.md
+.github/
+
+# Scripts de banco de dados (não fazem parte do binário)
+db/

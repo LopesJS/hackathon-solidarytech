@@ -1,0 +1,151 @@
+# =============================================================================
+# .gitignore
+# Protege segredos, artefatos de build e lixo de IDEs de irem ao GitHub.
+# =============================================================================
+
+
+# ─── SEGREDOS E VARIÁVEIS DE AMBIENTE ────────────────────────────────────────
+# NUNCA commitar arquivos .env com credenciais reais.
+# Use .env.example (sem valores reais) para documentar as variáveis necessárias.
+.env
+.env.*
+!.env.example
+
+# Arquivos de credenciais AWS (nunca devem sair da máquina local)
+.aws/
+credentials
+*.pem
+*.key
+*.p12
+*.pfx
+
+
+# ─── PYTHON ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtualenvs
+.venv/
+venv/
+env/
+ENV/
+.Python
+
+# Distribuição e empacotamento
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+wheels/
+
+# Testes e cobertura
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+
+# mypy / pyright
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyright/
+
+
+# ─── GO ──────────────────────────────────────────────────────────────────────
+# Binários compilados
+donation-service/donation-service
+donation-service/*.exe
+donation-service/*.test
+donation-service/*.out
+
+# Cache de build do Go
+donation-service/vendor/
+
+# Cobertura de testes
+coverage.txt
+
+
+# ─── DOCKER ──────────────────────────────────────────────────────────────────
+# Arquivos de override local do Compose (contém configs pessoais/credenciais)
+docker-compose.override.yml
+docker-compose.local.yml
+
+
+# ─── TERRAFORM (para quando evoluir o projeto) ───────────────────────────────
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfstate.backup
+**/terraform.tfvars
+**/terraform.tfvars.json
+**/.terraformrc
+**/terraform.rc
+**/crash.log
+**/crash.*.log
+**/.terraform.lock.hcl
+
+
+# ─── IDEs E EDITORES ─────────────────────────────────────────────────────────
+# JetBrains (PyCharm, GoLand, IntelliJ)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+!.vscode/extensions.json   # Extensões recomendadas podem ser compartilhadas
+!.vscode/settings.json      # Settings de formatação podem ser compartilhadas
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+Session.vim
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+
+# ─── SISTEMA OPERACIONAL ─────────────────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encdata
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.fuse_hidden*
+.nfs*
+
+
+# ─── LOGS ────────────────────────────────────────────────────────────────────
+*.log
+logs/
+*.log.*
+
+
+# ─── KUBERNETES (para quando evoluir o projeto) ──────────────────────────────
+# Arquivos de kubeconfig nunca devem ir ao repositório
+kubeconfig
+*.kubeconfig
+.kube/

@@ -1,0 +1,66 @@
+# =============================================================================
+# Stage 1 — Builder
+# Compila o binário Go de forma estática para rodar em imagem distroless
+# =============================================================================
+FROM golang:1.21-alpine AS builder
+
+# Instala ca-certificates e git para download de módulos privados (se houver)
+RUN apk add --no-cache ca-certificates git tzdata
+
+WORKDIR /build
+
+# Copia go.mod e go.sum primeiro (aproveita cache do Docker para go mod download)
+COPY go.mod ./
+# go.sum é gerado via `go mod tidy` antes do build. 
+# Copie-o junto com go.mod quando disponível para garantir builds reprodutíveis.
+# COPY go.sum ./
+RUN go mod download && go mod verify
+
+# Copia o código fonte
+COPY *.go ./
+
+# Compila o binário:
+# CGO_ENABLED=0  → binário estático (sem dependências de libc do host)
+# GOOS/GOARCH    → target Linux AMD64 (compatível com AWS ECS/EKS)
+# -ldflags       → remove informações de debug e símbolo (reduz tamanho)
+# -trimpath      → remove paths de build do binário (segurança)
+RUN CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64 \
+    go build \
+      -ldflags="-s -w" \
+      -trimpath \
+      -o /bin/donation-service \
+      .
+
+
+# =============================================================================
+# Stage 2 — Runtime
+# Imagem distroless: sem shell, sem package manager, superfície de ataque mínima
+# Ideal para binários Go estáticos
+# =============================================================================
+FROM gcr.io/distroless/static-debian12:nonroot AS runtime
+
+# Metadata da imagem (OCI image spec)
+LABEL org.opencontainers.image.title="donation-service" \
+      org.opencontainers.image.description="SolidaryTech — Hot path de processamento de doações" \
+      org.opencontainers.image.version="1.0.0"
+
+# Copia apenas o binário compilado e os certificados CA (necessários para TLS com AWS)
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=builder /bin/donation-service /bin/donation-service
+
+# A imagem distroless:nonroot já define um usuário não-root (uid 65532)
+USER nonroot:nonroot
+
+# Porta exposta pelo serviço
+EXPOSE 8082
+
+# Health check: em imagens distroless não há shell ou utilitários disponíveis.
+# O health check real é feito pelo ALB Target Group (/health) e pelos
+# liveness/readiness probes do Kubernetes. O HEALTHCHECK do Docker é desabilitado
+# neste contexto — use docker-compose com um sidecar ou confie no orquestrador.
+
+# Entrypoint direto no binário (sem shell wrapper)
+ENTRYPOINT ["/bin/donation-service"]
