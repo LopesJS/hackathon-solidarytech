@@ -17,13 +17,15 @@ Registro da comprovação de utilização das disciplinas das Fases 1 a 4 no nov
 
 ## Infraestrutura como Código (Terraform)
 
-- [ ] Módulo de networking
+- [ ] Módulo de networking  
 - [ ] Módulo de cluster Kubernetes
 - [ ] Módulo de banco de dados
 - [ ] Módulo de mensageria (RabbitMQ/Redis)
 - [ ] Módulo de registry (ACR/ECR)
 - [ ] Tags FinOps aplicadas em todos os recursos (`Project`, `Environment`, `CostCenter`)
 
+[01 - Infra](./fundacao/infra.md)
+[02 - Deploy Infra](./fundacao/deploy-infra.md)
 
 ## CI/CD e DevSecOps
 

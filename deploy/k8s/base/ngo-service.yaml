@@ -1,0 +1,98 @@
+# =============================================================================
+# ngo-service — Deployment base (valores sobrescritos pelos overlays)
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngo-service
+  namespace: solidarytech
+  labels:
+    app: ngo-service
+    project: solidarytech
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngo-service
+  template:
+    metadata:
+      labels:
+        app: ngo-service
+        version: "1.0.0"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port:   "8081"
+        prometheus.io/path:   "/metrics"
+    spec:
+      serviceAccountName: ngo-service
+      securityContext:
+        runAsNonRoot: true
+        runAsUser:    1000
+        fsGroup:      2000
+      containers:
+        - name: ngo-service
+          image: REGISTRY/solidarytech/ngo-service:TAG
+          ports:
+            - containerPort: 8081
+              name: http
+          env:
+            - name: PORT
+              value: "8081"
+            - name: ENVIRONMENT
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          envFrom:
+            - secretRef:
+                name: ngo-service-secrets
+          resources:
+            requests:
+              cpu:    "100m"
+              memory: "128Mi"
+            limits:
+              cpu:    "250m"
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds:       10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds:       20
+            failureThreshold:    3
+      topologySpreadConstraints:
+        - maxSkew:           1
+          topologyKey:       kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: ngo-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ngo-service
+  namespace: solidarytech
+  labels:
+    app: ngo-service
+spec:
+  selector:
+    app: ngo-service
+  ports:
+    - port: 80
+      targetPort: 8081
+      name: http
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ngo-service
+  namespace: solidarytech
+  labels:
+    app: ngo-service

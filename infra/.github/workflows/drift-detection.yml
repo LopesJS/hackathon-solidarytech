@@ -1,0 +1,71 @@
+# =============================================================================
+# Workflow: drift-detection
+# Detecta drift diariamente — recursos alterados fora do Terraform.
+# =============================================================================
+name: "Terraform Drift Detection"
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # 06:00 UTC = 03:00 BRT
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues:   write
+  id-token: write
+
+env:
+  TF_VERSION: "1.8.0"
+  AWS_REGION: "us-east-1"
+
+jobs:
+  drift-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [lab, aws-prod]
+    environment: ${{ matrix.environment }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region:     ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init
+        working-directory: terraform/environments/${{ matrix.environment }}
+        run: terraform init
+
+      - name: Detect Drift
+        id: drift
+        working-directory: terraform/environments/${{ matrix.environment }}
+        run: |
+          terraform plan \
+            -var="db_password=${{ secrets.DB_PASSWORD }}" \
+            -detailed-exitcode \
+            -no-color 2>&1 | tee drift_output.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+
+      - name: Open Issue on Drift
+        if: steps.drift.outputs.exit_code == '2'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync(
+              'terraform/environments/${{ matrix.environment }}/drift_output.txt',
+              'utf8'
+            ).slice(0, 10000);
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              title: `⚠️ Drift detectado em \`${{ matrix.environment }}\` — ${new Date().toISOString().split('T')[0]}`,
+              body:  `## Drift de Infraestrutura Detectado\n\nO Terraform identificou mudanças no ambiente \`${{ matrix.environment }}\` que não estão no código.\n\n<details><summary>Detalhes</summary>\n\n\`\`\`\n${output}\n\`\`\`\n</details>\n\n**Ação necessária:** execute \`terraform apply\` ou reverta as mudanças manuais.`,
+              labels: ['infrastructure', 'drift', '${{ matrix.environment }}']
+            });

@@ -1,0 +1,50 @@
+# =============================================================================
+# ArgoCD AppProject — SolidaryTech
+# Define permissões, destinos e repositórios permitidos.
+# =============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: solidarytech
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: "SolidaryTech — Plataforma de conexão ONGs/Doadores/Voluntários"
+
+  sourceRepos:
+    - "https://github.com/LopesJS/hackathon-solidarytech"
+   #- "https://github.com/LopesJS/solidarytech-apps"
+
+  destinations:
+    - namespace: solidarytech
+      server: https://kubernetes.default.svc
+    - namespace: solidarytech-monitoring
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+    - group: "rbac.authorization.k8s.io"
+      kind: ClusterRole
+    - group: "rbac.authorization.k8s.io"
+      kind: ClusterRoleBinding
+
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+
+  roles:
+    - name: developer
+      description: "Acesso leitura para desenvolvedores"
+      policies:
+        - p, proj:solidarytech:developer, applications, get, solidarytech/*, allow
+        - p, proj:solidarytech:developer, applications, sync, solidarytech/*, allow
+      groups:
+        - solidarytech-developers
+    - name: admin
+      description: "Acesso total para admins"
+      policies:
+        - p, proj:solidarytech:admin, applications, *, solidarytech/*, allow
+      groups:
+        - solidarytech-admins

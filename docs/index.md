@@ -1,6 +1,8 @@
 # SolidaryTech — Documentação do Hackathon
 
-![Capa](/hackathon-solidarytech/images/capa.png)
+Documentação técnica do projeto, construída com **MkDocs** (gratuito e open-source) e publicada automaticamente no **GitHub Pages** via GitHub Actions.
+
+![Capa](./img/capa.png)
 
 Bem-vindo(a) à documentação técnica do projeto **SolidaryTech**, desenvolvida para o Hackathon da Fase 5 (POSTECH DCLT).
 
@@ -40,6 +42,6 @@ A SolidaryTech é uma plataforma que conecta ONGs, doadores e voluntários. O de
 
 ## Arquitetura
 
-![Arquitetura](/hackathon-solidarytech/images/arquitetura-geral.png)
 
+![Arquitetura](./img/arquitetura-geral.png)
 

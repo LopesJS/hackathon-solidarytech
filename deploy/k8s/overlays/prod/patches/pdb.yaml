@@ -1,0 +1,11 @@
+# PodDisruptionBudget — donation-service sempre tem ao menos 1 pod disponível
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: donation-service-pdb
+  namespace: solidarytech
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: donation-service

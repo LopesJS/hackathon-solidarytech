@@ -5,25 +5,42 @@ site_author: Juliano da Silva Lopes
 theme:
   name: material
   language: pt-BR
+  logo: assets/images/logo.png
+  favicon: assets/images/logo.png
+  # Paleta de cores moderna (Indigo e Teal)
   palette:
-    - scheme: slate
-      primary: teal
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: cyan
       accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Mudar para modo escuro
+    # Configuração para o modo Escuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: cyan
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Mudar para modo claro
   features:
     - navigation.tabs
     - navigation.top
     - navigation.sections
     - content.code.copy
     - toc.integrate
+    - search.suggest            # Autocompletar inteligente na busca
+    - search.highlight
 
 nav:
   - Início: index.md
   - Cronograma: cronograma.md
-  - 0. Fundação DevOps: 00-fundacao-devops.md
-  - 1. SRE: 01-sre.md
-  - 2. FinOps: 02-finops.md
-  - 3. ITSM e AIOps: 03-itsm-aiops.md
-  - 4. DR e Segurança: 04-dr-seguranca.md
+  - Fundação DevOps: 00-fundacao-devops.md
+  - SRE: 01-sre.md
+  - FinOps: 02-finops.md
+  - ITSM e AIOps: 03-itsm-aiops.md
+  - DR e Segurança: 04-dr-seguranca.md
 
 markdown_extensions:
   - admonition
@@ -34,3 +51,5 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.details
   - attr_list
+  - pymdownx.tabbed:
+      alternate_style: true 

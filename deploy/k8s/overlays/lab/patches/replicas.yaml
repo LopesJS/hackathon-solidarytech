@@ -1,0 +1,19 @@
+# Lab: 1 réplica para todos (economiza recursos)
+- op: replace
+  path: /spec/replicas
+  value: 1
+  target:
+    kind: Deployment
+    name: ngo-service
+- op: replace
+  path: /spec/replicas
+  value: 1
+  target:
+    kind: Deployment
+    name: donation-service
+- op: replace
+  path: /spec/replicas
+  value: 1
+  target:
+    kind: Deployment
+    name: volunteer-service

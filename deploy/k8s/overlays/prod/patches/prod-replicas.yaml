@@ -1,0 +1,12 @@
+- op: replace
+  path: /spec/replicas
+  value: 2
+  target:
+    kind: Deployment
+    name: ngo-service
+- op: replace
+  path: /spec/replicas
+  value: 3
+  target:
+    kind: Deployment
+    name: donation-service

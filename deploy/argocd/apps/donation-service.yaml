@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: donation-service
+  namespace: argocd
+  labels:
+    project: solidarytech
+    service: donation-service
+    criticality: high
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: solidarytech
+  source:
+    repoURL: https://github.com/LopesJS/hackathon-solidarytech
+    targetRevision: main
+    path: k8s/overlays/prod
+    kustomize:
+      images:
+        - donation-service=123456789012.dkr.ecr.us-east-1.amazonaws.com/solidarytech/donation-service:latest
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: solidarytech
+  syncPolicy:
+    automated:
+      prune:    true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+    retry:
+      limit: 5
+      backoff:
+        duration:    10s
+        factor:      2
+        maxDuration: 5m
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas   # Controlado pelo HPA
+  revisionHistoryLimit: 10

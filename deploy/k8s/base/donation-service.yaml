@@ -1,0 +1,123 @@
+# =============================================================================
+# donation-service — HOT PATH / Caminho Crítico
+# Réplicas mínimas = 2 (HA), HPA até 10.
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: donation-service
+  namespace: solidarytech
+  labels:
+    app: donation-service
+    project: solidarytech
+    tier: backend
+    criticality: high
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: donation-service
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge:       1
+      maxUnavailable: 0   # Zero-downtime deploy
+  template:
+    metadata:
+      labels:
+        app: donation-service
+        version: "1.0.0"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port:   "8082"
+        prometheus.io/path:   "/metrics"
+    spec:
+      serviceAccountName: donation-service
+      securityContext:
+        runAsNonRoot: true
+        runAsUser:    1000
+      containers:
+        - name: donation-service
+          image: REGISTRY/solidarytech/donation-service:TAG
+          ports:
+            - containerPort: 8082
+              name: http
+          env:
+            - name: PORT
+              value: "8082"
+          envFrom:
+            - secretRef:
+                name: donation-service-secrets
+          resources:
+            requests:
+              cpu:    "250m"
+              memory: "256Mi"
+            limits:
+              cpu:    "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8082
+            initialDelaySeconds: 5
+            periodSeconds:       5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8082
+            initialDelaySeconds: 20
+            periodSeconds:       15
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: donation-service
+              topologyKey: kubernetes.io/hostname  # Pods em nós diferentes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: donation-service
+  namespace: solidarytech
+  labels:
+    app: donation-service
+spec:
+  selector:
+    app: donation-service
+  ports:
+    - port: 80
+      targetPort: 8082
+      name: http
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: donation-service-hpa
+  namespace: solidarytech
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: donation-service
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type:               AverageUtilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type:               AverageUtilization
+          averageUtilization: 80
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: donation-service
+  namespace: solidarytech

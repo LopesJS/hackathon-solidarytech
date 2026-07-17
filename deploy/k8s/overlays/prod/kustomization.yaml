@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: solidarytech
+
+bases:
+  - ../../base
+
+commonLabels:
+  environment: production
+
+images:
+  - name: REGISTRY/solidarytech/ngo-service
+    newName: 123456789012.dkr.ecr.us-east-1.amazonaws.com/solidarytech/ngo-service
+    newTag:  v1.0.0   # substituído pelo CI/CD com o SHA do commit
+  - name: REGISTRY/solidarytech/donation-service
+    newName: 123456789012.dkr.ecr.us-east-1.amazonaws.com/solidarytech/donation-service
+    newTag:  v1.0.0
+  - name: REGISTRY/solidarytech/volunteer-service
+    newName: 123456789012.dkr.ecr.us-east-1.amazonaws.com/solidarytech/volunteer-service
+    newTag:  v1.0.0
+
+patches:
+  - path: patches/prod-replicas.yaml
+  - path: patches/pdb.yaml

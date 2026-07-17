@@ -1,0 +1,81 @@
+# =============================================================================
+# Workflow: terraform-apply
+# Dispara em push para main — aplica Terraform no environment correspondente.
+# Requires manual approval para aws-prod (GitHub Environment protection rule).
+# =============================================================================
+name: "Terraform Apply"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "terraform/**"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment para aplicar"
+        required: true
+        type: choice
+        options: [lab, aws-prod]
+      confirm:
+        description: "Digite APLICAR para confirmar"
+        required: true
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  TF_VERSION: "1.8.0"
+  AWS_REGION: "us-east-1"
+
+jobs:
+  apply-lab:
+    if: github.event_name == 'push' || inputs.environment == 'lab'
+    runs-on: ubuntu-latest
+    environment: lab
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_LAB }}
+          aws-region:     ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init + Apply (lab)
+        working-directory: terraform/environments/lab
+        run: |
+          terraform init
+          terraform apply \
+            -var="db_password=${{ secrets.DB_PASSWORD }}" \
+            -auto-approve
+
+  apply-prod:
+    if: github.event_name == 'workflow_dispatch' && inputs.environment == 'aws-prod' && inputs.confirm == 'APLICAR'
+    runs-on: ubuntu-latest
+    environment: aws-prod   # Requer approval no GitHub
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region:     ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init + Apply (prod)
+        working-directory: terraform/environments/aws-prod
+        run: |
+          terraform init
+          terraform apply \
+            -var="db_password=${{ secrets.DB_PASSWORD }}" \
+            -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
+            -var="alarm_sns_arn=${{ secrets.ALARM_SNS_ARN }}" \
+            -auto-approve
