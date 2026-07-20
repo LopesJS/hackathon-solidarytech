@@ -1,0 +1,156 @@
+# =============================================================================
+# Workflow: CI - volunteer-service
+# Build, teste de integração, SAST/SCA (Trivy) e push para ECR (lab).
+# =============================================================================
+name: "CI - volunteer-service"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/volunteer-service/**"
+      - "services/docker-compose.yml"
+      - ".github/workflows/ci-volunteer-service.yml"
+  pull_request:
+    paths:
+      - "services/volunteer-service/**"
+
+env:
+  SERVICE_NAME: volunteer-service
+  AWS_REGION: "us-east-1"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build da imagem Docker
+        run: |
+          docker build -t ${{ env.SERVICE_NAME }}:${{ github.sha }} services/${{ env.SERVICE_NAME }}
+          docker save ${{ env.SERVICE_NAME }}:${{ github.sha }} -o /tmp/${{ env.SERVICE_NAME }}.tar
+
+      - name: Upload da imagem como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.SERVICE_NAME }}-image
+          path: /tmp/${{ env.SERVICE_NAME }}.tar
+          retention-days: 1
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar .env de teste
+        working-directory: services
+        run: cp .env.example .env
+
+      - name: Subir stack (docker-compose)
+        working-directory: services
+        run: docker compose up -d --build localstack aws-init ${{ env.SERVICE_NAME }}
+
+      - name: Aguardar serviço ficar saudável
+        run: |
+          for i in $(seq 1 20); do
+            if curl -sf http://localhost:8083/health; then
+              echo "volunteer-service respondendo."
+              exit 0
+            fi
+            echo "Aguardando volunteer-service... ($i/20)"
+            sleep 5
+          done
+          echo "volunteer-service não respondeu a tempo."
+          exit 1
+
+      - name: Logs em caso de falha
+        if: failure()
+        working-directory: services
+        run: docker compose logs ${{ env.SERVICE_NAME }} localstack
+
+      - name: Encerrar stack
+        if: always()
+        working-directory: services
+        run: docker compose down -v
+
+  sca:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trivy — scan do filesystem (requirements.txt)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "services/${{ env.SERVICE_NAME }}"
+          severity: "CRITICAL,HIGH"
+          format: "table"
+          exit-code: "1"
+
+  image-scan:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Baixar imagem gerada no job de build
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.SERVICE_NAME }}-image
+          path: /tmp
+
+      - name: Carregar imagem no Docker local
+        run: docker load -i /tmp/${{ env.SERVICE_NAME }}.tar
+
+      - name: Trivy — scan da imagem
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          severity: "CRITICAL,HIGH"
+          format: "table"
+          exit-code: "1"
+
+  push-to-ecr:
+    needs: [test, sca, image-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: lab
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar credenciais AWS (OIDC — role do ambiente lab)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_LAB }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login no ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag e push
+        env:
+          REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          REPOSITORY: solidarytech/${{ env.SERVICE_NAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG services/${{ env.SERVICE_NAME }}
+          docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:latest
+          echo "Imagem publicada: $REGISTRY/$REPOSITORY:$IMAGE_TAG"
+
+      - name: Forçar novo deploy no ECS (lab)
+        run: |
+          aws ecs update-service \
+            --cluster solidarytech-lab \
+            --service ${{ env.SERVICE_NAME }} \
+            --force-new-deployment \
+            --region ${{ env.AWS_REGION }} \
+            --no-cli-pager

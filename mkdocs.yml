@@ -36,7 +36,14 @@ theme:
 nav:
   - Início: index.md
   - Cronograma: cronograma.md
-  - Fundação DevOps: 00-fundacao-devops.md
+  - Fundação DevOps:
+      - Visão geral: 00-fundacao-devops.md
+      - Infraestrutura (Terraform - Parte 1): fundacao/infra.md
+      - Infraestrutura (Terraform - Parte 2): fundacao/terraform-infra.md
+      - Deploy na AWS (Lab): fundacao/deploy-infra.md
+      - Containerização (Docker): fundacao/docker.md
+      - Execução Local (Docker Compose): fundacao/solidarytech-local.md
+      - Lab Automatizado: fundacao/lab-automatizado.md
   - SRE: 01-sre.md
   - FinOps: 02-finops.md
   - ITSM e AIOps: 03-itsm-aiops.md
