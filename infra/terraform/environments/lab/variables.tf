@@ -1,29 +1,21 @@
 variable "aws_region" {
-  description = "AWS region for the lab environment"
   type        = string
   default     = "us-east-1"
-}
-
-variable "project" {
-  description = "Project name"
-  type        = string
-  default     = "solidarytech"
-}
-
-variable "environment" {
-  description = "Environment name"
-  type        = string
-  default     = "lab"
+  description = "Região AWS para o ambiente lab"
 }
 
 variable "owner" {
-  description = "Team owner of these resources"
   type        = string
-  default     = "devops"
+  default     = "devops-team"
+  description = "Time responsável pelos recursos"
 }
 
-variable "image_tag" {
-  description = "Docker image tag to deploy (use git SHA in CI/CD)"
+variable "db_password" {
   type        = string
-  default     = "latest"
+  sensitive   = true
+  description = "Senha do PostgreSQL — passe via TF_VAR_db_password ou -var"
+  validation {
+    condition     = length(var.db_password) >= 12
+    error_message = "Senha deve ter ao menos 12 caracteres."
+  }
 }

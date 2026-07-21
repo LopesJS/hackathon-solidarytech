@@ -6,7 +6,10 @@
 
 terraform {
   required_providers {
-    aws = { source = "hashicorp/aws"; version = "~> 5.0" }
+    aws = { 
+      source  = "hashicorp/aws" 
+      version = "~> 5.0" 
+    }
   }
 }
 
@@ -53,24 +56,10 @@ resource "aws_cloudwatch_log_group" "services" {
 }
 
 # ---------------------------------------------------------------------------
-# IAM — Task Execution Role
+# IAM — Busca a Role Padrão do Laboratório (Substitui Criação de Role)
 # ---------------------------------------------------------------------------
-data "aws_iam_policy_document" "ecs_assume" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals { type = "Service"; identifiers = ["ecs-tasks.amazonaws.com"] }
-  }
-}
-
-resource "aws_iam_role" "task_execution" {
-  name               = "${var.project}-${var.environment}-ecs-exec-role"
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume.json
-  tags               = merge(var.tags, { Layer = "ecs" })
-}
-
-resource "aws_iam_role_policy_attachment" "task_execution" {
-  role       = aws_iam_role.task_execution.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+data "aws_iam_role" "lab_role" {
+  name = "LabRole"
 }
 
 # ---------------------------------------------------------------------------
@@ -82,7 +71,7 @@ locals {
       port   = 8081
       cpu    = 256
       memory = 512
-      image  = "${var.ecr_base_url}/solidarytech/ngo-service:${var.image_tag}"
+      image  = "${var.registry_base}/solidarytech/ngo-service:${var.image_tag}"
       env = [
         { name = "PORT",          value = "8081" },
         { name = "DB_HOST",       value = var.db_endpoint },
@@ -94,7 +83,7 @@ locals {
       port   = 8082
       cpu    = 512
       memory = 1024
-      image  = "${var.ecr_base_url}/solidarytech/donation-service:${var.image_tag}"
+      image  = "${var.registry_base}/solidarytech/donation-service:${var.image_tag}"
       env = [
         { name = "PORT",          value = "8082" },
         { name = "DB_HOST",       value = var.db_endpoint },
@@ -107,7 +96,7 @@ locals {
       port   = 8083
       cpu    = 256
       memory = 512
-      image  = "${var.ecr_base_url}/solidarytech/volunteer-service:${var.image_tag}"
+      image  = "${var.registry_base}/solidarytech/volunteer-service:${var.image_tag}"
       env = [
         { name = "PORT",          value = "8083" },
         { name = "DYNAMO_TABLE",  value = var.volunteer_table },
@@ -125,8 +114,10 @@ resource "aws_ecs_task_definition" "services" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = each.value.cpu
   memory                   = each.value.memory
-  execution_role_arn       = aws_iam_role.task_execution.arn
-  task_role_arn            = aws_iam_role.task_execution.arn
+  
+  # Alterado para usar a LabRole injetada pelo Data Source do IAM
+  execution_role_arn       = data.aws_iam_role.lab_role.arn
+  task_role_arn            = data.aws_iam_role.lab_role.arn
 
   container_definitions = jsonencode([{
     name      = each.key

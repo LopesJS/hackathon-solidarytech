@@ -2,21 +2,27 @@
 # MODULE: sqs
 # Filas SQS para processamento assíncrono de doações.
 # Inclui Dead Letter Queue (DLQ) para mensagens com falha.
+# KMS opcional — habilitado em prod, desabilitado em lab por padrão.
 # =============================================================================
 
 terraform {
   required_providers {
-    aws = { source = "hashicorp/aws"; version = "~> 5.0" }
+    aws = { source = "hashicorp/aws" 
+    version = "~> 5.0" }
   }
+}
+
+locals {
+  kms_key = var.use_kms ? "alias/aws/sqs" : null
 }
 
 # ---------------------------------------------------------------------------
 # DLQ — Dead Letter Queue
 # ---------------------------------------------------------------------------
 resource "aws_sqs_queue" "dlq" {
-  name                       = "${var.project}-${var.environment}-donations-dlq"
-  message_retention_seconds  = 1209600  # 14 dias
-  kms_master_key_id          = "alias/aws/sqs"
+  name                      = "${var.project}-${var.environment}-donations-dlq"
+  message_retention_seconds = 1209600  # 14 dias
+  kms_master_key_id         = local.kms_key
 
   tags = merge(var.tags, {
     Name    = "${var.project}-${var.environment}-donations-dlq"
@@ -31,14 +37,14 @@ resource "aws_sqs_queue" "dlq" {
 # ---------------------------------------------------------------------------
 resource "aws_sqs_queue" "donations" {
   name                       = "${var.project}-${var.environment}-donations"
-  visibility_timeout_seconds = 300          # 5 min (tempo para processar 1 doação)
-  message_retention_seconds  = 86400        # 24h
-  receive_wait_time_seconds  = 20           # Long polling — reduz custo
-  kms_master_key_id          = "alias/aws/sqs"
+  visibility_timeout_seconds = 300
+  message_retention_seconds  = 86400
+  receive_wait_time_seconds  = 20
+  kms_master_key_id          = local.kms_key
 
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.dlq.arn
-    maxReceiveCount     = 3                 # 3 tentativas antes da DLQ
+    maxReceiveCount     = 3
   })
 
   tags = merge(var.tags, {
@@ -54,9 +60,9 @@ resource "aws_sqs_queue" "donations" {
 # ---------------------------------------------------------------------------
 resource "aws_sqs_queue" "volunteer_notifications" {
   name                      = "${var.project}-${var.environment}-volunteer-notifications"
-  message_retention_seconds = 3600         # 1h (notificações têm validade curta)
+  message_retention_seconds = 3600
   receive_wait_time_seconds = 10
-  kms_master_key_id         = "alias/aws/sqs"
+  kms_master_key_id         = local.kms_key
 
   tags = merge(var.tags, {
     Name    = "${var.project}-${var.environment}-volunteer-notifications"
@@ -66,7 +72,7 @@ resource "aws_sqs_queue" "volunteer_notifications" {
 }
 
 # ---------------------------------------------------------------------------
-# Alarme CloudWatch — DLQ com mensagens (alerta de falhas)
+# Alarme CloudWatch — DLQ com mensagens
 # ---------------------------------------------------------------------------
 resource "aws_cloudwatch_metric_alarm" "dlq_messages" {
   alarm_name          = "${var.project}-${var.environment}-dlq-not-empty"

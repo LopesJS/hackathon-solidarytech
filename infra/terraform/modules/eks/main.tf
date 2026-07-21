@@ -6,7 +6,8 @@
 
 terraform {
   required_providers {
-    aws = { source = "hashicorp/aws"; version = "~> 5.0" }
+    aws = { source = "hashicorp/aws"
+    version = "~> 5.0" }
   }
 }
 
@@ -16,7 +17,10 @@ terraform {
 data "aws_iam_policy_document" "eks_assume" {
   statement {
     actions = ["sts:AssumeRole"]
-    principals { type = "Service"; identifiers = ["eks.amazonaws.com"] }
+    principals { 
+      type = "Service"
+      identifiers = ["eks.amazonaws.com"] 
+    }
   }
 }
 
@@ -37,7 +41,10 @@ resource "aws_iam_role_policy_attachment" "cluster_policy" {
 data "aws_iam_policy_document" "node_assume" {
   statement {
     actions = ["sts:AssumeRole"]
-    principals { type = "Service"; identifiers = ["ec2.amazonaws.com"] }
+    principals { 
+      type = "Service"
+      identifiers = ["ec2.amazonaws.com"] 
+    }
   }
 }
 

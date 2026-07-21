@@ -153,7 +153,7 @@ resource "aws_route_table_association" "private" {
 # ---------------------------------------------------------------------------
 resource "aws_security_group" "alb" {
   name        = "${var.project}-${var.environment}-alb-sg"
-  description = "ALB — aceita trafego publico HTTP/HTTPS"
+  description = "ALB - aceita trafego publico HTTP/HTTPS"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -185,7 +185,7 @@ resource "aws_security_group" "alb" {
 
 resource "aws_security_group" "app" {
   name        = "${var.project}-${var.environment}-app-sg"
-  description = "Microsservicos — trafego interno apenas"
+  description = "Microsservicos - trafego interno apenas"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -216,7 +216,7 @@ resource "aws_security_group" "app" {
 
 resource "aws_security_group" "rds" {
   name        = "${var.project}-${var.environment}-rds-sg"
-  description = "RDS PostgreSQL — apenas trafego interno"
+  description = "RDS PostgreSQL - apenas trafego interno"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -229,3 +229,4 @@ resource "aws_security_group" "rds" {
 
   tags = merge(var.tags, { Name = "${var.project}-${var.environment}-rds-sg" })
 }
+

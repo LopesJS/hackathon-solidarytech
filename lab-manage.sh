@@ -12,8 +12,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Detecta automaticamente onde está o main.tf do lab
 LAB_DIR=""
 for candidate in \
-  "${SCRIPT_DIR}/terraform/environments/lab" \
-  "${SCRIPT_DIR}/environments/lab" \
+  "${SCRIPT_DIR}/infra/terraform/environments/lab" \
+  "${SCRIPT_DIR}/infra/terraform/environments/lab" \
   "${SCRIPT_DIR}/lab"; do
   if [[ -f "${candidate}/main.tf" ]]; then
     LAB_DIR="$candidate"

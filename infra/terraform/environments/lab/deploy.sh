@@ -8,7 +8,7 @@ set -euo pipefail
 REGION="${AWS_REGION:-us-east-1}"
 GIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "local")
 IMAGE_TAG="${1:-$GIT_SHA}"
-APP_DIR="../../../../services"   # raiz do repo (4 níveis acima) + pasta services/
+APP_DIR="../../.."   # ajuste para o caminho do repositório de código
 
 echo "=== SolidaryTech — Deploy das Imagens ==="
 echo "Região: $REGION"

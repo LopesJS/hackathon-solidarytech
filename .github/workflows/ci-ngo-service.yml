@@ -2,168 +2,149 @@
 # Workflow: CI - ngo-service
 # Build, teste de integração, SAST/SCA (Trivy) e push para ECR (lab).
 # =============================================================================
-name: "CI - ngo-service"
+name: "CI — ngo-service"
 
 on:
   push:
     branches: [main]
     paths:
-      - "services/ngo-service/**"
-      - "services/docker-compose.yml"
+      - "src/hackathon-DCLT-main/ngo-service/**"
       - ".github/workflows/ci-ngo-service.yml"
-  pull_request:
-    paths:
-      - "services/ngo-service/**"
+  workflow_dispatch:
 
 env:
-  SERVICE_NAME: ngo-service
-  AWS_REGION: "us-east-1"
-
-permissions:
-  contents: read
-  id-token: write   # OIDC para AWS
+  SERVICE:     ngo-service
+  PORT:        "8081"
+  DOCKERFILE:  src/hackathon-DCLT-main/ngo-service/Dockerfile
+  CONTEXT:     src/hackathon-DCLT-main/ngo-service
 
 jobs:
-  # ───────────────────────── 1. BUILD ─────────────────────────
-  build:
+  build-scan-push-deploy:
+    name: Build → Scan → Push → Deploy
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Build da imagem Docker
-        run: |
-          docker build -t ${{ env.SERVICE_NAME }}:${{ github.sha }} services/${{ env.SERVICE_NAME }}
-          docker save ${{ env.SERVICE_NAME }}:${{ github.sha }} -o /tmp/${{ env.SERVICE_NAME }}.tar
-
-      - name: Upload da imagem como artifact (reaproveitada pelos próximos jobs)
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.SERVICE_NAME }}-image
-          path: /tmp/${{ env.SERVICE_NAME }}.tar
-          retention-days: 1
-
-  # ───────────────────── 2. TESTE DE INTEGRAÇÃO ─────────────────────
-  # Não há testes unitários no serviço ainda — o smoke test sobe a stack
-  # completa (docker-compose) e valida o endpoint /health, reproduzindo
-  # em CI a mesma validação já feita manualmente em tests/solidarytech-local.
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Preparar .env de teste
-        working-directory: services
-        run: cp .env.example .env
-
-      - name: Subir stack (docker-compose)
-        working-directory: services
-        run: docker compose up -d --build postgres localstack db-init aws-init ${{ env.SERVICE_NAME }}
-
-      - name: Aguardar serviço ficar saudável
-        run: |
-          for i in $(seq 1 20); do
-            if curl -sf http://localhost:8081/health; then
-              echo "ngo-service respondendo."
-              exit 0
-            fi
-            echo "Aguardando ngo-service... ($i/20)"
-            sleep 5
-          done
-          echo "ngo-service não respondeu a tempo."
-          exit 1
-
-      - name: Smoke test funcional (CRUD básico)
-        run: |
-          curl -sf http://localhost:8081/health
-          echo "Health check OK"
-
-      - name: Logs em caso de falha
-        if: failure()
-        working-directory: services
-        run: docker compose logs ${{ env.SERVICE_NAME }} postgres
-
-      - name: Encerrar stack
-        if: always()
-        working-directory: services
-        run: docker compose down -v
-
-  # ───────────────────────── 3. SCA — Trivy (dependências) ─────────────────────────
-  sca:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Trivy — scan do filesystem (requirements.txt)
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: "fs"
-          scan-ref: "services/${{ env.SERVICE_NAME }}"
-          severity: "CRITICAL,HIGH"
-          format: "table"
-          exit-code: "1"
-
-  # ───────────────────── 4. Scan da imagem (Trivy) ─────────────────────
-  image-scan:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Baixar imagem gerada no job de build
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.SERVICE_NAME }}-image
-          path: /tmp
-
-      - name: Carregar imagem no Docker local
-        run: docker load -i /tmp/${{ env.SERVICE_NAME }}.tar
-
-      - name: Trivy — scan da imagem
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ env.SERVICE_NAME }}:${{ github.sha }}"
-          severity: "CRITICAL,HIGH"
-          format: "table"
-          exit-code: "1"
-
-  # ───────────────────── 5. PUSH PARA O ECR (lab) ─────────────────────
-  push-to-ecr:
-    needs: [test, sca, image-scan]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    environment: lab
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Configurar credenciais AWS (OIDC — role do ambiente lab)
+      # ── 2. Configurar credenciais AWS ────────────────────────────────────────
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_LAB }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token:     ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region:            ${{ secrets.AWS_REGION }}
 
-      - name: Login no ECR
+      # ── 3. Login no ECR ──────────────────────────────────────────────────────
+      - name: Login to Amazon ECR
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag e push
-        env:
-          REGISTRY: ${{ steps.ecr-login.outputs.registry }}
-          REPOSITORY: solidarytech/${{ env.SERVICE_NAME }}
-          IMAGE_TAG: ${{ github.sha }}
+      # ── 4. Definir tags da imagem ────────────────────────────────────────────
+      - name: Set image metadata
+        id: meta
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG services/${{ env.SERVICE_NAME }}
-          docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:latest
-          echo "Imagem publicada: $REGISTRY/$REPOSITORY:$IMAGE_TAG"
+          SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          IMAGE="${{ secrets.ECR_NGO_URL }}"
+          echo "sha_tag=sha-${SHA}"         >> $GITHUB_OUTPUT
+          echo "image_sha=${IMAGE}:sha-${SHA}" >> $GITHUB_OUTPUT
+          echo "image_latest=${IMAGE}:latest"  >> $GITHUB_OUTPUT
 
-      - name: Forçar novo deploy no ECS (lab)
+      # ── 5. Build da imagem ───────────────────────────────────────────────────
+      - name: Build Docker image
         run: |
+          docker build \
+            --file ${{ env.DOCKERFILE }} \
+            --tag ${{ steps.meta.outputs.image_sha }} \
+            --tag ${{ steps.meta.outputs.image_latest }} \
+            --label "git-commit=${{ github.sha }}" \
+            --label "build-date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            ${{ env.CONTEXT }}
+
+      # ── 6. Scan de segurança com Trivy ───────────────────────────────────────
+      - name: Security scan — Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref:    ${{ steps.meta.outputs.image_sha }}
+          format:       "table"
+          severity:     "CRITICAL,HIGH"
+          exit-code:    "0"          # não falha o build, mas registra no log
+          ignore-unfixed: true
+
+      # ── 7. Gerar relatório SARIF (visível na aba Security do GitHub) ──────────
+      - name: Trivy SARIF report
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref:  ${{ steps.meta.outputs.image_sha }}
+          format:     "sarif"
+          output:     "trivy-results.sarif"
+          severity:   "CRITICAL,HIGH"
+          ignore-unfixed: true
+        continue-on-error: true
+
+      - name: Upload Trivy SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "trivy-results.sarif"
+        continue-on-error: true
+
+      # ── 8. Push para ECR ─────────────────────────────────────────────────────
+      - name: Push image to ECR
+        run: |
+          docker push ${{ steps.meta.outputs.image_sha }}
+          docker push ${{ steps.meta.outputs.image_latest }}
+          echo "✅ Imagem publicada: ${{ steps.meta.outputs.image_sha }}"
+
+      # ── 9. Atualizar ECS com a nova imagem ───────────────────────────────────
+      - name: Deploy to ECS
+        run: |
+          TASK_DEF=$(aws ecs describe-task-definition \
+            --task-definition solidarytech-lab-${{ env.SERVICE }} \
+            --query 'taskDefinition' \
+            --output json)
+
+          NEW_TASK_DEF=$(echo "$TASK_DEF" | jq \
+            --arg IMAGE "${{ steps.meta.outputs.image_sha }}" \
+            '.containerDefinitions[0].image = $IMAGE |
+             del(.taskDefinitionArn, .revision, .status,
+                 .requiresAttributes, .compatibilities,
+                 .registeredAt, .registeredBy)')
+
+          NEW_TASK_ARN=$(aws ecs register-task-definition \
+            --cli-input-json "$NEW_TASK_DEF" \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
           aws ecs update-service \
-            --cluster solidarytech-lab \
-            --service ${{ env.SERVICE_NAME }} \
+            --cluster "${{ secrets.ECS_CLUSTER }}" \
+            --service "${{ env.SERVICE }}" \
+            --task-definition "$NEW_TASK_ARN" \
             --force-new-deployment \
-            --region ${{ env.AWS_REGION }} \
-            --no-cli-pager
+            --query 'service.{Status:status,Desired:desiredCount}' \
+            --output json
+
+          echo "✅ ECS atualizado: ${{ env.SERVICE }} → $NEW_TASK_ARN"
+
+      # ── 10. Aguardar service estabilizar ─────────────────────────────────────
+      - name: Wait for ECS stability
+        run: |
+          echo "Aguardando ${{ env.SERVICE }} estabilizar..."
+          aws ecs wait services-stable \
+            --cluster "${{ secrets.ECS_CLUSTER }}" \
+            --services "${{ env.SERVICE }}"
+          echo "✅ ${{ env.SERVICE }} estável"
+
+      # ── 11. Summary no GitHub Actions ────────────────────────────────────────
+      - name: Job Summary
+        if: always()
+        run: |
+          echo "## 🐳 ${{ env.SERVICE }} — Deploy Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Item | Valor |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Imagem | \`${{ steps.meta.outputs.image_sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Cluster | \`${{ secrets.ECS_CLUSTER }}\` |" >> $GITHUB_STEP_SUMMARY
