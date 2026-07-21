@@ -52,6 +52,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
+            --no-cache \
             --file ${{ env.DOCKERFILE }} \
             --tag ${{ steps.meta.outputs.image_sha }} \
             --tag ${{ steps.meta.outputs.image_latest }} \
