@@ -1,7 +1,7 @@
 # =============================================================================
 # Workflow: CI - donation-service
 # Build, testes Go, SAST/SCA (Trivy) e push para ECR (lab).
-# donation-service é o Hot Path (Golden Path do desafio) — pipeline mais rígido.
+# donation-service é o Hot Path (Golden Path do desafio) — Pipeline mais rígido.
 # =============================================================================
 name: "CI — donation-service"
 
