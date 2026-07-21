@@ -4,7 +4,7 @@ RUN apk add --no-cache ca-certificates git tzdata
 
 WORKDIR /build
 
-COPY go.mod ./
+COPY go.mod go.sum ./
 
 RUN go mod download && go mod verify
 
