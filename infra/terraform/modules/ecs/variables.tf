@@ -39,3 +39,16 @@ variable "tags"                {
     type = map(string)
     default = {} 
 }
+
+variable "donation_db_secret_arn" {
+  type        = string
+  default     = ""
+  description = "ARN do secret no Secrets Manager com a DATABASE_URL do donation-service"
+}
+
+variable "ngo_db_secret_arn" {
+  type        = string
+  default     = ""
+  description = "ARN do secret no Secrets Manager com a DATABASE_URL do ngo-service"
+}
+

@@ -68,40 +68,43 @@ data "aws_iam_role" "lab_role" {
 locals {
   services = {
     "ngo-service" = {
-      port   = 8081
-      cpu    = 256
-      memory = 512
-      image  = "${var.registry_base}/solidarytech/ngo-service:${var.image_tag}"
+      port    = 8081
+      cpu     = 256
+      memory  = 512
+      image   = "${var.registry_base}/solidarytech/ngo-service:${var.image_tag}"
       env = [
-        { name = "PORT",          value = "8081" },
-        { name = "DB_HOST",       value = var.db_endpoint },
-        { name = "DB_NAME",       value = "ngo_db" },
-        { name = "ENVIRONMENT",   value = var.environment },
+        { name = "PORT",        value = "8081" },
+        { name = "ENVIRONMENT", value = var.environment },
+        { name = "DATABASE_URL", valueFrom = var.ngo_db_secret_arn },
       ]
+      secrets = []
     }
     "donation-service" = {
-      port   = 8082
-      cpu    = 512
-      memory = 1024
-      image  = "${var.registry_base}/solidarytech/donation-service:${var.image_tag}"
+      port    = 8082
+      cpu     = 512
+      memory  = 1024
+      image   = "${var.registry_base}/solidarytech/donation-service:${var.image_tag}"
       env = [
-        { name = "PORT",          value = "8082" },
-        { name = "DB_HOST",       value = var.db_endpoint },
-        { name = "DB_NAME",       value = "donation_db" },
-        { name = "SQS_URL",       value = var.sqs_donations_url },
-        { name = "ENVIRONMENT",   value = var.environment },
+        { name = "PORT",        value = "8082" },
+        { name = "AWS_SQS_URL", value = var.sqs_donations_url },
+        { name = "AWS_REGION",  value = var.aws_region },
+        { name = "ENVIRONMENT", value = var.environment },
+        { name = "DATABASE_URL", valueFrom = var.donation_db_secret_arn },
       ]
+      secrets = []
     }
     "volunteer-service" = {
-      port   = 8083
-      cpu    = 256
-      memory = 512
-      image  = "${var.registry_base}/solidarytech/volunteer-service:${var.image_tag}"
+      port    = 8083
+      cpu     = 256
+      memory  = 512
+      image   = "${var.registry_base}/solidarytech/volunteer-service:${var.image_tag}"
       env = [
-        { name = "PORT",          value = "8083" },
-        { name = "DYNAMO_TABLE",  value = var.volunteer_table },
-        { name = "ENVIRONMENT",   value = var.environment },
+        { name = "PORT",         value = "8083" },
+        { name = "DYNAMO_TABLE", value = var.volunteer_table },
+        { name = "AWS_REGION",   value = var.aws_region },
+        { name = "ENVIRONMENT",  value = var.environment },
       ]
+      secrets = []
     }
   }
 }
@@ -125,6 +128,7 @@ resource "aws_ecs_task_definition" "services" {
     essential = true
     portMappings = [{ containerPort = each.value.port, protocol = "tcp" }]
     environment  = each.value.env
+    secrets      = each.value.secrets
     logConfiguration = {
       logDriver = "awslogs"
       options = {
