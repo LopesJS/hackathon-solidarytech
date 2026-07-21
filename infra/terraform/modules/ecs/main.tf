@@ -1,16 +1,24 @@
 # =============================================================================
-# MODULE: ecs
-# ECS Fargate — alternativa ao EKS para ambientes lab/DR (custo menor).
-# Executa os três microsserviços SolidaryTech sem necessidade de gerenciar nós.
+# MODULE: ecs — ECS Fargate
+# Vocareum/AWS Academy: iam:CreateRole bloqueado.
+# Usa LabRole pré-existente via data source.
+# DATABASE_URL montada a partir dos componentes do RDS (sem Secrets Manager).
 # =============================================================================
 
 terraform {
   required_providers {
     aws = { 
-      source  = "hashicorp/aws" 
+      source = "hashicorp/aws"
       version = "~> 5.0" 
     }
   }
+}
+
+# ---------------------------------------------------------------------------
+# IAM — Vocareum: usa LabRole pré-existente (iam:CreateRole não permitido)
+# ---------------------------------------------------------------------------
+data "aws_iam_role" "lab_role" {
+  name = "LabRole"
 }
 
 # ---------------------------------------------------------------------------
@@ -42,7 +50,7 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
 }
 
 # ---------------------------------------------------------------------------
-# CloudWatch Log Group
+# CloudWatch Log Groups
 # ---------------------------------------------------------------------------
 resource "aws_cloudwatch_log_group" "services" {
   for_each          = toset(["ngo-service", "donation-service", "volunteer-service"])
@@ -56,55 +64,54 @@ resource "aws_cloudwatch_log_group" "services" {
 }
 
 # ---------------------------------------------------------------------------
-# IAM — Busca a Role Padrão do Laboratório (Substitui Criação de Role)
+# DATABASE_URL montada a partir dos componentes individuais do RDS
+# Evita dependência de Secrets Manager (Vocareum não permite iam:PassRole
+# para injeção de secrets em task definitions sem role própria)
 # ---------------------------------------------------------------------------
-data "aws_iam_role" "lab_role" {
-  name = "LabRole"
+locals {
+  database_url = "postgres://${var.db_user}:${var.db_password}@${var.db_host}:${var.db_port}/${var.db_name}?sslmode=require"
 }
 
 # ---------------------------------------------------------------------------
-# Task Definitions (uma por serviço)
+# Task Definitions — uma por serviço
 # ---------------------------------------------------------------------------
 locals {
   services = {
     "ngo-service" = {
-      port    = 8081
-      cpu     = 256
-      memory  = 512
-      image   = "${var.registry_base}/solidarytech/ngo-service:${var.image_tag}"
+      port   = 8081
+      cpu    = 256
+      memory = 512
+      image  = "${var.registry_base}/solidarytech/ngo-service:${var.image_tag}"
       env = [
-        { name = "PORT",        value = "8081" },
-        { name = "ENVIRONMENT", value = var.environment },
-        { name = "DATABASE_URL", valueFrom = var.ngo_db_secret_arn },
+        { name = "PORT",         value = "8081" },
+        { name = "DATABASE_URL", value = local.database_url },
+        { name = "ENVIRONMENT",  value = var.environment },
       ]
-      secrets = []
     }
     "donation-service" = {
-      port    = 8082
-      cpu     = 512
-      memory  = 1024
-      image   = "${var.registry_base}/solidarytech/donation-service:${var.image_tag}"
+      port   = 8082
+      cpu    = 512
+      memory = 1024
+      image  = "${var.registry_base}/solidarytech/donation-service:${var.image_tag}"
       env = [
-        { name = "PORT",        value = "8082" },
-        { name = "AWS_SQS_URL", value = var.sqs_donations_url },
-        { name = "AWS_REGION",  value = var.aws_region },
-        { name = "ENVIRONMENT", value = var.environment },
-        { name = "DATABASE_URL", valueFrom = var.donation_db_secret_arn },
+        { name = "PORT",         value = "8082" },
+        { name = "DATABASE_URL", value = local.database_url },
+        { name = "AWS_SQS_URL",  value = var.sqs_donations_url },
+        { name = "AWS_REGION",   value = var.aws_region },
+        { name = "ENVIRONMENT",  value = var.environment },
       ]
-      secrets = []
     }
     "volunteer-service" = {
-      port    = 8083
-      cpu     = 256
-      memory  = 512
-      image   = "${var.registry_base}/solidarytech/volunteer-service:${var.image_tag}"
+      port   = 8083
+      cpu    = 256
+      memory = 512
+      image  = "${var.registry_base}/solidarytech/volunteer-service:${var.image_tag}"
       env = [
         { name = "PORT",         value = "8083" },
         { name = "DYNAMO_TABLE", value = var.volunteer_table },
         { name = "AWS_REGION",   value = var.aws_region },
         { name = "ENVIRONMENT",  value = var.environment },
       ]
-      secrets = []
     }
   }
 }
@@ -117,8 +124,6 @@ resource "aws_ecs_task_definition" "services" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = each.value.cpu
   memory                   = each.value.memory
-  
-  # Alterado para usar a LabRole injetada pelo Data Source do IAM
   execution_role_arn       = data.aws_iam_role.lab_role.arn
   task_role_arn            = data.aws_iam_role.lab_role.arn
 
@@ -128,7 +133,6 @@ resource "aws_ecs_task_definition" "services" {
     essential = true
     portMappings = [{ containerPort = each.value.port, protocol = "tcp" }]
     environment  = each.value.env
-    secrets      = each.value.secrets
     logConfiguration = {
       logDriver = "awslogs"
       options = {
@@ -142,7 +146,7 @@ resource "aws_ecs_task_definition" "services" {
       interval    = 30
       timeout     = 5
       retries     = 3
-      startPeriod = 10
+      startPeriod = 15
     }
   }])
 
@@ -150,6 +154,8 @@ resource "aws_ecs_task_definition" "services" {
     Service = each.key
     Layer   = "compute"
   })
+
+  depends_on = [aws_cloudwatch_log_group.services]
 }
 
 # ---------------------------------------------------------------------------
@@ -186,6 +192,6 @@ resource "aws_ecs_service" "services" {
   })
 
   lifecycle {
-    ignore_changes = [desired_count]  # gerenciado pelo autoscaling
+    ignore_changes = [desired_count]
   }
 }

@@ -113,11 +113,17 @@ module "ecs" {
   registry_base      = module.ecr.registry_base
   private_subnet_ids = module.networking.private_subnet_ids
   app_sg_id          = module.networking.app_sg_id
-  db_endpoint        = module.rds.endpoint
   sqs_donations_url  = module.sqs.donations_queue_url
   volunteer_table    = module.dynamodb.volunteer_matches_table_name
   use_spot           = true
   desired_count      = 1
   log_retention_days = 3
   tags               = local.common_tags
+
+  # Novos parâmetros para montar a URL do banco dentro do módulo do ECS
+  db_host     = module.rds.endpoint
+  db_port     = module.rds.port
+  db_name     = module.rds.db_name
+  db_user     = module.rds.username
+  db_password = module.rds.password
 }
