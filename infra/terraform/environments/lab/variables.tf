@@ -23,6 +23,6 @@ variable "db_password" {
 variable "newrelic_license_key" {
   type        = string
   sensitive   = true
-  description = "License key do New Relic — passe via TF_VAR_newrelic_license_key"
   default     = ""
+  description = "License key do New Relic — passe via TF_VAR_newrelic_license_key"
 }

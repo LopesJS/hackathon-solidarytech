@@ -112,10 +112,10 @@ module "ecs" {
   aws_region         = var.aws_region
   registry_base      = module.ecr.registry_base
   private_subnet_ids = module.networking.private_subnet_ids
-  app_sg_id          = module.networking.app_sg_id
-  vpc_id             = module.networking.vpc_id
   public_subnet_ids  = module.networking.public_subnet_ids
+  vpc_id             = module.networking.vpc_id
   alb_sg_id          = module.networking.alb_sg_id
+  app_sg_id          = module.networking.app_sg_id
   sqs_donations_url  = module.sqs.donations_queue_url
   volunteer_table    = module.dynamodb.volunteer_matches_table_name
   use_spot           = true
@@ -123,10 +123,13 @@ module "ecs" {
   log_retention_days = 3
   tags               = local.common_tags
 
-  # Novos parâmetros para montar a URL do banco dentro do módulo do ECS
+  # RDS — componentes para montar DATABASE_URL dentro do módulo
   db_host     = module.rds.endpoint
   db_port     = module.rds.port
   db_name     = module.rds.db_name
   db_user     = module.rds.username
   db_password = module.rds.password
+
+  # New Relic — passe via: export TF_VAR_newrelic_license_key='sua-key'
+  newrelic_license_key = var.newrelic_license_key
 }
