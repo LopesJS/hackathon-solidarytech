@@ -48,9 +48,9 @@ jobs:
         run: |
           SHA=$(echo ${{ github.sha }} | cut -c1-7)
           IMAGE="${{ secrets.ECR_NGO_URL }}"
-          echo "sha_tag=sha-${SHA}"         >> $GITHUB_OUTPUT
-          echo "image_sha=${IMAGE}:sha-${SHA}" >> $GITHUB_OUTPUT
-          echo "image_latest=${IMAGE}:latest"  >> $GITHUB_OUTPUT
+          echo "sha_tag=sha-${SHA}"              >> $GITHUB_OUTPUT
+          echo "image_sha=${IMAGE}:sha-${SHA}"   >> $GITHUB_OUTPUT
+          echo "image_latest=${IMAGE}:latest"    >> $GITHUB_OUTPUT
 
       # ── 5. Build da imagem ───────────────────────────────────────────────────
       - name: Build Docker image
@@ -67,20 +67,20 @@ jobs:
       - name: Security scan — Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref:    ${{ steps.meta.outputs.image_sha }}
-          format:       "table"
-          severity:     "CRITICAL,HIGH"
-          exit-code:    "0"          # não falha o build, mas registra no log
+          image-ref:      ${{ steps.meta.outputs.image_sha }}
+          format:         "table"
+          severity:       "CRITICAL,HIGH"
+          exit-code:      "0"
           ignore-unfixed: true
 
       # ── 7. Gerar relatório SARIF (visível na aba Security do GitHub) ──────────
       - name: Trivy SARIF report
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref:  ${{ steps.meta.outputs.image_sha }}
-          format:     "sarif"
-          output:     "trivy-results.sarif"
-          severity:   "CRITICAL,HIGH"
+          image-ref:      ${{ steps.meta.outputs.image_sha }}
+          format:         "sarif"
+          output:         "trivy-results.sarif"
+          severity:       "CRITICAL,HIGH"
           ignore-unfixed: true
         continue-on-error: true
 
@@ -127,14 +127,49 @@ jobs:
 
           echo "✅ ECS atualizado: ${{ env.SERVICE }} → $NEW_TASK_ARN"
 
-      # ── 10. Aguardar service estabilizar ─────────────────────────────────────
+      # ── 10. Aguardar service estabilizar (com retry e timeout estendido) ──────
       - name: Wait for ECS stability
         run: |
           echo "Aguardando ${{ env.SERVICE }} estabilizar..."
-          aws ecs wait services-stable \
-            --cluster "${{ secrets.ECS_CLUSTER }}" \
-            --services "${{ env.SERVICE }}"
-          echo "✅ ${{ env.SERVICE }} estável"
+
+          # aws ecs wait tem limite fixo de ~10 min (40 tentativas × 15s).
+          # Em Fargate Spot + ALB health check, o primeiro deploy pode levar
+          # até 15 min (pull da imagem + startPeriod do health check + TG drain).
+          # Solução: polling manual com timeout de 20 minutos.
+
+          CLUSTER="${{ secrets.ECS_CLUSTER }}"
+          SERVICE="${{ env.SERVICE }}"
+          TIMEOUT=1200   # 20 minutos
+          INTERVAL=20    # checar a cada 20 segundos
+          ELAPSED=0
+
+          while [ $ELAPSED -lt $TIMEOUT ]; do
+            STATUS=$(aws ecs describe-services \
+              --cluster "$CLUSTER" \
+              --services "$SERVICE" \
+              --query 'services[0].{running:runningCount,desired:desiredCount,pending:pendingCount}' \
+              --output json)
+
+            RUNNING=$(echo "$STATUS" | jq -r '.running')
+            DESIRED=$(echo "$STATUS" | jq -r '.desired')
+            PENDING=$(echo "$STATUS" | jq -r '.pending')
+
+            echo "  [${ELAPSED}s] running=${RUNNING} desired=${DESIRED} pending=${PENDING}"
+
+            if [ "$RUNNING" -eq "$DESIRED" ] && [ "$PENDING" -eq 0 ] && [ "$DESIRED" -gt 0 ]; then
+              echo "✅ $SERVICE estável (${RUNNING}/${DESIRED} tasks rodando)"
+              exit 0
+            fi
+
+            sleep $INTERVAL
+            ELAPSED=$((ELAPSED + INTERVAL))
+          done
+
+          echo "❌ Timeout: $SERVICE não estabilizou em ${TIMEOUT}s"
+          echo "Investigar no console ECS ou via:"
+          echo "  aws ecs describe-services --cluster $CLUSTER --services $SERVICE"
+          echo "  aws logs tail /ecs/solidarytech/lab/$SERVICE --since 10m"
+          exit 1
 
       # ── 11. Summary no GitHub Actions ────────────────────────────────────────
       - name: Job Summary

@@ -42,7 +42,10 @@ EXPOSE 8083
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8083/health')" || exit 1
 
-CMD ["gunicorn", \
+RUN opentelemetry-bootstrap -a install
+
+CMD ["opentelemetry-instrument", \
+     "gunicorn", \
      "--bind", "0.0.0.0:8083", \
      "--workers", "2", \
      "--timeout", "30", \

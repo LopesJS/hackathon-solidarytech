@@ -119,10 +119,39 @@ jobs:
 
       - name: Wait for ECS stability
         run: |
-          aws ecs wait services-stable \
-            --cluster "${{ secrets.ECS_CLUSTER }}" \
-            --services "${{ env.SERVICE }}"
-          echo "✅ donation-service estável"
+          echo "Aguardando ${{ env.SERVICE }} estabilizar..."
+
+          CLUSTER="${{ secrets.ECS_CLUSTER }}"
+          SERVICE="${{ env.SERVICE }}"
+          TIMEOUT=1200
+          INTERVAL=20
+          ELAPSED=0
+
+          while [ $ELAPSED -lt $TIMEOUT ]; do
+            STATUS=$(aws ecs describe-services \
+              --cluster "$CLUSTER" \
+              --services "$SERVICE" \
+              --query 'services[0].{running:runningCount,desired:desiredCount,pending:pendingCount}' \
+              --output json)
+
+            RUNNING=$(echo "$STATUS" | jq -r '.running')
+            DESIRED=$(echo "$STATUS" | jq -r '.desired')
+            PENDING=$(echo "$STATUS" | jq -r '.pending')
+
+            echo "  [${ELAPSED}s] running=${RUNNING} desired=${DESIRED} pending=${PENDING}"
+
+            if [ "$RUNNING" -eq "$DESIRED" ] && [ "$PENDING" -eq 0 ] && [ "$DESIRED" -gt 0 ]; then
+              echo "✅ $SERVICE estável (${RUNNING}/${DESIRED} tasks rodando)"
+              exit 0
+            fi
+
+            sleep $INTERVAL
+            ELAPSED=$((ELAPSED + INTERVAL))
+          done
+
+          echo "❌ Timeout: $SERVICE não estabilizou em ${TIMEOUT}s"
+          aws logs tail /ecs/solidarytech/lab/$SERVICE --since 10m || true
+          exit 1
 
       - name: Job Summary
         if: always()

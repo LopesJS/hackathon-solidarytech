@@ -233,7 +233,7 @@ locals {
       image  = "${var.registry_base}/solidarytech/volunteer-service:${var.image_tag}"
       env = [
         { name = "PORT",         value = "8083" },
-        { name = "DYNAMO_TABLE", value = var.volunteer_table },
+        { name = "AWS_DYNAMODB_TABLE", value = var.volunteer_table },
         { name = "AWS_REGION",   value = var.aws_region },
         { name = "ENVIRONMENT",  value = var.environment },
       ]
