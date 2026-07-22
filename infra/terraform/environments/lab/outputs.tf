@@ -13,6 +13,11 @@ output "ecs_cluster_name" {
   value       = module.ecs.cluster_name
 }
 
+output "alb_dns_name" {
+  description = "DNS do ALB — endpoint público dos microsserviços"
+  value       = module.ecs.alb_dns_name
+}
+
 output "rds_endpoint" {
   description = "Endpoint do PostgreSQL"
   value       = module.rds.endpoint

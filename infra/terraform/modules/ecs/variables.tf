@@ -6,15 +6,20 @@ variable "aws_region"         {
 }
 
 # Registry ECR — hostname da conta (sem o path do repositório)
-# Exemplo: 486630403283.dkr.ecr.us-east-1.amazonaws.com
 variable "registry_base"      { type = string }
-
 variable "image_tag"          { 
   type = string
   default = "latest" 
 }
+
+# Rede — subnets e SGs vindos do módulo networking
+variable "vpc_id"             { type = string }
+variable "public_subnet_ids"  { type = list(string) }
 variable "private_subnet_ids" { type = list(string) }
+variable "alb_sg_id"          { type = string }
 variable "app_sg_id"          { type = string }
+
+# Serviços AWS
 variable "sqs_donations_url"  { 
   type = string
   default = "" 
@@ -23,8 +28,10 @@ variable "volunteer_table"    {
   type = string
   default = "" 
 }
+
+# Fargate
 variable "use_spot"           { 
-  type = bool   
+  type = bool
   default = true 
 }
 variable "desired_count"      { 
@@ -40,37 +47,32 @@ variable "tags"               {
   default = {} 
 }
 
-# ---------------------------------------------------------------------------
 # Componentes do RDS para montar DATABASE_URL
-# Passados pelo lab/main.tf a partir dos outputs do módulo rds
-# ---------------------------------------------------------------------------
-variable "db_host" {
-  type        = string
-  default     = ""
-  description = "Endpoint do RDS (module.rds.endpoint)"
+variable "db_host"     { 
+  type = string
+  default = "" 
+}
+variable "db_port"     { 
+  type = number
+  default = 5432 
+}
+variable "db_name"     { 
+  type = string
+  default = "solidarytech" 
+}
+variable "db_user"     { 
+  type = string
+  default = "solidary_admin" 
+}
+variable "db_password" { 
+  type = string
+  sensitive = true
+  default = "" 
 }
 
-variable "db_port" {
-  type        = number
-  default     = 5432
-  description = "Porta do PostgreSQL (module.rds.port)"
-}
-
-variable "db_name" {
-  type        = string
-  default     = "solidarytech"
-  description = "Nome do banco (module.rds.db_name)"
-}
-
-variable "db_user" {
-  type        = string
-  default     = "solidary_admin"
-  description = "Usuário do banco (module.rds.username)"
-}
-
-variable "db_password" {
-  type        = string
-  sensitive   = true
-  default     = ""
-  description = "Senha do banco (module.rds.password)"
+# New Relic (opcional — usado na instrumentação OTel)
+variable "newrelic_license_key" {
+  type      = string
+  sensitive = true
+  default   = ""
 }

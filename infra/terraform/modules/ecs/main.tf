@@ -1,5 +1,5 @@
 # =============================================================================
-# MODULE: ecs — ECS Fargate
+# MODULE: ecs — ECS Fargate + ALB
 # Vocareum/AWS Academy: iam:CreateRole bloqueado.
 # Usa LabRole pré-existente via data source.
 # DATABASE_URL montada a partir dos componentes do RDS (sem Secrets Manager).
@@ -8,7 +8,7 @@
 terraform {
   required_providers {
     aws = { 
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 5.0" 
     }
   }
@@ -63,10 +63,135 @@ resource "aws_cloudwatch_log_group" "services" {
   })
 }
 
+
+# ---------------------------------------------------------------------------
+# Nomes curtos para Target Groups (limite AWS: 32 chars)
+# solidarytech-lab-volunteer-service-tg = 37 chars → usa abreviação
+# ---------------------------------------------------------------------------
+locals {
+  tg_short_names = {
+    "ngo-service"       = "stch-${var.environment}-ngo-svc-tg"
+    "donation-service"  = "stch-${var.environment}-donation-svc-tg"
+    "volunteer-service" = "stch-${var.environment}-volunteer-svc-tg"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# ALB — Application Load Balancer (público)
+# ---------------------------------------------------------------------------
+resource "aws_lb" "main" {
+  name               = "${var.project}-${var.environment}-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [var.alb_sg_id]
+  subnets            = var.public_subnet_ids
+
+  enable_deletion_protection = false
+
+  tags = merge(var.tags, {
+    Name  = "${var.project}-${var.environment}-alb"
+    Layer = "ingress"
+  })
+}
+
+# ---------------------------------------------------------------------------
+# Target Groups — um por serviço
+# ---------------------------------------------------------------------------
+resource "aws_lb_target_group" "services" {
+  for_each = {
+    "ngo-service"       = { port = 8081, path = "/health" }
+    "donation-service"  = { port = 8082, path = "/health" }
+    "volunteer-service" = { port = 8083, path = "/health" }
+  }
+
+  name        = local.tg_short_names[each.key]
+  port        = each.value.port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"   # obrigatório para Fargate awsvpc
+
+  health_check {
+    path                = each.value.path
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    timeout             = 5
+    interval            = 30
+    matcher             = "200"
+  }
+
+  tags = merge(var.tags, {
+    Service = each.key
+    Layer   = "ingress"
+  })
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# ---------------------------------------------------------------------------
+# ALB Listener HTTP :80 — roteamento por path
+# ---------------------------------------------------------------------------
+resource "aws_lb_listener" "http" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  # Default: 404 para rotas não mapeadas
+  default_action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "application/json"
+      message_body = "{\"error\":\"route not found\"}"
+      status_code  = "404"
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "ngo" {
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 10
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.services["ngo-service"].arn
+  }
+
+  condition {
+    path_pattern { values = ["/ngos", "/ngos/*", "/health"] }
+  }
+}
+
+resource "aws_lb_listener_rule" "donation" {
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 20
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.services["donation-service"].arn
+  }
+
+  condition {
+    path_pattern { values = ["/donations", "/donations/*"] }
+  }
+}
+
+resource "aws_lb_listener_rule" "volunteer" {
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 30
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.services["volunteer-service"].arn
+  }
+
+  condition {
+    path_pattern { values = ["/volunteers", "/volunteers/*"] }
+  }
+}
+
 # ---------------------------------------------------------------------------
 # DATABASE_URL montada a partir dos componentes individuais do RDS
-# Evita dependência de Secrets Manager (Vocareum não permite iam:PassRole
-# para injeção de secrets em task definitions sem role própria)
 # ---------------------------------------------------------------------------
 locals {
   database_url = "postgres://${var.db_user}:${var.db_password}@${var.db_host}:${var.db_port}/${var.db_name}?sslmode=require"
@@ -159,7 +284,7 @@ resource "aws_ecs_task_definition" "services" {
 }
 
 # ---------------------------------------------------------------------------
-# ECS Services
+# ECS Services — associados ao ALB
 # ---------------------------------------------------------------------------
 resource "aws_ecs_service" "services" {
   for_each = local.services
@@ -181,10 +306,19 @@ resource "aws_ecs_service" "services" {
     assign_public_ip = false
   }
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.services[each.key].arn
+    container_name   = each.key
+    container_port   = each.value.port
+  }
+
   deployment_circuit_breaker {
     enable   = true
     rollback = true
   }
+
+  # Garante que o listener existe antes dos services tentarem registrar nos TGs
+  depends_on = [aws_lb_listener.http]
 
   tags = merge(var.tags, {
     Service = each.key

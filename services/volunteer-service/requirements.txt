@@ -1,4 +1,9 @@
-Flask==3.0.3
-gunicorn==22.0.0
-boto3==1.34.144
-python-dotenv==1.0.1
+Flask==2.3.3
+gunicorn==20.1.0
+python-dotenv==0.21.0
+boto3==1.26.50
+Werkzeug==2.3.7
+opentelemetry-distro==0.46b0
+opentelemetry-exporter-otlp==1.25.0
+opentelemetry-instrumentation-flask==0.46b0
+opentelemetry-instrumentation-requests==0.46b0

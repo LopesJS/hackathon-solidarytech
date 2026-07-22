@@ -19,3 +19,10 @@ variable "db_password" {
     error_message = "Senha deve ter ao menos 12 caracteres."
   }
 }
+
+variable "newrelic_license_key" {
+  type        = string
+  sensitive   = true
+  description = "License key do New Relic — passe via TF_VAR_newrelic_license_key"
+  default     = ""
+}
