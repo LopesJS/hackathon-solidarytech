@@ -6,13 +6,14 @@ variable "aws_region"         {
 }
 
 # Registry ECR — hostname da conta (sem o path do repositório)
+# Exemplo: 486630403283.dkr.ecr.us-east-1.amazonaws.com
 variable "registry_base"      { type = string }
 variable "image_tag"          { 
   type = string
   default = "latest" 
 }
 
-# Rede — subnets e SGs vindos do módulo networking
+# Rede — vindos do módulo networking
 variable "vpc_id"             { type = string }
 variable "public_subnet_ids"  { type = list(string) }
 variable "private_subnet_ids" { type = list(string) }
@@ -47,32 +48,48 @@ variable "tags"               {
   default = {} 
 }
 
+# ---------------------------------------------------------------------------
 # Componentes do RDS para montar DATABASE_URL
-variable "db_host"     { 
-  type = string
-  default = "" 
-}
-variable "db_port"     { 
-  type = number
-  default = 5432 
-}
-variable "db_name"     { 
-  type = string
-  default = "solidarytech" 
-}
-variable "db_user"     { 
-  type = string
-  default = "solidary_admin" 
-}
-variable "db_password" { 
-  type = string
-  sensitive = true
-  default = "" 
+# ---------------------------------------------------------------------------
+variable "db_host" {
+  type        = string
+  default     = ""
+  description = "Endpoint do RDS (module.rds.endpoint)"
 }
 
-# New Relic (opcional — usado na instrumentação OTel)
+variable "db_port" {
+  type        = number
+  default     = 5432
+  description = "Porta do PostgreSQL (module.rds.port)"
+}
+
+variable "db_name" {
+  type        = string
+  default     = "solidarytech"
+  description = "Nome do banco (module.rds.db_name)"
+}
+
+variable "db_user" {
+  type        = string
+  default     = "solidary_admin"
+  description = "Usuário do banco (module.rds.username)"
+}
+
+variable "db_password" {
+  type        = string
+  sensitive   = true
+  default     = ""
+  description = "Senha do banco (module.rds.password)"
+}
+
+# ---------------------------------------------------------------------------
+# New Relic — chave de licença para ingestão OTLP
+# Passe via: export TF_VAR_newrelic_license_key='sua-key'
+# NUNCA commite o valor real desta variável
+# ---------------------------------------------------------------------------
 variable "newrelic_license_key" {
-  type      = string
-  sensitive = true
-  default   = ""
+  type        = string
+  sensitive   = true
+  default     = ""
+  description = "License key do New Relic (INGEST - LICENSE) para envio via OTLP"
 }

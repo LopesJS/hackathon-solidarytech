@@ -7,9 +7,9 @@
 
 terraform {
   required_providers {
-    aws = { 
+    aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0" 
+      version = "~> 5.0"
     }
   }
 }
@@ -63,19 +63,6 @@ resource "aws_cloudwatch_log_group" "services" {
   })
 }
 
-
-# ---------------------------------------------------------------------------
-# Nomes curtos para Target Groups (limite AWS: 32 chars)
-# solidarytech-lab-volunteer-service-tg = 37 chars → usa abreviação
-# ---------------------------------------------------------------------------
-locals {
-  tg_short_names = {
-    "ngo-service"       = "stch-${var.environment}-ngo-svc-tg"
-    "donation-service"  = "stch-${var.environment}-donation-svc-tg"
-    "volunteer-service" = "stch-${var.environment}-volunteer-svc-tg"
-  }
-}
-
 # ---------------------------------------------------------------------------
 # ALB — Application Load Balancer (público)
 # ---------------------------------------------------------------------------
@@ -95,6 +82,18 @@ resource "aws_lb" "main" {
 }
 
 # ---------------------------------------------------------------------------
+# Nomes curtos para Target Groups (limite AWS: 32 chars)
+# solidarytech-lab-volunteer-service-tg = 37 chars → usa abreviação
+# ---------------------------------------------------------------------------
+locals {
+  tg_short_names = {
+    "ngo-service"       = "stch-${var.environment}-ngo-svc-tg"
+    "donation-service"  = "stch-${var.environment}-donation-svc-tg"
+    "volunteer-service" = "stch-${var.environment}-volunteer-svc-tg"
+  }
+}
+
+# ---------------------------------------------------------------------------
 # Target Groups — um por serviço
 # ---------------------------------------------------------------------------
 resource "aws_lb_target_group" "services" {
@@ -108,7 +107,7 @@ resource "aws_lb_target_group" "services" {
   port        = each.value.port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
-  target_type = "ip"   # obrigatório para Fargate awsvpc
+  target_type = "ip"
 
   health_check {
     path                = each.value.path
@@ -137,7 +136,6 @@ resource "aws_lb_listener" "http" {
   port              = 80
   protocol          = "HTTP"
 
-  # Default: 404 para rotas não mapeadas
   default_action {
     type = "fixed-response"
     fixed_response {
@@ -151,12 +149,10 @@ resource "aws_lb_listener" "http" {
 resource "aws_lb_listener_rule" "ngo" {
   listener_arn = aws_lb_listener.http.arn
   priority     = 10
-
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.services["ngo-service"].arn
   }
-
   condition {
     path_pattern { values = ["/ngos", "/ngos/*", "/health"] }
   }
@@ -165,12 +161,10 @@ resource "aws_lb_listener_rule" "ngo" {
 resource "aws_lb_listener_rule" "donation" {
   listener_arn = aws_lb_listener.http.arn
   priority     = 20
-
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.services["donation-service"].arn
   }
-
   condition {
     path_pattern { values = ["/donations", "/donations/*"] }
   }
@@ -179,12 +173,10 @@ resource "aws_lb_listener_rule" "donation" {
 resource "aws_lb_listener_rule" "volunteer" {
   listener_arn = aws_lb_listener.http.arn
   priority     = 30
-
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.services["volunteer-service"].arn
   }
-
   condition {
     path_pattern { values = ["/volunteers", "/volunteers/*"] }
   }
@@ -198,6 +190,21 @@ locals {
 }
 
 # ---------------------------------------------------------------------------
+# Variáveis de ambiente OpenTelemetry — injetadas em todos os serviços
+# Transmite traces/métricas para o New Relic via OTLP
+# ---------------------------------------------------------------------------
+locals {
+  otel_env = [
+    { name = "OTEL_EXPORTER_OTLP_ENDPOINT", value = "https://otlp.nr-data.net:4317" },
+    { name = "OTEL_EXPORTER_OTLP_HEADERS",  value = "api-key=${var.newrelic_license_key}" },
+    { name = "OTEL_RESOURCE_ATTRIBUTES",    value = "service.namespace=solidarytech,deployment.environment=${var.environment}" },
+    { name = "OTEL_TRACES_EXPORTER",        value = "otlp" },
+    { name = "OTEL_METRICS_EXPORTER",       value = "otlp" },
+    { name = "OTEL_LOGS_EXPORTER",          value = "none" },
+  ]
+}
+
+# ---------------------------------------------------------------------------
 # Task Definitions — uma por serviço
 # ---------------------------------------------------------------------------
 locals {
@@ -207,36 +214,39 @@ locals {
       cpu    = 256
       memory = 512
       image  = "${var.registry_base}/solidarytech/ngo-service:${var.image_tag}"
-      env = [
-        { name = "PORT",         value = "8081" },
-        { name = "DATABASE_URL", value = local.database_url },
-        { name = "ENVIRONMENT",  value = var.environment },
-      ]
+      env = concat([
+        { name = "PORT",              value = "8081" },
+        { name = "DATABASE_URL",      value = local.database_url },
+        { name = "ENVIRONMENT",       value = var.environment },
+        { name = "OTEL_SERVICE_NAME", value = "ngo-service" },
+      ], local.otel_env)
     }
     "donation-service" = {
       port   = 8082
       cpu    = 512
       memory = 1024
       image  = "${var.registry_base}/solidarytech/donation-service:${var.image_tag}"
-      env = [
-        { name = "PORT",         value = "8082" },
-        { name = "DATABASE_URL", value = local.database_url },
-        { name = "AWS_SQS_URL",  value = var.sqs_donations_url },
-        { name = "AWS_REGION",   value = var.aws_region },
-        { name = "ENVIRONMENT",  value = var.environment },
-      ]
+      env = concat([
+        { name = "PORT",              value = "8082" },
+        { name = "DATABASE_URL",      value = local.database_url },
+        { name = "AWS_SQS_URL",       value = var.sqs_donations_url },
+        { name = "AWS_REGION",        value = var.aws_region },
+        { name = "ENVIRONMENT",       value = var.environment },
+        { name = "OTEL_SERVICE_NAME", value = "donation-service" },
+      ], local.otel_env)
     }
     "volunteer-service" = {
       port   = 8083
       cpu    = 256
       memory = 512
       image  = "${var.registry_base}/solidarytech/volunteer-service:${var.image_tag}"
-      env = [
-        { name = "PORT",         value = "8083" },
+      env = concat([
+        { name = "PORT",              value = "8083" },
         { name = "AWS_DYNAMODB_TABLE", value = var.volunteer_table },
-        { name = "AWS_REGION",   value = var.aws_region },
-        { name = "ENVIRONMENT",  value = var.environment },
-      ]
+        { name = "AWS_REGION",        value = var.aws_region },
+        { name = "ENVIRONMENT",       value = var.environment },
+        { name = "OTEL_SERVICE_NAME", value = "volunteer-service" },
+      ], local.otel_env)
     }
   }
 }
@@ -253,9 +263,9 @@ resource "aws_ecs_task_definition" "services" {
   task_role_arn            = data.aws_iam_role.lab_role.arn
 
   container_definitions = jsonencode([{
-    name      = each.key
-    image     = each.value.image
-    essential = true
+    name         = each.key
+    image        = each.value.image
+    essential    = true
     portMappings = [{ containerPort = each.value.port, protocol = "tcp" }]
     environment  = each.value.env
     logConfiguration = {
@@ -317,7 +327,6 @@ resource "aws_ecs_service" "services" {
     rollback = true
   }
 
-  # Garante que o listener existe antes dos services tentarem registrar nos TGs
   depends_on = [aws_lb_listener.http]
 
   tags = merge(var.tags, {
