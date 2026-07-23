@@ -3,15 +3,12 @@ FROM golang:1.21-alpine AS builder
 RUN apk add --no-cache ca-certificates git tzdata
  
 WORKDIR /build
- 
-COPY go.mod ./
-COPY go.sum ./
- 
-# go mod tidy regenera o go.sum quando o go.mod mudou (novas deps OTel).
-# Usa || true para não falhar se o go.sum ainda estiver consistente.
-RUN go mod tidy
+
+COPY go.mod go.sum ./
  
 COPY *.go ./
+ 
+RUN go mod tidy
  
 RUN CGO_ENABLED=0 \
     GOOS=linux \
@@ -37,4 +34,3 @@ USER nonroot:nonroot
 EXPOSE 8082
  
 ENTRYPOINT ["/bin/donation-service"]
- 
