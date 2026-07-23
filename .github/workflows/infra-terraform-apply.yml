@@ -1,7 +1,7 @@
 # =============================================================================
 # Workflow: infra-terraform-apply
-# Dispara em push para main — aplica Terraform no environment correspondente.
-# Requer approval manual para aws-prod (GitHub Environment protection rule).
+# Vocareum/AWS Academy: autentica via credenciais estáticas + session token
+# (OIDC não é suportado em contas Vocareum — iam:CreateRole bloqueado)
 # =============================================================================
 name: "Infra - Terraform Apply"
 
@@ -23,7 +23,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 env:
   TF_VERSION: "1.8.0"
@@ -37,10 +36,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pré-check: falhar cedo com mensagem clara se algum secret estiver faltando
+      - name: Check required secrets
+        run: |
+          MISSING=""
+          [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]     && MISSING="$MISSING AWS_ACCESS_KEY_ID"
+          [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ] && MISSING="$MISSING AWS_SECRET_ACCESS_KEY"
+          [ -z "${{ secrets.AWS_SESSION_TOKEN }}" ]     && MISSING="$MISSING AWS_SESSION_TOKEN"
+          [ -z "${{ secrets.DB_PASSWORD }}" ]           && MISSING="$MISSING DB_PASSWORD"
+          [ -z "${{ secrets.NEW_RELIC_LICENSE_KEY }}" ] && MISSING="$MISSING NEW_RELIC_LICENSE_KEY"
+          if [ -n "$MISSING" ]; then
+            echo "❌ Secrets faltando:$MISSING"
+            echo "Adicione em Settings → Secrets and variables → Actions → New repository secret"
+            exit 1
+          fi
+          echo "✅ Todos os secrets obrigatórios estão presentes"
+
+      # Vocareum: credenciais estáticas + session token (renovar quando expirarem)
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_LAB }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token:     ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region:            ${{ env.AWS_REGION }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -48,23 +66,42 @@ jobs:
 
       - name: Terraform Init + Apply (lab)
         working-directory: infra/terraform/environments/lab
+        env:
+          TF_VAR_db_password:          ${{ secrets.DB_PASSWORD }}
+          TF_VAR_newrelic_license_key: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
         run: |
           terraform init
-          terraform apply \
-            -var="db_password=${{ secrets.DB_PASSWORD }}" \
-            -auto-approve
+          terraform apply -auto-approve
 
   apply-prod:
     if: github.event_name == 'workflow_dispatch' && inputs.environment == 'aws-prod' && inputs.confirm == 'APLICAR'
     runs-on: ubuntu-latest
-    environment: aws-prod   # Requer approval no GitHub
+    environment: aws-prod
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check required secrets
+        run: |
+          MISSING=""
+          [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]     && MISSING="$MISSING AWS_ACCESS_KEY_ID"
+          [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ] && MISSING="$MISSING AWS_SECRET_ACCESS_KEY"
+          [ -z "${{ secrets.AWS_SESSION_TOKEN }}" ]     && MISSING="$MISSING AWS_SESSION_TOKEN"
+          [ -z "${{ secrets.DB_PASSWORD }}" ]           && MISSING="$MISSING DB_PASSWORD"
+          [ -z "${{ secrets.AWS_ACCOUNT_ID }}" ]        && MISSING="$MISSING AWS_ACCOUNT_ID"
+          [ -z "${{ secrets.ALARM_SNS_ARN }}" ]         && MISSING="$MISSING ALARM_SNS_ARN"
+          [ -z "${{ secrets.NEW_RELIC_LICENSE_KEY }}" ] && MISSING="$MISSING NEW_RELIC_LICENSE_KEY"
+          if [ -n "$MISSING" ]; then
+            echo "❌ Secrets faltando:$MISSING"
+            exit 1
+          fi
+          echo "✅ Todos os secrets obrigatórios estão presentes"
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token:     ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region:            ${{ env.AWS_REGION }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -72,10 +109,11 @@ jobs:
 
       - name: Terraform Init + Apply (prod)
         working-directory: infra/terraform/environments/aws-prod
+        env:
+          TF_VAR_db_password:          ${{ secrets.DB_PASSWORD }}
+          TF_VAR_aws_account_id:       ${{ secrets.AWS_ACCOUNT_ID }}
+          TF_VAR_alarm_sns_arn:        ${{ secrets.ALARM_SNS_ARN }}
+          TF_VAR_newrelic_license_key: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
         run: |
           terraform init
-          terraform apply \
-            -var="db_password=${{ secrets.DB_PASSWORD }}" \
-            -var="aws_account_id=${{ secrets.AWS_ACCOUNT_ID }}" \
-            -var="alarm_sns_arn=${{ secrets.ALARM_SNS_ARN }}" \
-            -auto-approve
+          terraform apply -auto-approve

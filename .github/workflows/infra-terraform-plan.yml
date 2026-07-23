@@ -1,8 +1,7 @@
 # =============================================================================
 # Workflow: infra-terraform-plan
-# Dispara em PRs para main — valida, formata e planeja Terraform.
-# Movido de infra/.github/workflows/ para a raiz: o GitHub só executa workflows
-# que estão em .github/workflows na raiz do repositório.
+# Vocareum/AWS Academy: autentica via credenciais estáticas + session token
+# (OIDC não é suportado — iam:CreateRole bloqueado)
 # =============================================================================
 name: "Infra - Terraform Plan"
 
@@ -15,7 +14,6 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  id-token: write   # OIDC para AWS
 
 env:
   TF_VERSION: "1.8.0"
@@ -72,10 +70,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check required secrets
+        run: |
+          MISSING=""
+          [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]     && MISSING="$MISSING AWS_ACCESS_KEY_ID"
+          [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ] && MISSING="$MISSING AWS_SECRET_ACCESS_KEY"
+          [ -z "${{ secrets.AWS_SESSION_TOKEN }}" ]     && MISSING="$MISSING AWS_SESSION_TOKEN"
+          [ -z "${{ secrets.DB_PASSWORD }}" ]           && MISSING="$MISSING DB_PASSWORD"
+          if [ -n "$MISSING" ]; then
+            echo "❌ Secrets faltando:$MISSING"
+            exit 1
+          fi
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token:     ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region:            ${{ env.AWS_REGION }}
 
       - uses: hashicorp/setup-terraform@v3
         with:
@@ -88,9 +100,11 @@ jobs:
       - name: Terraform Plan
         id: plan
         working-directory: infra/terraform/environments/${{ matrix.environment }}
+        env:
+          TF_VAR_db_password:          ${{ secrets.DB_PASSWORD }}
+          TF_VAR_newrelic_license_key: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
         run: |
           terraform plan \
-            -var="db_password=${{ secrets.DB_PASSWORD }}" \
             -out=tfplan \
             -no-color 2>&1 | tee plan_output.txt
 
