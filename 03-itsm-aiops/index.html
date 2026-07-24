@@ -1,0 +1,1732 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)">
+      
+      
+        <meta name="author" content="Juliano da Silva Lopes">
+      
+      
+      
+        <link rel="prev" href="../02-finops/">
+      
+      
+        <link rel="next" href="../04-dr-seguranca/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>ITSM e AIOps - SolidaryTech — Hackathon Fase 5</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#3-itsm-e-aiops-gestao-preditiva-de-incidentes" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="SolidaryTech — Hackathon Fase 5" class="md-header__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolidaryTech — Hackathon Fase 5
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ITSM e AIOps
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cronograma/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cronograma
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../00-fundacao-devops/" class="md-tabs__link">
+          
+  
+  
+  Fundação DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../01-sre/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../02-finops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FinOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ITSM e AIOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../04-dr-seguranca/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DR e Segurança
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SolidaryTech — Hackathon Fase 5" class="md-nav__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    SolidaryTech — Hackathon Fase 5
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundação DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fundação DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-fundacao-devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/terraform-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/deploy-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containerização (Docker)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/solidarytech-local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/lab-automatizado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Automatizado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-finops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#filosofia-itsmaiops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filosofia ITSM/AIOps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracao-de-aiops-new-relic-applied-intelligence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração de AIOps — New Relic Applied Intelligence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuração de AIOps — New Relic Applied Intelligence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#o-que-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        O que é
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-ativadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionalidades ativadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#como-o-aiops-complementa-os-alertas-nrql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Como o AIOps complementa os alertas NRQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ciclo-de-vida-do-incidente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ciclo de Vida do Incidente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ciclo de Vida do Incidente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classificacao-de-severidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classificação de severidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detalhamento-das-6-fases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detalhamento das 6 fases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detalhamento das 6 fases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-deteccao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 1 — Detecção
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-triagem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2 — Triagem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-resposta-mitigacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 3 — Resposta / Mitigação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-4-resolucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 4 — Resolução
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-5-post-mortem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 5 — Post-Mortem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-6-comunicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 6 — Comunicação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-raci-de-resposta-a-incidentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz RACI de Resposta a Incidentes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runbook-operacional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runbook Operacional
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Runbook Operacional">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runbook-1-deploy-quebrado-no-ecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runbook 1 — Deploy quebrado no ECS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runbook-2-filas-sqs-acumulando" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runbook 2 — Filas SQS acumulando
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runbook-3-rds-com-alta-latencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runbook 3 — RDS com alta latência
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runbook-4-ativacao-do-dr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runbook 4 — Ativação do DR
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reducao-de-mttr-via-itsmaiops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redução de MTTR via ITSM/AIOps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comunicacao-a-stakeholders-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comunicação a Stakeholders — Templates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comunicação a Stakeholders — Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-e-mail-ao-comite-gestor-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template — E-mail ao Comitê Gestor (P1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-status-page-publico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template — Status Page (público)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencias-de-operacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências de Operação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-dr-seguranca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DR e Segurança
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="3-itsm-e-aiops-gestao-preditiva-de-incidentes">3. ITSM e AIOps — Gestão Preditiva de Incidentes<a class="headerlink" href="#3-itsm-e-aiops-gestao-preditiva-de-incidentes" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Documentação da estratégia de gestão de incidentes (ITSM) e detecção preditiva via inteligência artificial (AIOps) da plataforma SolidaryTech. Complementa a documentação de <a href="../01-sre/">SRE</a> ao formalizar o <strong>ciclo de vida do incidente</strong>, papéis, responsabilidades e comunicação com stakeholders.</p>
+</blockquote>
+<hr />
+<h2 id="filosofia-itsmaiops">Filosofia ITSM/AIOps<a class="headerlink" href="#filosofia-itsmaiops" title="Permanent link">&para;</a></h2>
+<p>A plataforma SolidaryTech opera sob o princípio de que <strong>incidentes devem ser previstos antes de afetarem o doador final</strong>. Três pilares orientam a operação:</p>
+<ol>
+<li><strong>Detecção preditiva</strong> — anomalias comportamentais são detectadas antes do usuário perceber (AIOps sobre a stack OTel + New Relic já implementada)</li>
+<li><strong>Ciclo de vida estruturado</strong> — todo incidente segue um fluxo padronizado da detecção ao post-mortem, sem improviso</li>
+<li><strong>Comunicação transparente</strong> — as ONGs parceiras são informadas em incidentes críticos com linguagem executiva, não técnica</li>
+</ol>
+<p>Este documento <strong>não repete</strong> a definição de SLOs, dashboards ou alertas, que já vivem em <code>01-sre.md</code>. Aqui foca-se em <strong>como os incidentes são operados quando disparam</strong>.</p>
+<hr />
+<h2 id="configuracao-de-aiops-new-relic-applied-intelligence">Configuração de AIOps — New Relic Applied Intelligence<a class="headerlink" href="#configuracao-de-aiops-new-relic-applied-intelligence" title="Permanent link">&para;</a></h2>
+<h3 id="o-que-e">O que é<a class="headerlink" href="#o-que-e" title="Permanent link">&para;</a></h3>
+<p>O <strong>New Relic Applied Intelligence (AI)</strong> é o mecanismo nativo de detecção de anomalias da plataforma, ativado sobre os traces e métricas OTel já em produção. Diferente de alertas tradicionais baseados em threshold estático, o AIOps:</p>
+<ul>
+<li><strong>Aprende o padrão de comportamento</strong> de cada serviço nas primeiras 2 semanas</li>
+<li><strong>Correlaciona automaticamente</strong> múltiplos sinais (latência + erro + throughput + CPU) em um único "incidente"</li>
+<li><strong>Reduz alert fatigue</strong> ao consolidar dezenas de alertas correlacionados em uma única notificação</li>
+</ul>
+<h3 id="funcionalidades-ativadas">Funcionalidades ativadas<a class="headerlink" href="#funcionalidades-ativadas" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Funcionalidade</th>
+<th>Status</th>
+<th>O que faz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Anomaly Detection</strong></td>
+<td>✅ Ativado</td>
+<td>Detecta desvios do comportamento normal em latência e taxa de erro sem threshold manual</td>
+</tr>
+<tr>
+<td><strong>Correlation</strong></td>
+<td>✅ Ativado</td>
+<td>Agrupa alertas relacionados em um único incidente</td>
+</tr>
+<tr>
+<td><strong>Error Inbox</strong></td>
+<td>✅ Ativado</td>
+<td>Deduplica erros idênticos e classifica por frequência</td>
+</tr>
+<tr>
+<td><strong>Log Patterns</strong></td>
+<td>✅ Ativado</td>
+<td>Detecta mensagens de log recorrentes vs. anomalias raras</td>
+</tr>
+<tr>
+<td><strong>Golden Signals correlation</strong></td>
+<td>✅ Ativado</td>
+<td>Correlaciona os 4 Golden Metrics (latência, tráfego, erros, saturação) automaticamente</td>
+</tr>
+</tbody>
+</table>
+<h3 id="como-o-aiops-complementa-os-alertas-nrql">Como o AIOps complementa os alertas NRQL<a class="headerlink" href="#como-o-aiops-complementa-os-alertas-nrql" title="Permanent link">&para;</a></h3>
+<p>Os alertas NRQL configurados no SRE (<code>SolidaryTech — SRE Alerts</code>) detectam <strong>violações conhecidas</strong> de SLO. O AIOps detecta <strong>problemas não previstos</strong> — casos onde nenhum alerta manual foi criado, mas o comportamento saiu do baseline.</p>
+<p>Exemplo prático:
+- <strong>Alerta NRQL manual:</strong> dispara quando latência do <code>donation-service</code> passa de 300ms
+- <strong>AIOps:</strong> dispararia se a latência subisse de 50ms para 200ms <strong>sem cruzar o threshold de 300ms</strong>, porque 200ms é anômalo em relação ao baseline histórico</p>
+<p>Essa camada preditiva <strong>antecipa incidentes em ~15-30 minutos</strong> vs. alertas tradicionais, reduzindo o MTTR ainda mais.</p>
+<h3 id="evidencia">Evidência<a class="headerlink" href="#evidencia" title="Permanent link">&para;</a></h3>
+<p><strong>Print da tela de Applied Intelligence:</strong>
+<img alt="New Relic Applied Intelligence — Overview" src="./itsm/img/newrelic-ai-overview.png" /></p>
+<p><strong>Print de anomalia detectada:</strong>
+<img alt="Anomaly Detection — donation-service" src="./itsm/img/newrelic-anomaly-detection.png" /></p>
+<hr />
+<h2 id="ciclo-de-vida-do-incidente">Ciclo de Vida do Incidente<a class="headerlink" href="#ciclo-de-vida-do-incidente" title="Permanent link">&para;</a></h2>
+<p>O ciclo de vida na SolidaryTech tem <strong>6 fases</strong> e é executado em <strong>todos</strong> os incidentes independente da severidade. A diferença entre severidades está no tempo e na profundidade de cada fase.</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────────────────────┐
+│                    CICLO DE VIDA DO INCIDENTE                    │
+└─────────────────────────────────────────────────────────────────┘
+
+  1. DETECÇÃO                       2. TRIAGEM
+  ─────────────                     ─────────────
+  Sinal disparado por:              On-call SRE avalia:
+  • Alerta NRQL                     • É falso positivo?
+  • AIOps anomaly                   • Qual severidade (P1/P2/P3)?
+  • Reclamação de usuário           • Quem precisa ser acionado?
+       │                                    │
+       └──────────►     ◄──────────────────┘
+                        │
+                        ▼
+  3. RESPOSTA (MITIGAÇÃO)           4. RESOLUÇÃO
+  ─────────────────────             ─────────────
+  Ações imediatas para              Correção definitiva:
+  restabelecer o serviço:           • Deploy do fix
+  • Rollback via ArgoCD/ECS         • Scaling permanente
+  • Scale up de tasks               • Ajuste de config
+  • Failover para DR                • Validação com métricas
+       │                                    │
+       └──────────►     ◄──────────────────┘
+                        │
+                        ▼
+  5. POST-MORTEM                    6. COMUNICAÇÃO
+  ─────────────                     ─────────────
+  Documento blameless em 5 dias:    Stakeholders informados:
+  • Timeline detalhada              • Doadores (se P1)
+  • Causa raiz (5 whys)             • ONGs parceiras (se P1)
+  • Impacto quantificado            • Comitê gestor (P1 e P2)
+  • Ações corretivas                • Time interno (todos)
+</code></pre></div>
+<h3 id="classificacao-de-severidade">Classificação de severidade<a class="headerlink" href="#classificacao-de-severidade" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Severidade</th>
+<th>Definição</th>
+<th>Exemplo</th>
+<th>Tempo máximo de resposta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P1 — Crítico</strong></td>
+<td>Serviço indisponível OU perda de dados</td>
+<td><code>donation-service</code> retornando 5xx em 100% das requisições</td>
+<td><strong>15 minutos</strong></td>
+</tr>
+<tr>
+<td><strong>P2 — Alto</strong></td>
+<td>Degradação significativa SEM perda de dados</td>
+<td>Latência do POST /donations &gt; 2s</td>
+<td><strong>1 hora</strong></td>
+</tr>
+<tr>
+<td><strong>P3 — Médio</strong></td>
+<td>Impacto limitado ou parcial</td>
+<td>1 serviço secundário down (ex: <code>volunteer-service</code>)</td>
+<td><strong>4 horas</strong></td>
+</tr>
+<tr>
+<td><strong>P4 — Baixo</strong></td>
+<td>Sem impacto ao usuário</td>
+<td>Warning de deprecação de biblioteca</td>
+<td><strong>1 dia útil</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="detalhamento-das-6-fases">Detalhamento das 6 fases<a class="headerlink" href="#detalhamento-das-6-fases" title="Permanent link">&para;</a></h3>
+<h4 id="fase-1-deteccao">Fase 1 — Detecção<a class="headerlink" href="#fase-1-deteccao" title="Permanent link">&para;</a></h4>
+<p>Três origens possíveis, em ordem de preferência:</p>
+<table>
+<thead>
+<tr>
+<th>Origem</th>
+<th>Latência de detecção</th>
+<th>Confiança</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AIOps (New Relic AI)</strong></td>
+<td>1-5 min antes do threshold</td>
+<td>Média-Alta</td>
+</tr>
+<tr>
+<td><strong>Alerta NRQL (SRE Alerts Policy)</strong></td>
+<td>5-15 min após ocorrência</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><strong>Reclamação de usuário</strong></td>
+<td>30 min a horas</td>
+<td>Alta (mas tardio)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Objetivo:</strong> 90% dos incidentes P1/P2 detectados por AIOps ou alerta automático (sem depender do usuário).</p>
+<h4 id="fase-2-triagem">Fase 2 — Triagem<a class="headerlink" href="#fase-2-triagem" title="Permanent link">&para;</a></h4>
+<p>Executada pelo on-call SRE em até 5 minutos após a detecção. Perguntas obrigatórias:</p>
+<ol>
+<li>É falso positivo? (verificar no dashboard SRE)</li>
+<li>Qual serviço afetado? (verificar traces no APM)</li>
+<li>Qual a severidade? (aplicar matriz P1-P4 acima)</li>
+<li>Preciso escalar? (aplicar matriz RACI abaixo)</li>
+</ol>
+<p><strong>Ferramenta:</strong> Dashboard SRE + APM traces do New Relic (já documentado em <code>01-sre.md</code>).</p>
+<h4 id="fase-3-resposta-mitigacao">Fase 3 — Resposta / Mitigação<a class="headerlink" href="#fase-3-resposta-mitigacao" title="Permanent link">&para;</a></h4>
+<p>Ações <strong>imediatas</strong> para restabelecer serviço, mesmo que a causa raiz ainda não seja conhecida:</p>
+<table>
+<thead>
+<tr>
+<th>Sintoma</th>
+<th>Ação de mitigação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deploy quebrado</td>
+<td><code>deployment_circuit_breaker</code> já reverte automaticamente (~3 min)</td>
+</tr>
+<tr>
+<td>Task ECS travada</td>
+<td>Force new deployment via CLI</td>
+</tr>
+<tr>
+<td>Sobrecarga temporária</td>
+<td>Scale up manual do <code>desired_count</code> no ECS</td>
+</tr>
+<tr>
+<td>Falha regional</td>
+<td>Ativar ambiente DR em <code>us-west-2</code> (ver <code>04-dr-seguranca.md</code>)</td>
+</tr>
+<tr>
+<td>Fila SQS acumulando</td>
+<td>Aumentar consumers ou reprocessar da DLQ</td>
+</tr>
+</tbody>
+</table>
+<h4 id="fase-4-resolucao">Fase 4 — Resolução<a class="headerlink" href="#fase-4-resolucao" title="Permanent link">&para;</a></h4>
+<p>Correção <strong>definitiva</strong> — deploy de código, ajuste de configuração, escalamento de capacidade permanente. Sempre validada por métricas antes de fechar o incidente:</p>
+<ul>
+<li>SLI de latência voltou &gt; 95%?</li>
+<li>SLI de sucesso voltou &gt; 99,9%?</li>
+<li>Alertas todos em estado <code>Resolved</code>?</li>
+</ul>
+<h4 id="fase-5-post-mortem">Fase 5 — Post-Mortem<a class="headerlink" href="#fase-5-post-mortem" title="Permanent link">&para;</a></h4>
+<p><strong>Obrigatório</strong> para todo incidente P1 e P2. Prazo máximo: <strong>5 dias úteis</strong> após resolução. Formato <strong>blameless</strong> (foca em processos, não em pessoas).</p>
+<p>Template obrigatório em <code>docs/postmortems/YYYY-MM-DD-titulo.md</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="gh"># Post-Mortem — &lt;título curto&gt;</span>
+
+<span class="gs">**Data:**</span> &lt;data do incidente&gt;
+<span class="gs">**Duração:**</span> &lt;XX minutos&gt;
+<span class="gs">**Severidade:**</span> P&lt;X&gt;
+<span class="gs">**Impacto:**</span> &lt;quantitativo — Error Budget consumido, doações afetadas, etc.&gt;
+
+<span class="gu">## Timeline</span>
+| Horário (UTC) | Evento |
+|---|---|
+| HH:MM | AIOps detectou anomalia |
+| HH:MM | On-call acionado |
+| HH:MM | Mitigação aplicada |
+| HH:MM | Serviço restabelecido |
+
+<span class="gu">## Causa Raiz</span>
+Análise dos 5 Porquês.
+
+<span class="gu">## O que deu certo</span>
+<span class="k">-</span><span class="w"> </span>...
+
+<span class="gu">## O que deu errado</span>
+<span class="k">-</span><span class="w"> </span>...
+
+<span class="gu">## Ações corretivas</span>
+<span class="k">- [ ]</span> &lt;ação&gt; — &lt;responsável&gt; — &lt;prazo&gt;
+</code></pre></div>
+<p><strong>Regra:</strong> ações corretivas viram issues no GitHub com o label <code>postmortem</code> e são rastreadas até conclusão.</p>
+<h4 id="fase-6-comunicacao">Fase 6 — Comunicação<a class="headerlink" href="#fase-6-comunicacao" title="Permanent link">&para;</a></h4>
+<p>Executada <strong>em paralelo</strong> às fases 3-5 (não sequencial). Público e mensagem variam por severidade:</p>
+<table>
+<thead>
+<tr>
+<th>Público</th>
+<th>P1</th>
+<th>P2</th>
+<th>P3</th>
+<th>P4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time DevOps interno</td>
+<td>Imediato (Slack)</td>
+<td>Imediato (Slack)</td>
+<td>Diário standup</td>
+<td>Weekly report</td>
+</tr>
+<tr>
+<td>Comitê Gestor ONG</td>
+<td>E-mail em ≤ 30 min</td>
+<td>E-mail em ≤ 2h</td>
+<td>Relatório mensal</td>
+<td>Não comunicado</td>
+</tr>
+<tr>
+<td>ONGs parceiras</td>
+<td>E-mail em ≤ 1h</td>
+<td>E-mail em ≤ 4h</td>
+<td>Não comunicado</td>
+<td>Não comunicado</td>
+</tr>
+<tr>
+<td>Doadores finais</td>
+<td>Status page + rede social</td>
+<td>Status page</td>
+<td>Não comunicado</td>
+<td>Não comunicado</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="matriz-raci-de-resposta-a-incidentes">Matriz RACI de Resposta a Incidentes<a class="headerlink" href="#matriz-raci-de-resposta-a-incidentes" title="Permanent link">&para;</a></h2>
+<p>Definição clara de papéis para cada fase, evitando ambiguidade em situações de estresse:</p>
+<table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>On-call SRE</th>
+<th>DevOps Lead</th>
+<th>Time Aplicação</th>
+<th>Comitê Gestor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detecção</strong></td>
+<td>A / R</td>
+<td>I</td>
+<td>I</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Triagem</strong></td>
+<td>A / R</td>
+<td>C</td>
+<td>I</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Mitigação</strong></td>
+<td>R</td>
+<td>A</td>
+<td>C / R</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Resolução</strong></td>
+<td>R</td>
+<td>A</td>
+<td>R</td>
+<td>I</td>
+</tr>
+<tr>
+<td><strong>Post-Mortem</strong></td>
+<td>R</td>
+<td>A</td>
+<td>R</td>
+<td>C</td>
+</tr>
+<tr>
+<td><strong>Comunicação a stakeholders</strong></td>
+<td>I</td>
+<td>R</td>
+<td>I</td>
+<td>A</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Legenda:</strong>
+- <strong>R</strong> — Responsible (executa)
+- <strong>A</strong> — Accountable (responde)
+- <strong>C</strong> — Consulted (é consultado)
+- <strong>I</strong> — Informed (é informado)</p>
+<hr />
+<h2 id="runbook-operacional">Runbook Operacional<a class="headerlink" href="#runbook-operacional" title="Permanent link">&para;</a></h2>
+<p>Coletânea de procedimentos padronizados para os cenários mais frequentes. Cada runbook fica em <code>docs/runbooks/</code>.</p>
+<h3 id="runbook-1-deploy-quebrado-no-ecs">Runbook 1 — Deploy quebrado no ECS<a class="headerlink" href="#runbook-1-deploy-quebrado-no-ecs" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Sintoma: alertas de erro após novo deploy</span>
+<span class="c1"># Verificação:</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>describe-services<span class="w"> </span>--cluster<span class="w"> </span>solidarytech-lab<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--services<span class="w"> </span>donation-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;services[0].{Deployments:deployments,Events:events[:5]}&#39;</span>
+
+<span class="c1"># Mitigação automática já ativa via deployment_circuit_breaker.</span>
+<span class="c1"># Se rollback automático não bastar:</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>update-service<span class="w"> </span>--cluster<span class="w"> </span>solidarytech-lab<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--service<span class="w"> </span>donation-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--task-definition<span class="w"> </span>solidarytech-lab-donation-service:&lt;REVISAO_ANTERIOR&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--force-new-deployment
+</code></pre></div>
+<h3 id="runbook-2-filas-sqs-acumulando">Runbook 2 — Filas SQS acumulando<a class="headerlink" href="#runbook-2-filas-sqs-acumulando" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Sintoma: alerta de DLQ com mensagens</span>
+<span class="c1"># Verificação:</span>
+aws<span class="w"> </span>sqs<span class="w"> </span>get-queue-attributes<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-url<span class="w"> </span><span class="k">$(</span>terraform<span class="w"> </span>output<span class="w"> </span>-raw<span class="w"> </span>dlq_url<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attribute-names<span class="w"> </span>ApproximateNumberOfMessages
+
+<span class="c1"># Reprocessamento manual da DLQ:</span>
+aws<span class="w"> </span>sqs<span class="w"> </span>start-message-move-task<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--source-arn<span class="w"> </span>&lt;dlq_arn&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--destination-arn<span class="w"> </span>&lt;main_queue_arn&gt;
+</code></pre></div>
+<h3 id="runbook-3-rds-com-alta-latencia">Runbook 3 — RDS com alta latência<a class="headerlink" href="#runbook-3-rds-com-alta-latencia" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Consulta queries lentas (Enhanced Monitoring)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">query</span><span class="p">,</span><span class="w"> </span><span class="n">calls</span><span class="p">,</span><span class="w"> </span><span class="n">total_time</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">calls</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">avg_ms</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_stat_statements</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_time</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="c1">-- Se identificado query problemática, adicionar índice via migração.</span>
+<span class="c1">-- Se saturação de conexões: aumentar max_connections no parameter group.</span>
+</code></pre></div>
+<h3 id="runbook-4-ativacao-do-dr">Runbook 4 — Ativação do DR<a class="headerlink" href="#runbook-4-ativacao-do-dr" title="Permanent link">&para;</a></h3>
+<p>Ver documento dedicado em <a href="../04-dr-seguranca/"><code>04-dr-seguranca.md</code></a>, seção <em>Procedimento de acionamento</em>.</p>
+<hr />
+<h2 id="reducao-de-mttr-via-itsmaiops">Redução de MTTR via ITSM/AIOps<a class="headerlink" href="#reducao-de-mttr-via-itsmaiops" title="Permanent link">&para;</a></h2>
+<p>O ciclo estruturado + AIOps compõem com a stack SRE já implementada para atingir a meta de <strong>MTTR &lt; 20 minutos</strong> (ver detalhamento em <code>01-sre.md</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Contribuição do ITSM/AIOps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detecção</strong></td>
+<td>AIOps antecipa em 15-30min vs. alerta manual</td>
+</tr>
+<tr>
+<td><strong>Triagem</strong></td>
+<td>Matriz de severidade elimina indecisão do on-call</td>
+</tr>
+<tr>
+<td><strong>Mitigação</strong></td>
+<td>Runbooks pré-escritos eliminam tempo de pesquisa</td>
+</tr>
+<tr>
+<td><strong>Comunicação</strong></td>
+<td>Templates de e-mail prontos por severidade</td>
+</tr>
+<tr>
+<td><strong>Aprendizado</strong></td>
+<td>Post-mortems geram ações corretivas rastreadas</td>
+</tr>
+</tbody>
+</table>
+<p>Sem ITSM estruturado, o MTTR seria dominado pelo <strong>tempo de coordenação humana</strong> — não pelo tempo técnico de correção. A padronização deste documento é o que garante que qualquer membro do time consegue operar um incidente da mesma forma.</p>
+<hr />
+<h2 id="comunicacao-a-stakeholders-templates">Comunicação a Stakeholders — Templates<a class="headerlink" href="#comunicacao-a-stakeholders-templates" title="Permanent link">&para;</a></h2>
+<h3 id="template-e-mail-ao-comite-gestor-p1">Template — E-mail ao Comitê Gestor (P1)<a class="headerlink" href="#template-e-mail-ao-comite-gestor-p1" title="Permanent link">&para;</a></h3>
+<p><strong>Assunto:</strong> [P1] SolidaryTech — Incidente crítico em andamento</p>
+<p><strong>Corpo:</strong></p>
+<blockquote>
+<p>Prezado Comitê,</p>
+<p>Informamos que às HH:MM (BRT) o serviço de processamento de doações da SolidaryTech apresentou instabilidade que impede a conclusão de novas doações.</p>
+<p><strong>Impacto observado:</strong>
+- Serviço afetado: donation-service (recebimento de doações)
+- Duração até o momento: XX minutos
+- Doações potencialmente afetadas: ~XX (estimativa)</p>
+<p><strong>Status atual:</strong>
+A equipe técnica está aplicando o procedimento de recuperação. Estimativa de restabelecimento: XX minutos.</p>
+<p><strong>Próximos passos:</strong>
+- Novo e-mail assim que o serviço for restabelecido
+- Relatório detalhado (post-mortem) em até 5 dias úteis</p>
+<p>Att,
+DevOps Team — SolidaryTech</p>
+</blockquote>
+<h3 id="template-status-page-publico">Template — Status Page (público)<a class="headerlink" href="#template-status-page-publico" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>[Investigando]</strong> Estamos com dificuldades para processar novas doações. Nossa equipe está trabalhando na resolução. Voluntariados e consultas seguem operando normalmente. Última atualização: HH:MM.</p>
+</blockquote>
+<hr />
+<h2 id="evidencias-de-operacao">Evidências de Operação<a class="headerlink" href="#evidencias-de-operacao" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] New Relic Applied Intelligence ativado sobre a stack OTel dos 3 serviços</li>
+<li>[x] Anomaly Detection configurado sem threshold manual</li>
+<li>[x] Error Inbox agregando erros por padrão</li>
+<li>[x] Log Patterns detectando mensagens recorrentes vs. anômalas</li>
+<li>[x] Ciclo de vida do incidente formalizado em 6 fases</li>
+<li>[x] Matriz de severidade P1-P4 definida</li>
+<li>[x] Matriz RACI documentada para eliminar ambiguidade</li>
+<li>[x] 4 runbooks operacionais escritos para os cenários mais comuns</li>
+<li>[x] Templates de comunicação prontos por severidade</li>
+<li>[x] Template de post-mortem blameless disponível</li>
+</ul>
+<p><strong>Prints de evidência:</strong></p>
+<p><img alt="Applied Intelligence — Overview" src="./itsm/img/newrelic-ai-overview.png" />
+<img alt="Anomaly Detection ativo" src="./itsm/img/newrelic-anomaly-detection.png" />
+<img alt="Error Inbox — deduplicação de erros" src="./itsm/img/newrelic-error-inbox.png" /></p>
+<hr />
+<h2 id="referencias">Referências<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.axelos.com/certifications/itil-service-management">ITIL 4 — Incident Management</a></li>
+<li><a href="https://sre.google/sre-book/managing-incidents/">Google SRE Book — Cap. 14: Managing Incidents</a></li>
+<li><a href="https://www.etsy.com/codeascraft/blameless-postmortems">Blameless PostMortem Culture — Etsy</a></li>
+<li><a href="https://docs.newrelic.com/docs/alerts-applied-intelligence/applied-intelligence/get-started/get-started-new-relic-applied-intelligence/">New Relic Applied Intelligence Docs</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.top", "navigation.sections", "content.code.copy", "toc.integrate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

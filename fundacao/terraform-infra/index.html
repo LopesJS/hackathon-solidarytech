@@ -1,0 +1,1712 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)">
+      
+      
+        <meta name="author" content="Juliano da Silva Lopes">
+      
+      
+      
+        <link rel="prev" href="../infra/">
+      
+      
+        <link rel="next" href="../deploy-infra/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Infraestrutura (Terraform - Parte 2) - SolidaryTech — Hackathon Fase 5</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#estrategia-de-provisionamento-lab-aws" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-header__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolidaryTech — Hackathon Fase 5
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Infraestrutura (Terraform - Parte 2)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cronograma/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cronograma
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../00-fundacao-devops/" class="md-tabs__link">
+          
+  
+  
+  Fundação DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../01-sre/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../02-finops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FinOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../03-itsm-aiops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ITSM e AIOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../04-dr-seguranca/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DR e Segurança
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-nav__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    SolidaryTech — Hackathon Fase 5
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundação DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fundação DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-fundacao-devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visão Geral
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pré-requisitos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ferramentas-locais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Ferramentas locais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-credenciais-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Credenciais AWS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-senha-do-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Senha do banco
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-0-validacao-estatica-sem-tocar-na-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 0 — Validação Estática (sem tocar na AWS)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-networking-ecr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 1 — Networking + ECR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="STEP 1 — Networking + ECR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validar-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validar Networking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validar-ecr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validar ECR
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-sqs-dynamodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 2 — SQS + DynamoDB
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="STEP 2 — SQS + DynamoDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validar-sqs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validar SQS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validar-dynamodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validar DynamoDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-rds-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 3 — RDS PostgreSQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="STEP 3 — RDS PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validar-rds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validar RDS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-ecs-fargate-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 4 — ECS Fargate Spot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="STEP 4 — ECS Fargate Spot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validar-ecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validar ECS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-validacao-final-todo-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 5 — Validação Final (todo ambiente)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-migrar-para-backend-s3-antes-do-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEP 6 — Migrar para Backend S3 (antes do GitHub)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comandos-de-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comandos de Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estimativa-de-custo-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estimativa de Custo Lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containerização (Docker)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solidarytech-local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab-automatizado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Automatizado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-finops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-itsm-aiops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-dr-seguranca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DR e Segurança
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="estrategia-de-provisionamento-lab-aws">Estratégia de Provisionamento — Lab AWS<a class="headerlink" href="#estrategia-de-provisionamento-lab-aws" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Guia completo para subir o ambiente lab do zero, validar cada camada
+e estar pronto para commitar no GitHub com evidências reais.</p>
+</blockquote>
+<hr />
+<h2 id="visao-geral">Visão Geral<a class="headerlink" href="#visao-geral" title="Permanent link">&para;</a></h2>
+<p>O provisionamento é dividido em <strong>4 Steps sequenciais</strong> que respeitam
+as dependências entre módulos. Cada step termina com uma validação
+antes de avançar.</p>
+<div class="highlight"><pre><span></span><code>STEP 1 ──────────────────────────── Sem dependências externas
+  ├── networking  (VPC, subnets, SGs, NAT)
+  └── ecr         (repositórios de imagem)
+
+STEP 2 ──────────────────────────── Independente de networking
+  ├── sqs         (filas + DLQ)
+  └── dynamodb    (tabelas NoSQL)
+
+STEP 3 ──────────────────────────── Depende de networking
+  └── rds         (PostgreSQL — leva ~8 min)
+
+STEP 4 ──────────────────────────── Depende de tudo acima
+  └── ecs         (Fargate Spot — tasks dos 3 serviços)
+</code></pre></div>
+<p><strong>Tempo total estimado:</strong> ~20–25 minutos (RDS é o gargalo)</p>
+<hr />
+<h2 id="pre-requisitos">Pré-requisitos<a class="headerlink" href="#pre-requisitos" title="Permanent link">&para;</a></h2>
+<h3 id="1-ferramentas-locais">1. Ferramentas locais<a class="headerlink" href="#1-ferramentas-locais" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Verificar versões</span>
+terraform<span class="w"> </span>version<span class="w">    </span><span class="c1"># precisa &gt;= 1.6</span>
+aws<span class="w"> </span>--version<span class="w">        </span><span class="c1"># precisa &gt;= 2.0</span>
+
+<span class="c1"># Se não tiver o tfenv:</span>
+brew<span class="w"> </span>install<span class="w"> </span>tfenv<span class="w">   </span><span class="c1"># macOS</span>
+tfenv<span class="w"> </span>install<span class="w"> </span><span class="m">1</span>.8.0
+tfenv<span class="w"> </span>use<span class="w"> </span><span class="m">1</span>.8.0
+</code></pre></div>
+<h3 id="2-credenciais-aws">2. Credenciais AWS<a class="headerlink" href="#2-credenciais-aws" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Opção A — perfil nomeado (recomendado)</span>
+aws<span class="w"> </span>configure<span class="w"> </span>--profile<span class="w"> </span>solidarytech-lab
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>solidarytech-lab
+
+<span class="c1"># Opção B — variáveis de ambiente</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="s2">&quot;AKIA...&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="s2">&quot;...&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_DEFAULT_REGION</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+
+<span class="c1"># Confirmar identidade</span>
+aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity
+<span class="c1"># Esperado: { &quot;Account&quot;: &quot;123456789012&quot;, &quot;UserId&quot;: &quot;...&quot;, &quot;Arn&quot;: &quot;arn:aws:iam::...&quot; }</span>
+</code></pre></div>
+<h3 id="3-senha-do-banco">3. Senha do banco<a class="headerlink" href="#3-senha-do-banco" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Definir e NUNCA commitar</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">TF_VAR_db_password</span><span class="o">=</span><span class="s2">&quot;SolidaryLab2024!&quot;</span>
+<span class="c1"># Mínimo 12 caracteres — validação está no variables.tf</span>
+</code></pre></div>
+<hr />
+<h2 id="step-0-validacao-estatica-sem-tocar-na-aws">STEP 0 — Validação Estática (sem tocar na AWS)<a class="headerlink" href="#step-0-validacao-estatica-sem-tocar-na-aws" title="Permanent link">&para;</a></h2>
+<p>Execute antes de qualquer <code>apply</code>. Detecta ~80% dos erros de graça.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>terraform/environments/lab
+
+<span class="c1"># 0.1 — Formato</span>
+terraform<span class="w"> </span>fmt<span class="w"> </span>-check<span class="w"> </span>-recursive<span class="w"> </span>../../<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ fmt ok&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">||</span><span class="w"> </span><span class="o">(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;❌ Execute: terraform fmt -recursive ../../&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span><span class="o">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># 0.2 — Validar cada módulo individualmente</span>
+<span class="k">for</span><span class="w"> </span>mod<span class="w"> </span><span class="k">in</span><span class="w"> </span>../../modules/*/<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nv">name</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="nv">$mod</span><span class="k">)</span>
+<span class="w">  </span><span class="nb">cd</span><span class="w"> </span><span class="nv">$mod</span>
+<span class="w">  </span>terraform<span class="w"> </span>init<span class="w"> </span>-backend<span class="o">=</span><span class="nb">false</span><span class="w"> </span>-input<span class="o">=</span><span class="nb">false</span><span class="w"> </span>-no-color<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<span class="w">  </span><span class="nv">result</span><span class="o">=</span><span class="k">$(</span>terraform<span class="w"> </span>validate<span class="w"> </span>-no-color<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="k">)</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$result</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;Success&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ </span><span class="nv">$name</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;❌ </span><span class="nv">$name</span><span class="s2"> FALHOU:&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$result</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="k">fi</span>
+<span class="w">  </span><span class="nb">cd</span><span class="w"> </span>-<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+<span class="k">done</span>
+</code></pre></div>
+<p><img alt="imagem 1" src="../img/terraform/001.png" /></p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 0.3 — Init do ambiente lab (backend local por enquanto)</span>
+terraform<span class="w"> </span>init<span class="w"> </span>-backend<span class="o">=</span><span class="nb">false</span>
+</code></pre></div>
+<img alt="imagem 2" src="../img/terraform/002.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 0.4 — Validate do ambiente completo</span>
+terraform<span class="w"> </span>validate<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ lab válido&quot;</span>
+</code></pre></div>
+<p><img alt="imagem 3" src="../img/terraform/003.png" /></p>
+<p><strong>✅ Critério para avançar:</strong> todos os módulos validados sem erro.</p>
+<hr />
+<h2 id="step-1-networking-ecr">STEP 1 — Networking + ECR<a class="headerlink" href="#step-1-networking-ecr" title="Permanent link">&para;</a></h2>
+<p>São independentes entre si e não têm dependências externas.
+Podem ser aplicados em paralelo, mas por clareza faremos em sequência.</p>
+<p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>terraform/environments/lab
+
+<span class="c1"># 1.1 — Plan somente networking</span>
+
+<span class="c1"># Definir versão do tfenv:</span>
+tfenv<span class="w"> </span>use<span class="w"> </span><span class="m">1</span>.5.7
+
+<span class="c1"># Plan:</span>
+terraform<span class="w"> </span>plan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.networking<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-out<span class="o">=</span>step1a.tfplan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-no-color<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>/tmp/step1a-plan.txt
+</code></pre></div>
+<img alt="imagem 4" src="../img/terraform/004.png" />
+<img alt="imagem 5" src="../img/terraform/005.png" /></p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Checar o que será criado (esperado: ~12 recursos)</span>
+grep<span class="w"> </span><span class="s2">&quot;^  #\|will be created\|will be destroyed&quot;</span><span class="w"> </span>/tmp/step1a-plan.txt
+</code></pre></div>
+<img alt="imagem 6" src="../img/terraform/006.png" />
+<div class="highlight"><pre><span></span><code><span class="c1"># 1.2 — Apply networking</span>
+terraform<span class="w"> </span>apply<span class="w"> </span>step1a.tfplan
+</code></pre></div>
+<img alt="imagem 8" src="../img/terraform/008.png" /></p>
+<h3 id="validar-networking">✅ Validar Networking<a class="headerlink" href="#validar-networking" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># VPC criada com tags corretas</span>
+aws<span class="w"> </span>ec2<span class="w"> </span>describe-vpcs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--filters<span class="w"> </span><span class="s2">&quot;Name=tag:Project,Values=SolidaryTech&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;Vpcs[*].{ID:VpcId,CIDR:CidrBlock,State:State}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+
+<span class="c1"># 4 subnets (2 públicas + 2 privadas)</span>
+aws<span class="w"> </span>ec2<span class="w"> </span>describe-subnets<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--filters<span class="w"> </span><span class="s2">&quot;Name=tag:Project,Values=SolidaryTech&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;Subnets[*].{ID:SubnetId,AZ:AvailabilityZone,CIDR:CidrBlock,Public:MapPublicIpOnLaunch}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+
+<span class="c1"># NAT Gateway ativo</span>
+aws<span class="w"> </span>ec2<span class="w"> </span>describe-nat-gateways<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--filter<span class="w"> </span><span class="s2">&quot;Name=tag:Project,Values=SolidaryTech&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;NatGateways[*].{ID:NatGatewayId,State:State,SubnetId:SubnetId}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+
+<span class="c1"># 3 Security Groups</span>
+aws<span class="w"> </span>ec2<span class="w"> </span>describe-security-groups<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--filters<span class="w"> </span><span class="s2">&quot;Name=tag:Project,Values=SolidaryTech&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;SecurityGroups[*].{ID:GroupId,Name:GroupName}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+</code></pre></div>
+<img alt="imagem 7" src="../img/terraform/007.png" />
+<div class="highlight"><pre><span></span><code><span class="c1"># 1.3 — Plan + Apply ECR</span>
+terraform<span class="w"> </span>plan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.ecr<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-out<span class="o">=</span>step1b.tfplan
+</code></pre></div>
+<img alt="imagem 008" src="../img/terraform/008.png" />
+<img alt="imagem 009" src="../img/terraform/009.png" /></p>
+<p><div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>apply<span class="w"> </span>step1b.tfplan
+</code></pre></div>
+<img alt="imagem 010" src="../img/terraform/010.png" /></p>
+<h3 id="validar-ecr">✅ Validar ECR<a class="headerlink" href="#validar-ecr" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 3 repositórios criados</span>
+aws<span class="w"> </span>ecr<span class="w"> </span>describe-repositories<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;repositories[*].{Name:repositoryName,URI:repositoryUri,ScanOnPush:imageScanningConfiguration.scanOnPush}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+
+<span class="c1"># Testar push de imagem (teste real de acesso)</span>
+<span class="nv">AWS_ACCOUNT</span><span class="o">=</span><span class="k">$(</span>aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity<span class="w"> </span>--query<span class="w"> </span>Account<span class="w"> </span>--output<span class="w"> </span>text<span class="k">)</span>
+<span class="nv">REGION</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+<span class="nv">REGISTRY</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">AWS_ACCOUNT</span><span class="si">}</span><span class="s2">.dkr.ecr.</span><span class="si">${</span><span class="nv">REGION</span><span class="si">}</span><span class="s2">.amazonaws.com&quot;</span>
+
+aws<span class="w"> </span>ecr<span class="w"> </span>get-login-password<span class="w"> </span>--region<span class="w"> </span><span class="nv">$REGION</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>--username<span class="w"> </span>AWS<span class="w"> </span>--password-stdin<span class="w"> </span><span class="nv">$REGISTRY</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ Login ECR ok&quot;</span>
+</code></pre></div>
+<img alt="imagem 011" src="../img/terraform/011.png" /></p>
+<hr />
+<h2 id="step-2-sqs-dynamodb">STEP 2 — SQS + DynamoDB<a class="headerlink" href="#step-2-sqs-dynamodb" title="Permanent link">&para;</a></h2>
+<p>Independentes de networking. Rápidos (~1–2 min cada).</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 2.1 — Plan + Apply SQS e DynamoDB juntos</span>
+terraform<span class="w"> </span>plan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.sqs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.dynamodb<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-out<span class="o">=</span>step2.tfplan
+</code></pre></div>
+<img alt="imagem 012" src="../img/terraform/012.png" />
+<img alt="imagem 013" src="../img/terraform/013.png" /></p>
+<p><div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>apply<span class="w"> </span>step2.tfplan
+</code></pre></div>
+<img alt="imagem 014" src="../img/terraform/014.png" /></p>
+<h3 id="validar-sqs">✅ Validar SQS<a class="headerlink" href="#validar-sqs" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 3 filas criadas (donations, dlq, volunteer-notifications)</span>
+aws<span class="w"> </span>sqs<span class="w"> </span>list-queues<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-name-prefix<span class="w"> </span>solidarytech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;QueueUrls&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+
+<span class="c1"># Confirmar DLQ vinculada à fila principal</span>
+<span class="nv">DONATIONS_URL</span><span class="o">=</span><span class="k">$(</span>aws<span class="w"> </span>sqs<span class="w"> </span>get-queue-url<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-name<span class="w"> </span>solidarytech-lab-donations<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span>QueueUrl<span class="w"> </span>--output<span class="w"> </span>text<span class="k">)</span>
+
+aws<span class="w"> </span>sqs<span class="w"> </span>get-queue-attributes<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-url<span class="w"> </span><span class="nv">$DONATIONS_URL</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--attribute-names<span class="w"> </span>RedrivePolicy<span class="w"> </span>VisibilityTimeout<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>json
+
+<span class="c1"># Teste funcional: enviar e receber mensagem</span>
+aws<span class="w"> </span>sqs<span class="w"> </span>send-message<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-url<span class="w"> </span><span class="nv">$DONATIONS_URL</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message-body<span class="w"> </span><span class="s1">&#39;{&quot;test&quot;: &quot;donation-event&quot;, &quot;amount&quot;: 50.00}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;MessageId&#39;</span><span class="w"> </span>--output<span class="w"> </span>text
+
+aws<span class="w"> </span>sqs<span class="w"> </span>receive-message<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--queue-url<span class="w"> </span><span class="nv">$DONATIONS_URL</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;Messages[0].Body&#39;</span><span class="w"> </span>--output<span class="w"> </span>text
+</code></pre></div>
+<img alt="imagem 015" src="../img/terraform/015.png" /></p>
+<h3 id="validar-dynamodb">✅ Validar DynamoDB<a class="headerlink" href="#validar-dynamodb" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 2 tabelas criadas</span>
+aws<span class="w"> </span>dynamodb<span class="w"> </span>list-tables<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;TableNames[?contains(@, `solidarytech`)]&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+
+<span class="c1"># Confirmar PITR habilitado nas duas tabelas</span>
+<span class="k">for</span><span class="w"> </span>table<span class="w"> </span><span class="k">in</span><span class="w"> </span>solidarytech-lab-volunteer-matches<span class="w"> </span>solidarytech-lab-donation-events<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nv">status</span><span class="o">=</span><span class="k">$(</span>aws<span class="w"> </span>dynamodb<span class="w"> </span>describe-continuous-backups<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--table-name<span class="w"> </span><span class="nv">$table</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--query<span class="w"> </span><span class="s1">&#39;ContinuousBackupsDescription.PointInTimeRecoveryDescription.PointInTimeRecoveryStatus&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>text<span class="k">)</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$table</span><span class="s2">: PITR=</span><span class="nv">$status</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+
+<span class="c1"># Teste funcional: inserir e ler item</span>
+aws<span class="w"> </span>dynamodb<span class="w"> </span>put-item<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--table-name<span class="w"> </span>solidarytech-lab-donation-events<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--item<span class="w"> </span><span class="s1">&#39;{&quot;donationId&quot;:{&quot;S&quot;:&quot;test-001&quot;},&quot;eventTimestamp&quot;:{&quot;S&quot;:&quot;2024-01-01T00:00:00Z&quot;},&quot;ngoId&quot;:{&quot;S&quot;:&quot;ngo-test&quot;}}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ DynamoDB write ok&quot;</span>
+
+aws<span class="w"> </span>dynamodb<span class="w"> </span>get-item<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--table-name<span class="w"> </span>solidarytech-lab-donation-events<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--key<span class="w"> </span><span class="s1">&#39;{&quot;donationId&quot;:{&quot;S&quot;:&quot;test-001&quot;},&quot;eventTimestamp&quot;:{&quot;S&quot;:&quot;2024-01-01T00:00:00Z&quot;}}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;Item&#39;</span><span class="w"> </span>--output<span class="w"> </span>json
+</code></pre></div>
+<hr />
+<h2 id="step-3-rds-postgresql">STEP 3 — RDS PostgreSQL<a class="headerlink" href="#step-3-rds-postgresql" title="Permanent link">&para;</a></h2>
+<p><strong>Atenção:</strong> este step leva ~8 minutos. O comando <code>wait</code> bloqueia até o banco estar disponível.</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 3.1 — Plan RDS</span>
+terraform<span class="w"> </span>plan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.rds<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-out<span class="o">=</span>step3.tfplan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-no-color<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>/tmp/step3-plan.txt
+</code></pre></div>
+<img alt="imagem 016" src="../img/terraform/016.png" />
+<img alt="imagem 017" src="../img/terraform/017.png" /></p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Checar o que será criado (esperado: ~4 recursos)</span>
+grep<span class="w"> </span><span class="s2">&quot;will be created&quot;</span><span class="w"> </span>/tmp/step3-plan.txt
+</code></pre></div>
+<img alt="imagem 018" src="../img/terraform/018.png" /></p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 3.2 — Apply RDS (aguardar ~8 min)</span>
+terraform<span class="w"> </span>apply<span class="w"> </span>step3.tfplan
+</code></pre></div>
+<img alt="imagem 019" src="../img/terraform/019.png" />
+<img alt="imagem 020" src="../img/terraform/020.png" /></p>
+<h3 id="validar-rds">✅ Validar RDS<a class="headerlink" href="#validar-rds" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Aguardar banco ficar available</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Aguardando RDS... (pode levar até 8 min)&quot;</span>
+aws<span class="w"> </span>rds<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>db-instance-available<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--db-instance-identifier<span class="w"> </span>solidarytech-lab-postgres<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ RDS available&quot;</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Checar configurações</span>
+aws<span class="w"> </span>rds<span class="w"> </span>describe-db-instances<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--db-instance-identifier<span class="w"> </span>solidarytech-lab-postgres<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;DBInstances[0].{</span>
+<span class="s1">    Status:DBInstanceStatus,</span>
+<span class="s1">    Endpoint:Endpoint.Address,</span>
+<span class="s1">    Port:Endpoint.Port,</span>
+<span class="s1">    Class:DBInstanceClass,</span>
+<span class="s1">    MultiAZ:MultiAZ,</span>
+<span class="s1">    Encrypted:StorageEncrypted,</span>
+<span class="s1">    BackupRetention:BackupRetentionPeriod,</span>
+<span class="s1">    PerformanceInsights:PerformanceInsightsEnabled</span>
+<span class="s1">  }&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>json
+
+<span class="c1"># Pegar endpoint para teste de conexão</span>
+<span class="nv">RDS_HOST</span><span class="o">=</span><span class="k">$(</span>terraform<span class="w"> </span>output<span class="w"> </span>-raw<span class="w"> </span>rds_endpoint<span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;RDS Host: </span><span class="nv">$RDS_HOST</span><span class="s2">&quot;</span>
+
+<span class="c1"># Teste de conectividade (via bastion ou task ECS temporária)</span>
+<span class="c1"># Alternativa: verificar que o SG bloqueia acesso público</span>
+aws<span class="w"> </span>ec2<span class="w"> </span>describe-security-group-rules<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--filters<span class="w"> </span><span class="s2">&quot;Name=group-id,Values=</span><span class="k">$(</span>aws<span class="w"> </span>ec2<span class="w"> </span>describe-security-groups<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--filters<span class="w"> </span><span class="s1">&#39;Name=tag:Name,Values=solidarytech-lab-rds-sg&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--query<span class="w"> </span><span class="s1">&#39;SecurityGroups[0].GroupId&#39;</span><span class="w"> </span>--output<span class="w"> </span>text<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;SecurityGroupRules[?IsEgress==`false`].{Port:FromPort,Source:CidrIpv4,SourceSG:ReferencedGroupInfo.GroupId}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+</code></pre></div>
+<img alt="imagem 021" src="../img/terraform/021.png" /></p>
+<hr />
+<h2 id="step-4-ecs-fargate-spot">STEP 4 — ECS Fargate Spot<a class="headerlink" href="#step-4-ecs-fargate-spot" title="Permanent link">&para;</a></h2>
+<p>Depende de networking (subnets, SG), ECR (registry URL), RDS e SQS.</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 4.1 — Plan ECS</span>
+terraform<span class="w"> </span>plan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.ecs<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-out<span class="o">=</span>step4.tfplan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-no-color<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>/tmp/step4-plan.txt
+</code></pre></div>
+<img alt="imagem 022" src="../img/terraform/022.png" />
+<img alt="imagem 023" src="../img/terraform/023.png" /></p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># 4.2 — Apply ECS</span>
+terraform<span class="w"> </span>apply<span class="w"> </span>step4.tfplan
+</code></pre></div>
+<img alt="imagem 024" src="../img/terraform/024.png" /></p>
+<h3 id="validar-ecs">✅ Validar ECS<a class="headerlink" href="#validar-ecs" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="nv">CLUSTER</span><span class="o">=</span><span class="s2">&quot;solidarytech-lab&quot;</span>
+
+<span class="c1"># Cluster criado</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>describe-clusters<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--clusters<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;clusters[0].{Name:clusterName,Status:status,ActiveServices:activeServicesCount}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>json
+
+<span class="c1"># 3 services criados</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>list-services<span class="w"> </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span>--output<span class="w"> </span>table
+
+<span class="c1"># Status dos services (desired vs running)</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>describe-services<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--services<span class="w"> </span>ngo-service<span class="w"> </span>donation-service<span class="w"> </span>volunteer-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;services[*].{</span>
+<span class="s1">    Name:serviceName,</span>
+<span class="s1">    Status:status,</span>
+<span class="s1">    Desired:desiredCount,</span>
+<span class="s1">    Running:runningCount,</span>
+<span class="s1">    Pending:pendingCount</span>
+<span class="s1">  }&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+</code></pre></div>
+<img alt="imagem 025" src="../img/terraform/025.png" /></p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Logs das tasks (se algo falhar, aqui está o erro)</span>
+<span class="nv">LOG_GROUP</span><span class="o">=</span><span class="s2">&quot;/ecs/solidarytech/lab/donation-service&quot;</span>
+aws<span class="w"> </span>logs<span class="w"> </span>get-log-events<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-group-name<span class="w"> </span><span class="nv">$LOG_GROUP</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-stream-name<span class="w"> </span><span class="k">$(</span>aws<span class="w"> </span>logs<span class="w"> </span>describe-log-streams<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--log-group-name<span class="w"> </span><span class="nv">$LOG_GROUP</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--order-by<span class="w"> </span>LastEventTime<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--descending<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--query<span class="w"> </span><span class="s1">&#39;logStreams[0].logStreamName&#39;</span><span class="w"> </span>--output<span class="w"> </span>text<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--limit<span class="w"> </span><span class="m">50</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;events[*].message&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>text
+</code></pre></div>
+<img alt="imagem 026" src="../img/terraform/026.png" /></p>
+<hr />
+<h2 id="step-5-validacao-final-todo-ambiente">STEP 5 — Validação Final (todo ambiente)<a class="headerlink" href="#step-5-validacao-final-todo-ambiente" title="Permanent link">&para;</a></h2>
+<p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>terraform/environments/lab
+
+<span class="c1"># 5.1 — Apply completo sem -target (garante que não ficou nada pendente)</span>
+terraform<span class="w"> </span>plan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-detailed-exitcode<span class="w"> </span>-no-color<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>/tmp/final-plan.txt
+
+<span class="nv">EXIT_CODE</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$EXIT_CODE</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ Nenhuma mudança pendente — infra 100% aplicada&quot;</span>
+<span class="k">elif</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$EXIT_CODE</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;⚠️  Ainda há mudanças pendentes — aplique o plan acima&quot;</span>
+<span class="k">else</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;❌ Erro no plan&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+<img alt="imagem 027" src="../img/terraform/027.png" />
+<img alt="imagem 028" src="../img/terraform/028.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 5.2 — Verificar tags em todos os recursos (FinOps)</span>
+<span class="nv">TAGGED</span><span class="o">=</span><span class="k">$(</span>aws<span class="w"> </span>resourcegroupstaggingapi<span class="w"> </span>get-resources<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tag-filters<span class="w"> </span><span class="nv">Key</span><span class="o">=</span>Project,Values<span class="o">=</span>SolidaryTech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;length(ResourceTagMappingList)&#39;</span><span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Recursos tagueados com Project=SolidaryTech: </span><span class="nv">$TAGGED</span><span class="s2">&quot;</span>
+
+<span class="c1"># 5.3 — Outputs finais</span>
+terraform<span class="w"> </span>output<span class="w"> </span>-json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  vpc: .vpc_id.value,</span>
+<span class="s1">  ecs_cluster: .ecs_cluster_name.value,</span>
+<span class="s1">  ecr_repos: .ecr_repository_urls.value,</span>
+<span class="s1">  donations_queue: .donations_queue_url.value,</span>
+<span class="s1">  volunteer_table: .volunteer_table_name.value</span>
+<span class="s1">}&#39;</span>
+
+<span class="c1"># 5.4 — State summary</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=== Recursos no Terraform State ===&quot;</span>
+terraform<span class="w"> </span>state<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F.<span class="w"> </span><span class="s1">&#39;{print $1&quot;.&quot;$2}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Total: </span><span class="k">$(</span>terraform<span class="w"> </span>state<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2"> recursos&quot;</span>
+</code></pre></div>
+<h2 id="_1"><img alt="imagem 029  " src="../img/terraform/029.png" /><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h2 id="step-6-migrar-para-backend-s3-antes-do-github">STEP 6 — Migrar para Backend S3 (antes do GitHub)<a class="headerlink" href="#step-6-migrar-para-backend-s3-antes-do-github" title="Permanent link">&para;</a></h2>
+<p>Depois de validar tudo localmente, migre o state para S3.
+Isso permite que o GitHub Actions acesse o mesmo state.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 6.1 — Criar bucket de state</span>
+aws<span class="w"> </span>s3<span class="w"> </span>mb<span class="w"> </span>s3://solidarytech-tfstate<span class="w"> </span>--region<span class="w"> </span>us-east-1
+
+aws<span class="w"> </span>s3api<span class="w"> </span>put-bucket-versioning<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--bucket<span class="w"> </span>solidarytech-tfstate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--versioning-configuration<span class="w"> </span><span class="nv">Status</span><span class="o">=</span>Enabled
+
+aws<span class="w"> </span>s3api<span class="w"> </span>put-bucket-encryption<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--bucket<span class="w"> </span>solidarytech-tfstate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--server-side-encryption-configuration<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s1">&#39;{&quot;Rules&quot;:[{&quot;ApplyServerSideEncryptionByDefault&quot;:{&quot;SSEAlgorithm&quot;:&quot;AES256&quot;}}]}&#39;</span>
+
+aws<span class="w"> </span>s3api<span class="w"> </span>put-public-access-block<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--bucket<span class="w"> </span>solidarytech-tfstate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--public-access-block-configuration<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">&quot;BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true&quot;</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ Bucket criado e configurado&quot;</span>
+
+<span class="c1"># 6.2 — Descomentar o backend no main.tf</span>
+<span class="c1"># (editar terraform/environments/lab/main.tf — remover o comentário do backend &quot;s3&quot;)</span>
+
+<span class="c1"># 6.3 — Migrar state local para S3</span>
+terraform<span class="w"> </span>init<span class="w"> </span>-migrate-state
+<span class="c1"># Responda &quot;yes&quot; quando perguntado</span>
+
+<span class="c1"># 6.4 — Confirmar migração</span>
+aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://solidarytech-tfstate/lab/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✅ State migrado para S3&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="comandos-de-troubleshooting">Comandos de Troubleshooting<a class="headerlink" href="#comandos-de-troubleshooting" title="Permanent link">&para;</a></h2>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Ver log detalhado do Terraform</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">TF_LOG</span><span class="o">=</span>ERROR<span class="w">   </span><span class="c1"># ERROR | WARN | INFO | DEBUG | TRACE</span>
+terraform<span class="w"> </span>plan<span class="w"> </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;Error|error&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">TF_LOG</span><span class="o">=</span>
+
+<span class="c1"># Inspecionar recurso específico no state</span>
+terraform<span class="w"> </span>state<span class="w"> </span>show<span class="w"> </span>module.networking.aws_vpc.main
+terraform<span class="w"> </span>state<span class="w"> </span>show<span class="w"> </span>module.rds.aws_db_instance.postgres
+
+<span class="c1"># Forçar refresh do state (detectar mudanças manuais)</span>
+terraform<span class="w"> </span>refresh<span class="w"> </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c1"># Remover recurso do state SEM destruir (use com cautela)</span>
+<span class="c1"># terraform state rm module.ecs.aws_ecs_service.services[\&quot;ngo-service\&quot;]</span>
+
+<span class="c1"># Destruir ambiente completo (cleanup de custos)</span>
+terraform<span class="w"> </span>destroy<span class="w"> </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_V</span><span class="si">}</span><span class="s2">&quot;</span>AR_db_password
+</code></pre></div>
+<img alt="imagem 030" src="../img/terraform/030.png" />
+<img alt="imagem 031" src="../img/terraform/031.png" /></p>
+<hr />
+<h2 id="estimativa-de-custo-lab">Estimativa de Custo Lab<a class="headerlink" href="#estimativa-de-custo-lab" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Recurso</th>
+<th>Especificação</th>
+<th>Custo/hora</th>
+<th>Custo/mês</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NAT Gateway</td>
+<td>1x us-east-1</td>
+<td>~$0.045</td>
+<td>~$32</td>
+</tr>
+<tr>
+<td>RDS PostgreSQL</td>
+<td>db.t3.micro Single-AZ</td>
+<td>~$0.017</td>
+<td>~$12</td>
+</tr>
+<tr>
+<td>ECS Fargate Spot</td>
+<td>3 tasks × 0.25 vCPU</td>
+<td>~$0.003</td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>DynamoDB</td>
+<td>On-demand (idle)</td>
+<td>$0</td>
+<td>~$0</td>
+</tr>
+<tr>
+<td>SQS</td>
+<td>&lt; 1M msgs</td>
+<td>$0</td>
+<td>~$0</td>
+</tr>
+<tr>
+<td>ECR</td>
+<td>&lt; 0.5GB</td>
+<td>~$0.001</td>
+<td>~$0.50</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>~$47/mês</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Dica FinOps:</strong> desligue o NAT Gateway fora do horário de trabalho.
+Ele sozinho custa ~$32/mês. Um script simples economiza ~$20/mês em lab.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="c1"># Destruir apenas NAT GW quando não usar (mantém o resto da infra)</span>
+terraform<span class="w"> </span>destroy<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.networking.aws_nat_gateway.main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.networking.aws_eip.nat<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-auto-approve
+
+<span class="c1"># Recriar quando precisar</span>
+terraform<span class="w"> </span>apply<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.networking.aws_nat_gateway.main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-target<span class="o">=</span>module.networking.aws_eip.nat<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-var<span class="o">=</span><span class="s2">&quot;db_password=</span><span class="si">${</span><span class="nv">TF_VAR_db_password</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-auto-approve
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.sections", "content.code.copy", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

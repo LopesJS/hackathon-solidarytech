@@ -1,0 +1,1614 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)">
+      
+      
+        <meta name="author" content="Juliano da Silva Lopes">
+      
+      
+      
+        <link rel="prev" href="../fundacao/lab-automatizado/">
+      
+      
+        <link rel="next" href="../02-finops/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>SRE - SolidaryTech — Hackathon Fase 5</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-sre-confiabilidade-e-golden-metrics" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="SolidaryTech — Hackathon Fase 5" class="md-header__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolidaryTech — Hackathon Fase 5
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SRE
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cronograma/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cronograma
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../00-fundacao-devops/" class="md-tabs__link">
+          
+  
+  
+  Fundação DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../02-finops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FinOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../03-itsm-aiops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ITSM e AIOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../04-dr-seguranca/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DR e Segurança
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SolidaryTech — Hackathon Fase 5" class="md-nav__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    SolidaryTech — Hackathon Fase 5
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundação DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fundação DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-fundacao-devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/terraform-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/deploy-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containerização (Docker)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/solidarytech-local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/lab-automatizado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Automatizado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-de-observabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura de Observabilidade
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitetura de Observabilidade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instrumentacao-por-servico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instrumentação por serviço
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slis-e-slos-do-donation-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLIs e SLOs do donation-service
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SLIs e SLOs do donation-service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definicao-formal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definição formal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#justificativa-dos-limiares" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Justificativa dos limiares
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queries-nrql-de-referencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queries NRQL de referência
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sla-e-error-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLA e Error Budget
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SLA e Error Budget">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sla-declarado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLA declarado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Budget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#politica-de-uso-do-error-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Política de uso do Error Budget
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashboard-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboard SRE
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashboard SRE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#widgets-do-dashboard-10-paineis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widgets do dashboard (10 painéis)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-visual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência visual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rastreabilidade-distribuida-distributed-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rastreabilidade Distribuída (Distributed Tracing)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mttr-mean-time-to-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MTTR — Mean Time To Recovery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MTTR — Mean Time To Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formula-do-mttr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fórmula do MTTR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reducao-por-etapa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redução por etapa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deteccao-automatica-alertas-configurados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detecção automática — alertas configurados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runbook-de-resposta-a-incidentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runbook de resposta a incidentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker-do-ecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit Breaker do ECS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencias-de-operacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências de Operação
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evidências de Operação">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-finops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-itsm-aiops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-dr-seguranca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DR e Segurança
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="1-sre-confiabilidade-e-golden-metrics">1. SRE — Confiabilidade e Golden Metrics<a class="headerlink" href="#1-sre-confiabilidade-e-golden-metrics" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Documentação de Site Reliability Engineering da plataforma SolidaryTech, cobrindo definição de SLIs, SLOs, SLA, dashboard de observabilidade e estratégia de redução de MTTR.</p>
+</blockquote>
+<hr />
+<h2 id="arquitetura-de-observabilidade">Arquitetura de Observabilidade<a class="headerlink" href="#arquitetura-de-observabilidade" title="Permanent link">&para;</a></h2>
+<p>A stack de observabilidade é 100% baseada em <strong>OpenTelemetry</strong> (padrão vendor-neutral), com o <strong>New Relic</strong> como backend de APM via ingestão OTLP nativa. Nenhum código proprietário de vendor foi adicionado às aplicações — se for necessário trocar de plataforma, é só apontar o endpoint OTLP para outro destino.</p>
+<p><img alt="New Relic" src="../sre/img/new-relic-01.png" /></p>
+<div class="highlight"><pre><span></span><code>┌────────────────────────────────────────────────────────────┐
+│  ECS Fargate                                               │
+│  ┌───────────────┐  ┌───────────────────┐  ┌─────────────┐ │
+│  │  ngo-service  │  │  donation-service │  │ volunteer   │ │
+│  │  Python/Flask │  │  Go (SDK OTel)    │  │ Python/Flask│ │
+│  │  OTel auto    │  │  otelhttp + spans │  │ OTel auto   │ │
+│  └───────┬───────┘  └─────────┬─────────┘  └──────┬──────┘ │
+└──────────┼────────────────────┼───────────────────┼────────┘
+           │                    │                   │
+           └────────────────────┼───────────────────┘
+                                │ OTLP/gRPC :4317
+                                ▼
+                    ┌───────────────────────┐
+                    │  New Relic APM (US)   │
+                    │  otlp.nr-data.net     │
+                    │  Traces + Metrics     │
+                    └───────────────────────┘
+</code></pre></div>
+<h3 id="instrumentacao-por-servico">Instrumentação por serviço<a class="headerlink" href="#instrumentacao-por-servico" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Serviço</th>
+<th>Linguagem</th>
+<th>Tipo de instrumentação</th>
+<th>Bibliotecas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ngo-service</code></td>
+<td>Python 3.11</td>
+<td>Auto (agente)</td>
+<td><code>opentelemetry-distro</code>, <code>opentelemetry-instrumentation-flask</code>, <code>opentelemetry-instrumentation-psycopg2</code></td>
+</tr>
+<tr>
+<td><code>donation-service</code></td>
+<td>Go 1.21</td>
+<td>Manual + SDK</td>
+<td><code>otel/sdk</code>, <code>otelhttp</code>, spans customizados (<code>db.insert_donation</code>)</td>
+</tr>
+<tr>
+<td><code>volunteer-service</code></td>
+<td>Python 3.11</td>
+<td>Auto (agente)</td>
+<td><code>opentelemetry-distro</code>, <code>opentelemetry-instrumentation-flask</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Toda a configuração OTel é injetada via <strong>variáveis de ambiente na task definition do ECS</strong> (<code>OTEL_EXPORTER_OTLP_ENDPOINT</code>, <code>OTEL_EXPORTER_OTLP_HEADERS</code>, <code>OTEL_RESOURCE_ATTRIBUTES</code>, <code>OTEL_SERVICE_NAME</code>). </p>
+</blockquote>
+<hr />
+<h2 id="slis-e-slos-do-donation-service">SLIs e SLOs do <code>donation-service</code><a class="headerlink" href="#slis-e-slos-do-donation-service" title="Permanent link">&para;</a></h2>
+<p>O <code>donation-service</code> foi escolhido como componente-alvo dos SLOs por ser o <strong>Hot Path</strong> da plataforma — falhas nele impactam diretamente o recebimento de recursos financeiros por parte das ONGs.</p>
+<h3 id="definicao-formal">Definição formal<a class="headerlink" href="#definicao-formal" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>SLI</th>
+<th>Descrição</th>
+<th>Fonte de dados</th>
+<th>SLO</th>
+<th>Janela</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Latência</strong></td>
+<td>Percentual de requisições HTTP com duração menor que 300ms</td>
+<td>Atributo <code>duration</code> na tabela <code>Transaction</code> do New Relic</td>
+<td><strong>≥ 95%</strong></td>
+<td>28 dias</td>
+</tr>
+<tr>
+<td><strong>Taxa de Sucesso</strong></td>
+<td>Percentual de requisições HTTP com status code &lt; 500 (exclui erros do servidor)</td>
+<td>Atributo <code>httpResponseCode</code> na tabela <code>Transaction</code></td>
+<td><strong>≥ 99,9%</strong></td>
+<td>28 dias</td>
+</tr>
+</tbody>
+</table>
+<h3 id="justificativa-dos-limiares">Justificativa dos limiares<a class="headerlink" href="#justificativa-dos-limiares" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Latência (&lt; 300ms):</strong> o <code>donation-service</code> executa apenas 1 INSERT em PostgreSQL + 1 envio assíncrono para SQS. Requisições que ultrapassam 300ms indicam degradação em algum desses componentes ou saturação de recursos do container. O SLO de 95% aceita variabilidade natural sem tolerar degradação sistêmica.</p>
+</li>
+<li>
+<p><strong>Taxa de Sucesso (99,9%):</strong> o operador SLO conta apenas erros <strong>atribuíveis ao serviço</strong> (5xx), tratando 4xx como problemas de cliente (dados inválidos), coerente com a filosofia do Google SRE Book.</p>
+</li>
+</ul>
+<h3 id="queries-nrql-de-referencia">Queries NRQL de referência<a class="headerlink" href="#queries-nrql-de-referencia" title="Permanent link">&para;</a></h3>
+<p><strong>SLI Latência:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;SLI Latência (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%donations%&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+<img alt="Query 1" src="../sre/img/query-01.png" /></p>
+<p><img alt="Query 1" src="../sre/img/query-02.png" /></p>
+<p><img alt="Query 1" src="../sre/img/query-03.png" /></p>
+<p><strong>SLI Taxa de Sucesso:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;SLI Sucesso (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%donations%&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div></p>
+<hr />
+<h2 id="sla-e-error-budget">SLA e Error Budget<a class="headerlink" href="#sla-e-error-budget" title="Permanent link">&para;</a></h2>
+<h3 id="sla-declarado">SLA declarado<a class="headerlink" href="#sla-declarado" title="Permanent link">&para;</a></h3>
+<p>A partir dos SLOs acima, a plataforma SolidaryTech declara aos seus stakeholders (ONGs, doadores e comitê gestor) o seguinte <strong>SLA de disponibilidade do fluxo de doações</strong>:</p>
+<blockquote>
+<p><strong>99,9% de disponibilidade mensal</strong>, medida como o percentual de requisições ao endpoint <code>POST /donations</code> que retornam status HTTP &lt; 500 e concluem em menos de 300ms, apurada em janela móvel de 28 dias.</p>
+</blockquote>
+<h3 id="error-budget">Error Budget<a class="headerlink" href="#error-budget" title="Permanent link">&para;</a></h3>
+<p>O Error Budget corresponde ao <strong>complemento matemático do SLO</strong> — ou seja, à parcela de falhas que a plataforma pode absorver sem violar o compromisso com os usuários. Para SLO de 99,9%:</p>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Error Budget total (mensal)</td>
+<td><strong>0,1% das requisições</strong></td>
+</tr>
+<tr>
+<td>Equivalente em tempo (base 30 dias)</td>
+<td><strong>~43,2 minutos</strong> de indisponibilidade total</td>
+</tr>
+<tr>
+<td>Consumo aceitável por semana</td>
+<td>~10 minutos</td>
+</tr>
+<tr>
+<td>Consumo aceitável por dia</td>
+<td>~1,4 minutos</td>
+</tr>
+</tbody>
+</table>
+<h3 id="politica-de-uso-do-error-budget">Política de uso do Error Budget<a class="headerlink" href="#politica-de-uso-do-error-budget" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Budget &gt; 50% restante:</strong> operação normal, deploys sem restrições.</li>
+<li><strong>Budget entre 20% e 50%:</strong> deploys só com aprovação; foco em correção de bugs conhecidos.</li>
+<li><strong>Budget &lt; 20%:</strong> <strong>freeze de features</strong> — apenas correções de bugs relacionados a estabilidade.</li>
+<li><strong>Budget esgotado:</strong> toda a capacidade de engenharia migra para investigação da causa raiz até o SLI voltar ao objetivo.</li>
+</ul>
+<hr />
+<h2 id="dashboard-sre">Dashboard SRE<a class="headerlink" href="#dashboard-sre" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Dashboard criado no New Relic com título <strong><code>SolidaryTech</code></strong></li>
+</ul>
+<p><img alt="Dashboard" src="../sre/img/dashboard-02.png" /></p>
+<ul>
+<li>
+<p><strong>Link do dashboard:</strong> <a href="LINK_A_PREENCHER">Abrir Dashboard SRE no New Relic</a></p>
+</li>
+<li>
+<p>Golden Metrics visíveis (latência, tráfego, erros, saturação)</p>
+</li>
+<li>
+<p>Consumo do Error Budget visível em widget dedicado</p>
+</li>
+</ul>
+<h3 id="widgets-do-dashboard-10-paineis">Widgets do dashboard (10 painéis)<a class="headerlink" href="#widgets-do-dashboard-10-paineis" title="Permanent link">&para;</a></h3>
+<p>Organizados em 3 seções conforme a hierarquia de visualização executiva → operacional → forense:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Seção</th>
+<th>Widget</th>
+<th>Tipo</th>
+<th>Métrica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>SLO Status</td>
+<td>SLO Latência (28d)</td>
+<td>Billboard</td>
+<td>% de requisições &lt; 300ms</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SLO Status</td>
+<td>SLO Taxa de Sucesso (28d)</td>
+<td>Billboard</td>
+<td>% de requisições sem 5xx</td>
+</tr>
+<tr>
+<td>3</td>
+<td>SLO Status</td>
+<td>Error Budget Restante</td>
+<td>Billboard</td>
+<td>% do budget mensal disponível</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Golden Metrics</td>
+<td>Latência p50/p95/p99</td>
+<td>Line</td>
+<td>Percentis por serviço</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Golden Metrics</td>
+<td>Tráfego</td>
+<td>Area</td>
+<td>Requisições/min por serviço</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Golden Metrics</td>
+<td>Taxa de Erro 5xx</td>
+<td>Line</td>
+<td>% de erros por serviço</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Golden Metrics</td>
+<td>Saturação CPU</td>
+<td>Line</td>
+<td><code>aws.ecs.CPUUtilization</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Forense</td>
+<td>Erros recentes</td>
+<td>Table</td>
+<td>Últimos 20 <code>TransactionError</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Forense</td>
+<td>Top endpoints por latência</td>
+<td>Bar</td>
+<td>Endpoints mais lentos</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Forense</td>
+<td>Apdex</td>
+<td>Gauge</td>
+<td>Índice de satisfação do usuário</td>
+</tr>
+</tbody>
+</table>
+<h3 id="evidencia-visual">Evidência visual<a class="headerlink" href="#evidencia-visual" title="Permanent link">&para;</a></h3>
+<p><strong>Print do Dashboard SRE:</strong><br />
+<img alt="Dashboard SRE — Visão geral" src="../sre/img/dashboard-02.png" /></p>
+<p><strong>Print do SLO Status (topo):</strong>
+<img alt="Dashboard SRE — SLO e Error Budget" src="./assets/images/dashboard-sre-slo.png" /></p>
+<p><strong>Print das Golden Metrics em tempo real:</strong>
+<img alt="Dashboard SRE — Golden Metrics" src="./assets/images/dashboard-sre-golden-metrics.png" /></p>
+<hr />
+<h2 id="rastreabilidade-distribuida-distributed-tracing">Rastreabilidade Distribuída (Distributed Tracing)<a class="headerlink" href="#rastreabilidade-distribuida-distributed-tracing" title="Permanent link">&para;</a></h2>
+<p>Cada requisição HTTP gera um <strong>trace distribuído</strong> com múltiplos spans que atravessam o serviço. No <code>donation-service</code>, a instrumentação manual em Go produz uma hierarquia clara:</p>
+<div class="highlight"><pre><span></span><code>POST /donations                              (span raiz — otelhttp)
+  └── db.insert_donation                     (span filho — tracer manual)
+       ├── attribute: donation.ngo_id = 1
+       └── attribute: donation.amount = 250.00
+</code></pre></div>
+<p>Essa granularidade permite responder rapidamente perguntas como:
+- <em>"O tempo total foi 800ms — quanto foi banco e quanto foi HTTP overhead?"</em>
+- <em>"Quais valores de doação demoraram mais que 500ms nas últimas 24h?"</em></p>
+<p><strong>Query de validação:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">duration</span><span class="p">.</span><span class="n">ms</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Latência média DB (ms)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Span</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;db.insert_donation&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div></p>
+<p><strong>Print da árvore de spans:</strong>
+<img alt="Trace distribuído — POST /donations" src="./assets/images/trace-donation.png" /></p>
+<hr />
+<h2 id="mttr-mean-time-to-recovery">MTTR — Mean Time To Recovery<a class="headerlink" href="#mttr-mean-time-to-recovery" title="Permanent link">&para;</a></h2>
+<p>A instrumentação OTel dos 3 serviços permite que qualquer erro apareça no APM em segundos (via trace), em vez de depender de logs manuais — isso reduz o tempo de detecção de incidentes de minutos/horas (checagem manual) para near real-time, o que impacta diretamente o MTTR ao eliminar a etapa de "descobrir que algo está errado" do ciclo de resposta.</p>
+<p>A meta é reduzir o <strong>MTTR estimado da plataforma para &lt; 20 minutos</strong> através da automação em três frentes:</p>
+<h3 id="formula-do-mttr">Fórmula do MTTR<a class="headerlink" href="#formula-do-mttr" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>MTTR = Tempo de Detecção + Tempo de Diagnóstico + Tempo de Recuperação
+</code></pre></div>
+<h3 id="reducao-por-etapa">Redução por etapa<a class="headerlink" href="#reducao-por-etapa" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Sem observabilidade</th>
+<th>Com stack atual</th>
+<th>Ganho</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detecção</strong></td>
+<td>Reclamação do usuário / verificação manual (30 min – 4h)</td>
+<td>Alerta NRQL disparado em ≤ 5 min</td>
+<td><strong>~90%</strong></td>
+</tr>
+<tr>
+<td><strong>Diagnóstico</strong></td>
+<td>Ler logs no CloudWatch, correlacionar manualmente (30 min – 2h)</td>
+<td>Trace distribuído no APM aponta o span com falha em ≤ 10 min</td>
+<td><strong>~85%</strong></td>
+</tr>
+<tr>
+<td><strong>Recuperação</strong></td>
+<td>Rebuild + redeploy manual (10 – 20 min)</td>
+<td>Rollback automático via <code>deployment_circuit_breaker</code> do ECS em ≤ 3 min</td>
+<td><strong>~80%</strong></td>
+</tr>
+<tr>
+<td><strong>MTTR total estimado</strong></td>
+<td>1h10min – 6h20min</td>
+<td><strong>&lt; 20 min</strong></td>
+<td><strong>~90%</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="deteccao-automatica-alertas-configurados">Detecção automática — alertas configurados<a class="headerlink" href="#deteccao-automatica-alertas-configurados" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] <strong>New Relic Alerts Policy:</strong> <code>SolidaryTech — SRE Alerts</code></li>
+<li>[x] <strong>3 condições NRQL</strong> configuradas com notificação por e-mail:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Alerta</th>
+<th>Condição</th>
+<th>Severidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>SLO de latência violado</td>
+<td><code>% req &lt; 300ms</code> cair abaixo de 95 por 5 min</td>
+<td>Crítica</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Burn rate do Error Budget alto</td>
+<td><code>% req com 5xx</code> acima de 0,1 por 5 min</td>
+<td>Crítica</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ausência de sinal</td>
+<td>Sem dados de qualquer serviço por 5 min</td>
+<td>Warning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Print da policy de alertas:</strong>
+<img alt="Alert Policy — SolidaryTech SRE Alerts" src="./assets/images/alertas-policy.png" /></p>
+<h3 id="runbook-de-resposta-a-incidentes">Runbook de resposta a incidentes<a class="headerlink" href="#runbook-de-resposta-a-incidentes" title="Permanent link">&para;</a></h3>
+<p>Em caso de disparo de alerta, o fluxo é:</p>
+<div class="highlight"><pre><span></span><code>Alerta disparado → Notificação por e-mail
+  │
+  ▼
+Abrir Dashboard SRE → confirmar SLO violado
+  │
+  ▼
+Abrir trace do span com falha no APM → identificar componente
+  │
+  ▼
+Decisão:
+  ├── Bug de código → rollback via ArgoCD/ECS force-new-deployment
+  ├── Recurso saturado → scale up temporário via HPA/desired_count
+  └── Dependência externa (RDS/SQS) → escalar time responsável
+  │
+  ▼
+Post-mortem obrigatório se Error Budget consumido &gt; 5% em 24h
+</code></pre></div>
+<h3 id="circuit-breaker-do-ecs">Circuit Breaker do ECS<a class="headerlink" href="#circuit-breaker-do-ecs" title="Permanent link">&para;</a></h3>
+<p>Configuração aplicada em <code>infra/terraform/modules/ecs/main.tf</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_ecs_service&quot;</span><span class="w"> </span><span class="nv">&quot;services&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">  # ...</span>
+<span class="w">  </span><span class="nb">deployment_circuit_breaker</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">enable</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">    </span><span class="na">rollback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Efeito:</strong> se um novo deploy falhar em subir tasks saudáveis dentro do período de estabilização, o ECS <strong>automaticamente reverte para a task definition anterior</strong>, sem intervenção humana. Isso limita o impacto de um deploy ruim ao intervalo entre o push e a detecção da falha — tipicamente menos de 5 minutos.</p>
+<hr />
+<h2 id="evidencias-de-operacao">Evidências de Operação<a class="headerlink" href="#evidencias-de-operacao" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] 3 serviços instrumentados e enviando telemetria</li>
+<li>[x] Traces com spans customizados no <code>donation-service</code> (evidência de instrumentação manual em Go)</li>
+<li>[x] Dashboard SRE publicado</li>
+<li>[x] Error Budget calculado em tempo real via query NRQL</li>
+<li>[x] Circuit Breaker do ECS ativo em produção (<code>lab</code>)</li>
+<li>[x] Alertas configurados e testados</li>
+</ul>
+<p>Documentação detalhada, disponível em aqui: <a href="../sre/new-relic/">New Relic - Passo a passo</a>.</p>
+<h3 id="referencias">Referências<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="https://sre.google/sre-book/service-level-objectives/">Google SRE Book — Cap. 4: Service Level Objectives</a></li>
+<li><a href="https://opentelemetry.io/docs/specs/otel/">OpenTelemetry Specification</a></li>
+<li><a href="https://docs.newrelic.com/docs/opentelemetry/best-practices/opentelemetry-otlp/">New Relic OTLP Endpoint Docs</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.top", "navigation.sections", "content.code.copy", "toc.integrate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

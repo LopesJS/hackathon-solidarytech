@@ -1,0 +1,1963 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)">
+      
+      
+        <meta name="author" content="Juliano da Silva Lopes">
+      
+      
+      
+        <link rel="prev" href="../terraform-infra/">
+      
+      
+        <link rel="next" href="../docker/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Deploy na AWS (Lab) - SolidaryTech — Hackathon Fase 5</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#solidarytech-guia-de-deploy-na-aws-com-terraform-lab" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-header__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolidaryTech — Hackathon Fase 5
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deploy na AWS (Lab)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cronograma/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cronograma
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../00-fundacao-devops/" class="md-tabs__link">
+          
+  
+  
+  Fundação DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../01-sre/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../02-finops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FinOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../03-itsm-aiops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ITSM e AIOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../04-dr-seguranca/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DR e Segurança
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-nav__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    SolidaryTech — Hackathon Fase 5
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundação DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fundação DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-fundacao-devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terraform-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitetura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#componentes-provisionados-pelo-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Componentes provisionados pelo Terraform
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pré-requisitos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ferramentas-necessarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ferramentas necessárias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissoes-iam-necessarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permissões IAM necessárias
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-do-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura do repositório
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-1-configurar-credenciais-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 1 — Configurar credenciais AWS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 1 — Configurar credenciais AWS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcao-a-aws-cli-configure-mais-simples-para-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção A — AWS CLI configure (mais simples para lab)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcao-b-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção B — Variáveis de ambiente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-que-as-credenciais-funcionam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar que as credenciais funcionam
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-2-criar-o-backend-do-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 2 — Criar o backend do Terraform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-3-inicializar-o-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 3 — Inicializar o Terraform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-4-planejar-a-infraestrutura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 4 — Planejar a infraestrutura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-5-aplicar-a-infraestrutura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 5 — Aplicar a infraestrutura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-6-publicar-imagens-no-ecr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 6 — Publicar imagens no ECR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 6 — Publicar imagens no ECR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcao-a-script-automatizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção A — Script automatizado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcao-b-comandos-manuais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opção B — Comandos manuais
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-7-executar-migrations-do-banco" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 7 — Executar migrations do banco
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 7 — Executar migrations do banco">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#via-aws-rds-query-editor-console-web-mais-simples-para-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Via AWS RDS Query Editor (console web — mais simples para lab)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verificar-que-as-tasks-estao-healthy-apos-as-migrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verificar que as tasks estão healthy após as migrations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-8-validar-os-servicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 8 — Validar os serviços
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recursos-criados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recursos criados
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recursos criados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resumo-completo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo completo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags-finops-aplicadas-a-todos-os-recursos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags FinOps aplicadas a todos os recursos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custos-estimados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custos estimados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#destruir-o-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Destruir o ambiente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tasks-ecs-ficam-em-pending" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tasks ECS ficam em PENDING
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tasks-ecs-ficam-em-stopped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tasks ECS ficam em STOPPED
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-check-do-alb-falhando" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health check do ALB falhando
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-resourcenotfoundexception-no-dynamodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Erro ResourceNotFoundException no DynamoDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erro-de-credenciais-aws-no-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Erro de credenciais AWS no Terraform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform-apply-falha-no-backend-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        terraform apply falha no backend S3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containerização (Docker)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solidarytech-local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab-automatizado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Automatizado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-finops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-itsm-aiops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-dr-seguranca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DR e Segurança
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="solidarytech-guia-de-deploy-na-aws-com-terraform-lab">SolidaryTech — Guia de Deploy na AWS com Terraform (Lab)<a class="headerlink" href="#solidarytech-guia-de-deploy-na-aws-com-terraform-lab" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Documentação completa para provisionar toda a infraestrutura da plataforma SolidaryTech na AWS usando Terraform, publicar as imagens Docker no ECR e subir os 3 microsserviços no ECS Fargate.</p>
+</blockquote>
+<hr />
+<h2 id="indice">Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#arquitetura">Arquitetura</a></li>
+<li><a href="#pré-requisitos">Pré-requisitos</a></li>
+<li><a href="#estrutura-do-repositório">Estrutura do repositório</a></li>
+<li><a href="#passo-1--configurar-credenciais-aws">Passo 1 — Configurar credenciais AWS</a></li>
+<li><a href="#passo-2--criar-o-backend-do-terraform">Passo 2 — Criar o backend do Terraform</a></li>
+<li><a href="#passo-3--inicializar-o-terraform">Passo 3 — Inicializar o Terraform</a></li>
+<li><a href="#passo-4--planejar-a-infraestrutura">Passo 4 — Planejar a infraestrutura</a></li>
+<li><a href="#passo-5--aplicar-a-infraestrutura">Passo 5 — Aplicar a infraestrutura</a></li>
+<li><a href="#passo-6--publicar-imagens-no-ecr">Passo 6 — Publicar imagens no ECR</a></li>
+<li><a href="#passo-7--executar-migrations-do-banco">Passo 7 — Executar migrations do banco</a></li>
+<li><a href="#passo-8--validar-os-serviços">Passo 8 — Validar os serviços</a></li>
+<li><a href="#recursos-criados">Recursos criados</a></li>
+<li><a href="#custos-estimados">Custos estimados</a></li>
+<li><a href="#destruir-o-ambiente">Destruir o ambiente</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+</ol>
+<hr />
+<h2 id="arquitetura">Arquitetura<a class="headerlink" href="#arquitetura" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>Internet
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Application Load Balancer (público)                        │
+│  /ngos*  → ngo-service:8081                                 │
+│  /donations* → donation-service:8082                        │
+│  /volunteers* → volunteer-service:8083                      │
+└──────────────────────┬──────────────────────────────────────┘
+                       │ (subnets privadas)
+           ┌───────────┼───────────┐
+           ▼           ▼           ▼
+    ┌──────────┐ ┌──────────┐ ┌──────────────┐
+    │ngo-svc   │ │donation  │ │volunteer-svc │
+    │Fargate   │ │Fargate   │ │Fargate       │
+    │256CPU    │ │256CPU    │ │256CPU        │
+    │512MB     │ │512MB     │ │512MB         │
+    └────┬─────┘ └────┬─────┘ └──────┬───────┘
+         │            │              │
+         ▼            ▼              ▼
+    ┌─────────┐  ┌─────────┐  ┌──────────────┐
+    │RDS      │  │RDS      │  │DynamoDB      │
+    │ngo_db   │  │donation │  │Volunteers    │
+    │         │  │_db + SQS│  │(PAY_PER_REQ) │
+    └─────────┘  └─────────┘  └──────────────┘
+</code></pre></div>
+<h3 id="componentes-provisionados-pelo-terraform">Componentes provisionados pelo Terraform<a class="headerlink" href="#componentes-provisionados-pelo-terraform" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Recursos criados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>networking</code></td>
+<td>VPC, 2 subnets públicas, 2 subnets privadas, IGW, NAT Gateway, Route Tables, 3 Security Groups</td>
+</tr>
+<tr>
+<td><code>ecr</code></td>
+<td>3 repositórios ECR com scan automático e lifecycle policy</td>
+</tr>
+<tr>
+<td><code>rds</code></td>
+<td>Instância PostgreSQL 15 (db.t3.micro), subnet group, parameter group, enhanced monitoring</td>
+</tr>
+<tr>
+<td><code>dynamodb</code></td>
+<td>Tabela <code>SolidaryTechVolunteers</code> com GSI por ngo_id, PITR habilitado</td>
+</tr>
+<tr>
+<td><code>sqs</code></td>
+<td>Fila <code>solidary-donations</code> + Dead Letter Queue</td>
+</tr>
+<tr>
+<td><code>secrets</code></td>
+<td>3 secrets no AWS Secrets Manager (DATABASE_URLs + RDS password)</td>
+</tr>
+<tr>
+<td><code>ecs</code></td>
+<td>Cluster ECS, ALB, 3 Target Groups, 3 Listener Rules, 3 Task Definitions, 3 Services, IAM Roles</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="pre-requisitos">Pré-requisitos<a class="headerlink" href="#pre-requisitos" title="Permanent link">&para;</a></h2>
+<h3 id="ferramentas-necessarias">Ferramentas necessárias<a class="headerlink" href="#ferramentas-necessarias" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Ferramenta</th>
+<th>Versão mínima</th>
+<th>Instalação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWS CLI</td>
+<td>2.x</td>
+<td>https://aws.amazon.com/cli/</td>
+</tr>
+<tr>
+<td>Terraform</td>
+<td>1.7.0</td>
+<td>https://www.terraform.io/downloads</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>24.x</td>
+<td>https://docs.docker.com/get-docker/</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>qualquer</td>
+<td>https://git-scm.com</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verificar instalações:</strong>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>--version<span class="w">          </span><span class="c1"># aws-cli/2.x.x</span>
+terraform<span class="w"> </span>version<span class="w">      </span><span class="c1"># Terraform v1.7.x</span>
+docker<span class="w"> </span>--version<span class="w">       </span><span class="c1"># Docker version 24.x</span>
+git<span class="w"> </span>--version<span class="w">          </span><span class="c1"># git version 2.x</span>
+</code></pre></div></p>
+<h3 id="permissoes-iam-necessarias">Permissões IAM necessárias<a class="headerlink" href="#permissoes-iam-necessarias" title="Permanent link">&para;</a></h3>
+<p>O usuário ou role AWS utilizado precisa ter permissões para criar todos os recursos. Em ambiente de lab, a policy <code>AdministratorAccess</code> é a mais simples. Em produção, use uma policy customizada com as permissões mínimas necessárias:</p>
+<ul>
+<li><code>ec2:*</code> (VPC, subnets, security groups, NAT, IGW)</li>
+<li><code>elasticloadbalancing:*</code> (ALB, target groups, listeners)</li>
+<li><code>ecs:*</code> (cluster, tasks, services)</li>
+<li><code>ecr:*</code> (repositórios)</li>
+<li><code>rds:*</code> (instância PostgreSQL)</li>
+<li><code>dynamodb:*</code> (tabelas)</li>
+<li><code>sqs:*</code> (filas)</li>
+<li><code>secretsmanager:*</code> (secrets)</li>
+<li><code>iam:*</code> (roles e policies para ECS)</li>
+<li><code>logs:*</code> (CloudWatch log groups)</li>
+<li><code>s3:*</code> (bucket do terraform state)</li>
+</ul>
+<hr />
+<h2 id="estrutura-do-repositorio">Estrutura do repositório<a class="headerlink" href="#estrutura-do-repositorio" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>hackathon-solidarytech/infra
+├── .github
+├── .gitignore
+├── terraform/
+│   ├── global/
+│   │   └── tags.tf                  ← política de tags FinOps
+│   ├── modules/
+│   │   ├── networking/              ← VPC, subnets, SGs
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   └── outputs.tf
+│   │   ├── ecr/                     ← repositórios de imagens
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   └── outputs.tf
+│   │   ├── rds/                     ← PostgreSQL
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   └── outputs.tf
+│   │   ├── dynamodb/                ← tabela de voluntários
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   └── outputs.tf
+│   │   ├── sqs/                     ← fila de doações + DLQ
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   └── outputs.tf
+│   │   ├── secrets/                 ← AWS Secrets Manager
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   └── outputs.tf
+│   │   └── ecs/                     ← cluster, ALB, tasks, services
+│   │       ├── main.tf
+│   │       ├── variables.tf
+│   │       └── outputs.tf
+│   └── environments/
+│       ├── lab/                     ← ambiente de laboratório
+│       │   ├── main.tf              ← orquestra todos os módulos
+│       │   ├── variables.tf
+│       │   ├── outputs.tf
+│       │   ├── terraform.tfvars     ← valores do lab (não commitar)
+│       │   ├── bootstrap.sh         ← cria o backend S3+DynamoDB
+│       │   ├── deploy.sh            ← build + push + ECS deploy
+│       │   └── migrate.sh           ← guia de migrations SQL
+│       └── aws-prod/                ← ambiente de produção (próxima fase)
+</code></pre></div>
+<hr />
+<h2 id="passo-1-configurar-credenciais-aws">Passo 1 — Configurar credenciais AWS<a class="headerlink" href="#passo-1-configurar-credenciais-aws" title="Permanent link">&para;</a></h2>
+<h3 id="opcao-a-aws-cli-configure-mais-simples-para-lab">Opção A — AWS CLI configure (mais simples para lab)<a class="headerlink" href="#opcao-a-aws-cli-configure-mais-simples-para-lab" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>configure
+<span class="c1"># AWS Access Key ID: AKIA...</span>
+<span class="c1"># AWS Secret Access Key: ...</span>
+<span class="c1"># Default region name: us-east-1</span>
+<span class="c1"># Default output format: json</span>
+</code></pre></div>
+<h3 id="opcao-b-variaveis-de-ambiente">Opção B — Variáveis de ambiente<a class="headerlink" href="#opcao-b-variaveis-de-ambiente" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="s2">&quot;AKIA...&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="s2">&quot;...&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_DEFAULT_REGION</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+</code></pre></div>
+<h3 id="verificar-que-as-credenciais-funcionam">Verificar que as credenciais funcionam<a class="headerlink" href="#verificar-que-as-credenciais-funcionam" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity
+</code></pre></div>
+<p>Saída esperada:
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;UserId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AIDA...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Account&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123456789012&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Arn&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:iam::123456789012:user/seu-usuario&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="passo-2-criar-o-backend-do-terraform">Passo 2 — Criar o backend do Terraform<a class="headerlink" href="#passo-2-criar-o-backend-do-terraform" title="Permanent link">&para;</a></h2>
+<p>O backend remoto armazena o <code>terraform.tfstate</code> no S3 e usa DynamoDB para impedir que dois <code>apply</code> rodem ao mesmo tempo.</p>
+<p>Execute o script de bootstrap <strong>uma única vez</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>terraform/environments/lab
+chmod<span class="w"> </span>+x<span class="w"> </span>bootstrap.sh
+./bootstrap.sh<span class="w"> </span>us-east-1
+</code></pre></div>
+<p>O script cria:
+- Bucket S3 <code>solidarytech-tfstate-lab</code> com versionamento e criptografia
+- Tabela DynamoDB <code>solidarytech-tfstate-lock</code> para state locking</p>
+<blockquote>
+<p>⚠️ <strong>Atenção:</strong> se quiser usar um nome de bucket diferente, edite o <code>bootstrap.sh</code> <strong>e</strong> a configuração <code>backend "s3"</code> no <code>main.tf</code> antes de rodar o <code>terraform init</code>.</p>
+</blockquote>
+<hr />
+<h2 id="passo-3-inicializar-o-terraform">Passo 3 — Inicializar o Terraform<a class="headerlink" href="#passo-3-inicializar-o-terraform" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>terraform/environments/lab
+terraform<span class="w"> </span>init
+</code></pre></div>
+<p>Saída esperada:
+<div class="highlight"><pre><span></span><code>Initializing the backend...
+Successfully configured the backend &quot;s3&quot;!
+
+Initializing modules...
+- module.networking
+- module.ecr
+- module.rds
+- module.dynamodb
+- module.sqs
+- module.secrets
+- module.ecs
+
+Terraform has been successfully initialized!
+</code></pre></div></p>
+<hr />
+<h2 id="passo-4-planejar-a-infraestrutura">Passo 4 — Planejar a infraestrutura<a class="headerlink" href="#passo-4-planejar-a-infraestrutura" title="Permanent link">&para;</a></h2>
+<p>O <code>plan</code> mostra tudo que será criado <strong>sem criar nada</strong>. Sempre revise antes do <code>apply</code>.</p>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>plan<span class="w"> </span>-out<span class="o">=</span>tfplan
+</code></pre></div>
+<p>Saída esperada (resumo):
+<div class="highlight"><pre><span></span><code>Plan: 47 to add, 0 to change, 0 to destroy.
+</code></pre></div></p>
+<p>Recursos principais que serão criados:
+- <code>aws_vpc.main</code>
+- <code>aws_subnet.public[0,1]</code> e <code>aws_subnet.private[0,1]</code>
+- <code>aws_nat_gateway.main[0]</code>
+- <code>aws_ecr_repository.services["ngo-service"]</code> (+ donation + volunteer)
+- <code>aws_db_instance.main</code>
+- <code>aws_dynamodb_table.volunteers</code>
+- <code>aws_sqs_queue.donations</code> + <code>donations_dlq</code>
+- <code>aws_secretsmanager_secret.*</code> (3 secrets)
+- <code>aws_ecs_cluster.main</code>
+- <code>aws_lb.main</code> (ALB)
+- <code>aws_ecs_task_definition.*</code> (3 task definitions)
+- <code>aws_ecs_service.*</code> (3 services)</p>
+<hr />
+<h2 id="passo-5-aplicar-a-infraestrutura">Passo 5 — Aplicar a infraestrutura<a class="headerlink" href="#passo-5-aplicar-a-infraestrutura" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>apply<span class="w"> </span>tfplan
+</code></pre></div>
+<blockquote>
+<p>⏱️ <strong>Tempo estimado:</strong> 15–25 minutos (o RDS é o mais lento — ~10 min para provisionamento).</p>
+</blockquote>
+<p>Ao finalizar, o Terraform exibe os outputs:</p>
+<div class="highlight"><pre><span></span><code>Outputs:
+
+alb_dns_name        = &quot;solidarytech-lab-alb-1234567890.us-east-1.elb.amazonaws.com&quot;
+ecr_urls            = {
+  &quot;donation-service&quot;  = &quot;123456789012.dkr.ecr.us-east-1.amazonaws.com/solidarytech/donation-service&quot;
+  &quot;ngo-service&quot;       = &quot;123456789012.dkr.ecr.us-east-1.amazonaws.com/solidarytech/ngo-service&quot;
+  &quot;volunteer-service&quot; = &quot;123456789012.dkr.ecr.us-east-1.amazonaws.com/solidarytech/volunteer-service&quot;
+}
+ecs_cluster_name    = &quot;solidarytech-lab&quot;
+dynamodb_table_name = &quot;SolidaryTechVolunteers&quot;
+sqs_queue_url       = &quot;https://sqs.us-east-1.amazonaws.com/123456789012/solidary-donations&quot;
+</code></pre></div>
+<p>Salve o <code>alb_dns_name</code> — você vai usar para testar no Passo 8.</p>
+<hr />
+<h2 id="passo-6-publicar-imagens-no-ecr">Passo 6 — Publicar imagens no ECR<a class="headerlink" href="#passo-6-publicar-imagens-no-ecr" title="Permanent link">&para;</a></h2>
+<p>As imagens Docker precisam estar no ECR antes dos containers subirem no ECS.</p>
+<h3 id="opcao-a-script-automatizado">Opção A — Script automatizado<a class="headerlink" href="#opcao-a-script-automatizado" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ainda dentro de terraform/environments/lab/</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>deploy.sh
+./deploy.sh
+</code></pre></div>
+<h3 id="opcao-b-comandos-manuais">Opção B — Comandos manuais<a class="headerlink" href="#opcao-b-comandos-manuais" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Variáveis</span>
+<span class="nv">REGION</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+<span class="nv">ACCOUNT_ID</span><span class="o">=</span><span class="k">$(</span>aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity<span class="w"> </span>--query<span class="w"> </span>Account<span class="w"> </span>--output<span class="w"> </span>text<span class="k">)</span>
+<span class="nv">ECR_BASE</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$ACCOUNT_ID</span><span class="s2">.dkr.ecr.</span><span class="nv">$REGION</span><span class="s2">.amazonaws.com&quot;</span>
+
+<span class="c1"># Autenticar no ECR</span>
+aws<span class="w"> </span>ecr<span class="w"> </span>get-login-password<span class="w"> </span>--region<span class="w"> </span><span class="nv">$REGION</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>--username<span class="w"> </span>AWS<span class="w"> </span>--password-stdin<span class="w"> </span><span class="nv">$ECR_BASE</span>
+
+<span class="c1"># Build e push de cada serviço (execute a partir da raiz do repositório de código)</span>
+<span class="k">for</span><span class="w"> </span>svc<span class="w"> </span><span class="k">in</span><span class="w"> </span>ngo-service<span class="w"> </span>donation-service<span class="w"> </span>volunteer-service<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>solidarytech/<span class="nv">$svc</span>:latest<span class="w"> </span>./<span class="nv">$svc</span>
+<span class="w">  </span>docker<span class="w"> </span>tag<span class="w"> </span>solidarytech/<span class="nv">$svc</span>:latest<span class="w"> </span><span class="nv">$ECR_BASE</span>/solidarytech/<span class="nv">$svc</span>:latest
+<span class="w">  </span>docker<span class="w"> </span>push<span class="w"> </span><span class="nv">$ECR_BASE</span>/solidarytech/<span class="nv">$svc</span>:latest
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✓ </span><span class="nv">$svc</span><span class="s2"> publicado&quot;</span>
+<span class="k">done</span>
+
+<span class="c1"># Forçar novo deploy no ECS (para usar as novas imagens)</span>
+<span class="nv">CLUSTER</span><span class="o">=</span><span class="k">$(</span>terraform<span class="w"> </span>output<span class="w"> </span>-raw<span class="w"> </span>ecs_cluster_name<span class="k">)</span>
+<span class="k">for</span><span class="w"> </span>svc<span class="w"> </span><span class="k">in</span><span class="w"> </span>ngo-service<span class="w"> </span>donation-service<span class="w"> </span>volunteer-service<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>aws<span class="w"> </span>ecs<span class="w"> </span>update-service<span class="w"> </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span>--service<span class="w"> </span><span class="nv">$svc</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--force-new-deployment<span class="w"> </span>--region<span class="w"> </span><span class="nv">$REGION</span><span class="w"> </span>--no-cli-pager
+<span class="k">done</span>
+</code></pre></div>
+<hr />
+<h2 id="passo-7-executar-migrations-do-banco">Passo 7 — Executar migrations do banco<a class="headerlink" href="#passo-7-executar-migrations-do-banco" title="Permanent link">&para;</a></h2>
+<p>As tabelas do PostgreSQL precisam ser criadas antes dos serviços ficarem saudáveis.</p>
+<h3 id="via-aws-rds-query-editor-console-web-mais-simples-para-lab">Via AWS RDS Query Editor (console web — mais simples para lab)<a class="headerlink" href="#via-aws-rds-query-editor-console-web-mais-simples-para-lab" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Acesse o <strong>AWS Console → RDS → Query Editor</strong></li>
+<li>Conecte à instância <code>solidarytech-lab-postgres</code></li>
+<li>Database username: <code>solidary</code></li>
+<li>Database password: recupere do Secrets Manager:
+     <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>secretsmanager<span class="w"> </span>get-secret-value<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--secret-id<span class="w"> </span><span class="s2">&quot;solidarytech/lab/rds/master-password&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span>SecretString<span class="w"> </span>--output<span class="w"> </span>text
+</code></pre></div></li>
+<li>Execute os SQLs:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Criar os bancos</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">ngo_db</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">donation_db</span><span class="p">;</span>
+</code></pre></div>
+<ol>
+<li>Troque para o banco <code>ngo_db</code> e execute:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">ngos</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">id</span><span class="w">         </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">name</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">email</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">cause</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">city</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+<span class="p">);</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">ngos</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">cause</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="w">  </span><span class="p">(</span><span class="s1">&#39;Anjos de Patas&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;contato@anjosdepatas.org&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Proteção Animal&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Osasco&#39;</span><span class="p">),</span>
+<span class="w">  </span><span class="p">(</span><span class="s1">&#39;Educa Mais&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;info@educamais.org&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Educação&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;São Paulo&#39;</span><span class="p">);</span>
+</code></pre></div>
+<ol>
+<li>Troque para <code>donation_db</code> e execute:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">donations</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">id</span><span class="w">         </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ngo_id</span><span class="w">     </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">amount</span><span class="w">     </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">donor_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">status</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">TIME</span><span class="w"> </span><span class="k">ZONE</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="verificar-que-as-tasks-estao-healthy-apos-as-migrations">Verificar que as tasks estão healthy após as migrations<a class="headerlink" href="#verificar-que-as-tasks-estao-healthy-apos-as-migrations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>ecs<span class="w"> </span>describe-services<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span>solidarytech-lab<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--services<span class="w"> </span>ngo-service<span class="w"> </span>donation-service<span class="w"> </span>volunteer-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s2">&quot;services[*].{Name:serviceName, Running:runningCount, Desired:desiredCount}&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+</code></pre></div>
+<hr />
+<h2 id="passo-8-validar-os-servicos">Passo 8 — Validar os serviços<a class="headerlink" href="#passo-8-validar-os-servicos" title="Permanent link">&para;</a></h2>
+<p>Substitua <code>&lt;ALB_DNS&gt;</code> pelo valor do output <code>alb_dns_name</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">ALB</span><span class="o">=</span><span class="s2">&quot;&lt;ALB_DNS&gt;&quot;</span>
+
+<span class="c1"># Health checks</span>
+curl<span class="w"> </span>http://<span class="nv">$ALB</span>/health
+<span class="c1"># {&quot;status&quot;:&quot;ok&quot;,&quot;service&quot;:&quot;ngo-service&quot;}</span>
+
+<span class="c1"># Listar ONGs (seed já inserido nas migrations)</span>
+curl<span class="w"> </span>http://<span class="nv">$ALB</span>/ngos
+
+<span class="c1"># Criar uma ONG</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$ALB</span>/ngos<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;Instituto Test&quot;,&quot;email&quot;:&quot;test@ong.org&quot;,&quot;cause&quot;:&quot;Educação&quot;,&quot;city&quot;:&quot;Curitiba&quot;}&#39;</span>
+
+<span class="c1"># Registrar uma doação</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$ALB</span>/donations<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;ngo_id&quot;:1,&quot;amount&quot;:100.00,&quot;donor_name&quot;:&quot;Fulano da Silva&quot;}&#39;</span>
+
+<span class="c1"># Cadastrar um voluntário</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://<span class="nv">$ALB</span>/volunteers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;Maria Costa&quot;,&quot;email&quot;:&quot;maria@email.com&quot;,&quot;ngo_id&quot;:1}&#39;</span>
+
+<span class="c1"># Buscar voluntários de uma ONG</span>
+curl<span class="w"> </span>http://<span class="nv">$ALB</span>/volunteers/1
+</code></pre></div>
+<hr />
+<h2 id="recursos-criados">Recursos criados<a class="headerlink" href="#recursos-criados" title="Permanent link">&para;</a></h2>
+<h3 id="resumo-completo">Resumo completo<a class="headerlink" href="#resumo-completo" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Serviço AWS</th>
+<th>Recurso</th>
+<th>Qtd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VPC</td>
+<td>VPC + subnets + IGW + NAT + RTs</td>
+<td>1 VPC, 4 subnets</td>
+</tr>
+<tr>
+<td>EC2</td>
+<td>Security Groups</td>
+<td>3</td>
+</tr>
+<tr>
+<td>ECR</td>
+<td>Repositórios de imagem</td>
+<td>3</td>
+</tr>
+<tr>
+<td>ECS</td>
+<td>Cluster + Task Definitions + Services</td>
+<td>1 cluster, 3 TDs, 3 services</td>
+</tr>
+<tr>
+<td>ELB</td>
+<td>ALB + Target Groups + Listener + Rules</td>
+<td>1 ALB, 3 TGs, 4 rules</td>
+</tr>
+<tr>
+<td>RDS</td>
+<td>Instância PostgreSQL 15</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DynamoDB</td>
+<td>Tabela + GSI</td>
+<td>1 tabela</td>
+</tr>
+<tr>
+<td>SQS</td>
+<td>Fila principal + DLQ</td>
+<td>2 filas</td>
+</tr>
+<tr>
+<td>Secrets Manager</td>
+<td>Secrets</td>
+<td>3</td>
+</tr>
+<tr>
+<td>IAM</td>
+<td>Roles + Policies</td>
+<td>4 roles, 6 policies</td>
+</tr>
+<tr>
+<td>CloudWatch</td>
+<td>Log Groups</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tags-finops-aplicadas-a-todos-os-recursos">Tags FinOps aplicadas a todos os recursos<a class="headerlink" href="#tags-finops-aplicadas-a-todos-os-recursos" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Project     = &quot;SolidaryTech&quot;
+Environment = &quot;lab&quot;
+CostCenter  = &quot;NGO-Core&quot;
+ManagedBy   = &quot;Terraform&quot;
+Owner       = &quot;devops&quot;
+</code></pre></div>
+<hr />
+<h2 id="custos-estimados">Custos estimados<a class="headerlink" href="#custos-estimados" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Recurso</th>
+<th>Tipo</th>
+<th>Custo/mês (estimado)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ECS Fargate</td>
+<td>3 tasks × 0.25 vCPU × 0.5 GB</td>
+<td>~$12</td>
+</tr>
+<tr>
+<td>RDS PostgreSQL</td>
+<td>db.t3.micro, 20 GB gp3</td>
+<td>~$15</td>
+</tr>
+<tr>
+<td>NAT Gateway</td>
+<td>~10 GB/mês de dados</td>
+<td>~$5</td>
+</tr>
+<tr>
+<td>ALB</td>
+<td>~10 LCUs</td>
+<td>~$18</td>
+</tr>
+<tr>
+<td>DynamoDB</td>
+<td>PAY_PER_REQUEST, baixo volume</td>
+<td>&lt; $1</td>
+</tr>
+<tr>
+<td>SQS</td>
+<td>&lt; 1M requests/mês</td>
+<td>&lt; $1</td>
+</tr>
+<tr>
+<td>ECR</td>
+<td>&lt; 1 GB de storage</td>
+<td>&lt; $1</td>
+</tr>
+<tr>
+<td>CloudWatch Logs</td>
+<td>3 days retention</td>
+<td>&lt; $1</td>
+</tr>
+<tr>
+<td>Secrets Manager</td>
+<td>3 secrets</td>
+<td>&lt; $1</td>
+</tr>
+<tr>
+<td><strong>Total lab</strong></td>
+<td></td>
+<td><strong>~$55/mês</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Dica de economia:</strong> destrua o ambiente quando não estiver usando:
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>destroy
+</code></pre></div>
+O NAT Gateway e o RDS são os maiores custos. Para economizar ainda mais, configure o <code>enable_nat_gateway = false</code> e use subnets públicas para as tasks no lab.</p>
+</blockquote>
+<hr />
+<h2 id="destruir-o-ambiente">Destruir o ambiente<a class="headerlink" href="#destruir-o-ambiente" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>terraform/environments/lab
+terraform<span class="w"> </span>destroy
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Atenção:</strong> isso remove <strong>todos</strong> os recursos, incluindo dados do RDS e DynamoDB. Em produção, habilite <code>deletion_protection = true</code> no RDS.</p>
+</blockquote>
+<p>Para destruir somente um módulo específico:
+<div class="highlight"><pre><span></span><code><span class="c1"># Destruir apenas o ECS (mantém banco e rede)</span>
+terraform<span class="w"> </span>destroy<span class="w"> </span>-target<span class="o">=</span>module.ecs
+</code></pre></div></p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="tasks-ecs-ficam-em-pending">Tasks ECS ficam em PENDING<a class="headerlink" href="#tasks-ecs-ficam-em-pending" title="Permanent link">&para;</a></h3>
+<p><strong>Causa mais comum:</strong> as imagens ainda não foram publicadas no ECR.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Verificar se as imagens existem no ECR</span>
+aws<span class="w"> </span>ecr<span class="w"> </span>list-images<span class="w"> </span>--repository-name<span class="w"> </span>solidarytech/ngo-service
+
+<span class="c1"># Ver eventos do serviço ECS</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>describe-services<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span>solidarytech-lab<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--services<span class="w"> </span>ngo-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s2">&quot;services[0].events[:5]&quot;</span>
+</code></pre></div>
+<h3 id="tasks-ecs-ficam-em-stopped">Tasks ECS ficam em STOPPED<a class="headerlink" href="#tasks-ecs-ficam-em-stopped" title="Permanent link">&para;</a></h3>
+<p><strong>Verificar logs do container:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Pegar o ARN da task que falhou</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>list-tasks<span class="w"> </span>--cluster<span class="w"> </span>solidarytech-lab<span class="w"> </span>--service-name<span class="w"> </span>ngo-service
+
+<span class="c1"># Ver logs no CloudWatch</span>
+aws<span class="w"> </span>logs<span class="w"> </span>get-log-events<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-group-name<span class="w"> </span>/ecs/solidarytech/lab/ngo-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-stream-name<span class="w"> </span>ecs/ngo-service/&lt;task-id&gt;
+</code></pre></div>
+<h3 id="health-check-do-alb-falhando">Health check do ALB falhando<a class="headerlink" href="#health-check-do-alb-falhando" title="Permanent link">&para;</a></h3>
+<p><strong>Verificar se as migrations foram executadas:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># O ngo-service falha no health check se a tabela `ngos` não existir</span>
+<span class="c1"># Execute as migrations do Passo 7 e force novo deploy:</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>update-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span>solidarytech-lab<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--service<span class="w"> </span>ngo-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--force-new-deployment
+</code></pre></div></p>
+<h3 id="erro-resourcenotfoundexception-no-dynamodb">Erro <code>ResourceNotFoundException</code> no DynamoDB<a class="headerlink" href="#erro-resourcenotfoundexception-no-dynamodb" title="Permanent link">&para;</a></h3>
+<p>A tabela <code>SolidaryTechVolunteers</code> não foi criada. Verifique:
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>dynamodb<span class="w"> </span>list-tables<span class="w"> </span>--region<span class="w"> </span>us-east-1
+<span class="c1"># Se vazio, o módulo dynamodb não foi aplicado</span>
+terraform<span class="w"> </span>apply<span class="w"> </span>-target<span class="o">=</span>module.dynamodb
+</code></pre></div></p>
+<h3 id="erro-de-credenciais-aws-no-terraform">Erro de credenciais AWS no Terraform<a class="headerlink" href="#erro-de-credenciais-aws-no-terraform" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Verificar qual identidade está sendo usada</span>
+aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity
+
+<span class="c1"># Garantir que a região está configurada</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWS_DEFAULT_REGION</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+</code></pre></div>
+<h3 id="terraform-apply-falha-no-backend-s3"><code>terraform apply</code> falha no backend S3<a class="headerlink" href="#terraform-apply-falha-no-backend-s3" title="Permanent link">&para;</a></h3>
+<p>O bucket não existe. Execute o bootstrap primeiro:
+<div class="highlight"><pre><span></span><code>./bootstrap.sh<span class="w"> </span>us-east-1
+</code></pre></div></p>
+<hr />
+<blockquote>
+<p><strong>Próximo passo:</strong> após validar o ambiente lab, a Semana 2 do cronograma cobre a migração para EKS com CI/CD automatizado via GitHub Actions e GitOps com ArgoCD. Consulte o <code>CRONOGRAMA.md</code> para o roadmap completo.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.sections", "content.code.copy", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

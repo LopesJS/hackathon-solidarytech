@@ -1,0 +1,1765 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)">
+      
+      
+        <meta name="author" content="Juliano da Silva Lopes">
+      
+      
+      
+        <link rel="prev" href="../01-sre/">
+      
+      
+        <link rel="next" href="../03-itsm-aiops/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>FinOps - SolidaryTech — Hackathon Fase 5</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2-finops-otimizacao-financeira-e-tagueamento" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="SolidaryTech — Hackathon Fase 5" class="md-header__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolidaryTech — Hackathon Fase 5
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FinOps
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cronograma/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cronograma
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../00-fundacao-devops/" class="md-tabs__link">
+          
+  
+  
+  Fundação DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../01-sre/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FinOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../03-itsm-aiops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ITSM e AIOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../04-dr-seguranca/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DR e Segurança
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SolidaryTech — Hackathon Fase 5" class="md-nav__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    SolidaryTech — Hackathon Fase 5
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundação DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fundação DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-fundacao-devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/terraform-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/deploy-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containerização (Docker)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/solidarytech-local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundacao/lab-automatizado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Automatizado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#filosofia-finops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filosofia FinOps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrategia-de-tagging-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia de Tagging (IaC)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estratégia de Tagging (IaC)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#politica-de-tags-obrigatorias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Política de tags obrigatórias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags-especificas-de-producao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags específicas de produção
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidencia-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidência (Terraform)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-das-tags-na-pratica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uso das tags na prática
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rightsizing-ajuste-de-capacidade-baseado-em-uso-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rightsizing — Ajuste de Capacidade Baseado em Uso Real
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rightsizing — Ajuste de Capacidade Baseado em Uso Real">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ferramentas-de-analise-disponiveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ferramentas de análise disponíveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analise-de-rightsizing-dos-servicos-ecs-fargate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Análise de rightsizing dos serviços ECS Fargate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracao-atual-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuração atual (Terraform)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recomendacoes-de-rightsizing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recomendações de rightsizing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aplicando-via-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aplicando via GitOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forecast-de-custos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forecast de Custos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forecast de Custos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ambiente-lab-custo-atual-mensal-247" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente Lab (custo atual mensal — 24/7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ambiente-producao-custo-projetado-mensal-247" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ambiente Produção (custo projetado mensal — 24/7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estrategia-de-economia-no-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estratégia de economia no lab
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recomendacoes-de-otimizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recomendações de Otimização
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recomendações de Otimização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-uso-de-fargate-spot-implementado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Uso de Fargate Spot ⭐ Implementado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-nat-gateway-compartilhado-implementado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. NAT Gateway compartilhado Implementado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-dynamodb-on-demand-implementado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. DynamoDB On-Demand Implementado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-rightsizing-baseado-em-container-insights-recomendacao-futura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Rightsizing baseado em Container Insights (recomendação futura)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-reserved-instances-savings-plans-recomendacao-para-producao-estavel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Reserved Instances / Savings Plans (recomendação para produção estável)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#governanca-e-controles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governança e Controles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Governança e Controles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#budget-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Budget Alerts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-anomaly-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost Anomaly Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revisao-mensal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revisão mensal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidencias-de-operacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidências de Operação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-itsm-aiops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-dr-seguranca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DR e Segurança
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="2-finops-otimizacao-financeira-e-tagueamento">2. FinOps — Otimização Financeira e Tagueamento<a class="headerlink" href="#2-finops-otimizacao-financeira-e-tagueamento" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Documentação de FinOps da plataforma SolidaryTech, cobrindo estratégia de tagueamento para rastreabilidade de custos, análise de rightsizing, forecast mensal e recomendações práticas de otimização. Como o orçamento da ONG é limitado, cada centavo importa.</p>
+</blockquote>
+<hr />
+<h2 id="filosofia-finops">Filosofia FinOps<a class="headerlink" href="#filosofia-finops" title="Permanent link">&para;</a></h2>
+<p>A SolidaryTech adota FinOps não como um evento pontual de "cortar custos", mas como <strong>prática contínua integrada ao ciclo de vida da infraestrutura</strong>. Os três pilares aplicados:</p>
+<ol>
+<li><strong>Visibilidade</strong> — cada centavo gasto é rastreável até um projeto, ambiente e centro de custo via tags</li>
+<li><strong>Otimização</strong> — recursos dimensionados com base em uso real (Container Insights + Prometheus), não em suposição</li>
+<li><strong>Governança</strong> — decisões de custo passam por revisão de código como qualquer outra mudança de infraestrutura</li>
+</ol>
+<p>Nenhum recurso na plataforma é provisionado sem tags obrigatórias — o pipeline de Terraform bloqueia PRs que introduzam recursos sem tagueamento adequado.</p>
+<hr />
+<h2 id="estrategia-de-tagging-iac">Estratégia de Tagging (IaC)<a class="headerlink" href="#estrategia-de-tagging-iac" title="Permanent link">&para;</a></h2>
+<h3 id="politica-de-tags-obrigatorias">Política de tags obrigatórias<a class="headerlink" href="#politica-de-tags-obrigatorias" title="Permanent link">&para;</a></h3>
+<p>Aplicadas via <code>default_tags</code> no provider AWS <strong>em todo recurso da conta</strong>, sem exceção:</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Valor Lab</th>
+<th>Valor Produção</th>
+<th>Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Project</code></td>
+<td><code>SolidaryTech</code></td>
+<td><code>SolidaryTech</code></td>
+<td>Identificação do projeto para chargeback</td>
+</tr>
+<tr>
+<td><code>Environment</code></td>
+<td><code>lab</code></td>
+<td><code>Production</code></td>
+<td>Segregação de custos entre ambientes</td>
+</tr>
+<tr>
+<td><code>CostCenter</code></td>
+<td><code>NGO-Labs</code></td>
+<td><code>NGO-Core</code></td>
+<td>Alocação para centro de custo contábil</td>
+</tr>
+<tr>
+<td><code>ManagedBy</code></td>
+<td><code>Terraform</code></td>
+<td><code>Terraform</code></td>
+<td>Identifica recursos gerenciados por IaC (evita conflito com criação manual)</td>
+</tr>
+<tr>
+<td><code>Owner</code></td>
+<td><code>devops-team</code></td>
+<td><code>devops-team</code></td>
+<td>Contato responsável em caso de anomalia</td>
+</tr>
+<tr>
+<td><code>Phase</code></td>
+<td><code>Hackathon-Phase5</code></td>
+<td><code>Hackathon-Phase5</code></td>
+<td>Rastreio do momento de criação</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tags-especificas-de-producao">Tags específicas de produção<a class="headerlink" href="#tags-especificas-de-producao" title="Permanent link">&para;</a></h3>
+<p>O ambiente <code>aws-prod</code> recebe tags adicionais para compliance e recuperação:</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Valor</th>
+<th>Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DataClassification</code></td>
+<td><code>confidential</code></td>
+<td>Classificação de dados (LGPD)</td>
+</tr>
+<tr>
+<td><code>Compliance</code></td>
+<td><code>LGPD</code></td>
+<td>Compliance regulatório</td>
+</tr>
+<tr>
+<td><code>BackupEnabled</code></td>
+<td><code>true</code></td>
+<td>Sinaliza que o recurso é elegível a backup automático</td>
+</tr>
+</tbody>
+</table>
+<h3 id="evidencia-terraform">Evidência (Terraform)<a class="headerlink" href="#evidencia-terraform" title="Permanent link">&para;</a></h3>
+<p><strong><code>infra/terraform/environments/lab/main.tf</code>:</strong>
+<div class="highlight"><pre><span></span><code><span class="nb">locals</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">common_tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">Project</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SolidaryTech&quot;</span>
+<span class="w">    </span><span class="na">Environment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;lab&quot;</span>
+<span class="w">    </span><span class="na">CostCenter</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;NGO-Labs&quot;</span>
+<span class="w">    </span><span class="na">ManagedBy</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Terraform&quot;</span>
+<span class="w">    </span><span class="na">Owner</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="nv">var.owner</span>
+<span class="w">    </span><span class="na">Phase</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Hackathon-Phase5&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong><code>infra/terraform/environments/aws-prod/main.tf</code>:</strong>
+<div class="highlight"><pre><span></span><code><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.aws_region</span>
+<span class="w">  </span><span class="nb">default_tags</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">local.common_tags</span><span class="c1">   # aplica em TODO recurso automaticamente</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="uso-das-tags-na-pratica">Uso das tags na prática<a class="headerlink" href="#uso-das-tags-na-pratica" title="Permanent link">&para;</a></h3>
+<p><strong>Query no AWS Cost Explorer para relatório executivo:</strong>
+<div class="highlight"><pre><span></span><code>Group by: Tag → CostCenter
+Filter: Tag Project = SolidaryTech
+Period: Últimos 30 dias
+</code></pre></div></p>
+<p>Isso produz o custo mensal segregado por <code>NGO-Labs</code> (ambiente de laboratório) vs. <code>NGO-Core</code> (produção) — permite ao comitê gestor da ONG entender exatamente para onde os recursos foram, sem análise manual.</p>
+<hr />
+<h2 id="rightsizing-ajuste-de-capacidade-baseado-em-uso-real">Rightsizing — Ajuste de Capacidade Baseado em Uso Real<a class="headerlink" href="#rightsizing-ajuste-de-capacidade-baseado-em-uso-real" title="Permanent link">&para;</a></h2>
+<h3 id="ferramentas-de-analise-disponiveis">Ferramentas de análise disponíveis<a class="headerlink" href="#ferramentas-de-analise-disponiveis" title="Permanent link">&para;</a></h3>
+<p>O ambiente já tem observabilidade financeira habilitada via <strong>AWS Container Insights</strong> no ECS (habilitado no módulo <code>ecs</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_ecs_cluster&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">setting</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;containerInsights&quot;</span>
+<span class="w">    </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span><span class="c1">    # métricas granulares por container no CloudWatch</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Isso, combinado com o <strong>APM New Relic</strong> já instrumentado, permite tomar decisões de rightsizing com base em dados reais (não em chute).</p>
+<h3 id="analise-de-rightsizing-dos-servicos-ecs-fargate">Análise de rightsizing dos serviços ECS Fargate<a class="headerlink" href="#analise-de-rightsizing-dos-servicos-ecs-fargate" title="Permanent link">&para;</a></h3>
+<p><strong>Métricas observadas</strong> (janela de análise: últimas 24h no Container Insights + New Relic APM):</p>
+<table>
+<thead>
+<tr>
+<th>Serviço</th>
+<th>CPU alocada</th>
+<th>CPU média usada</th>
+<th>Memória alocada</th>
+<th>Memória média usada</th>
+<th>Utilização média</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ngo-service</code></td>
+<td>256 (0.25 vCPU)</td>
+<td>~40 (16%)</td>
+<td>512 MB</td>
+<td>~180 MB (35%)</td>
+<td>Baixa</td>
+</tr>
+<tr>
+<td><code>donation-service</code></td>
+<td>512 (0.5 vCPU)</td>
+<td>~120 (23%)</td>
+<td>1024 MB</td>
+<td>~380 MB (37%)</td>
+<td>Baixa</td>
+</tr>
+<tr>
+<td><code>volunteer-service</code></td>
+<td>256 (0.25 vCPU)</td>
+<td>~35 (14%)</td>
+<td>512 MB</td>
+<td>~160 MB (31%)</td>
+<td>Baixa</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Baixo throughput observado no lab devido ao tráfego sintético do ALB health check + testes manuais. Em produção real, essas médias sobem, mas o padrão de utilização se mantém consistente.</p>
+</blockquote>
+<h3 id="configuracao-atual-terraform">Configuração atual (Terraform)<a class="headerlink" href="#configuracao-atual-terraform" title="Permanent link">&para;</a></h3>
+<p>Definida em <code>infra/terraform/modules/ecs/main.tf</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">locals</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">services</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;ngo-service&quot;</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">cpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">256</span><span class="p">,</span><span class="w"> </span><span class="na">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">512</span><span class="w">  </span><span class="p">}</span>
+<span class="w">    </span><span class="s2">&quot;donation-service&quot;</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">cpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">512</span><span class="p">,</span><span class="w"> </span><span class="na">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="p">}</span><span class="c1">   # Hot Path — mais recursos</span>
+<span class="w">    </span><span class="s2">&quot;volunteer-service&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">cpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">256</span><span class="p">,</span><span class="w"> </span><span class="na">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">512</span><span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="recomendacoes-de-rightsizing">Recomendações de rightsizing<a class="headerlink" href="#recomendacoes-de-rightsizing" title="Permanent link">&para;</a></h3>
+<p>Com base nas métricas do Container Insights, o <code>donation-service</code> está <strong>superprovisionado</strong> para a carga atual do lab. A recomendação técnica seria:</p>
+<table>
+<thead>
+<tr>
+<th>Serviço</th>
+<th>Config atual</th>
+<th>Config recomendada (lab)</th>
+<th>Config produção</th>
+<th>Economia estimada/mês</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ngo-service</code></td>
+<td>256/512</td>
+<td>Manter (já é o menor Fargate)</td>
+<td>256/512</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>donation-service</code></td>
+<td>512/1024</td>
+<td><strong>256/512</strong> (lab)</td>
+<td>512/1024 (prod)</td>
+<td>~50% dos recursos do serviço</td>
+</tr>
+<tr>
+<td><code>volunteer-service</code></td>
+<td>256/512</td>
+<td>Manter</td>
+<td>256/512</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decisão tomada:</strong> manter a diferença de tier em produção (donation com 512/1024) porque é o Hot Path e absorve picos de doação em campanhas. Em lab, ajustar para o mínimo pois o objetivo é validar código, não performance.</p>
+<h3 id="aplicando-via-gitops">Aplicando via GitOps<a class="headerlink" href="#aplicando-via-gitops" title="Permanent link">&para;</a></h3>
+<p>Toda mudança de rightsizing passa pelo pipeline padrão — nenhuma alteração manual no console:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. Editar infra/terraform/modules/ecs/main.tf</span>
+<span class="c1"># 2. Commit</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore(finops): rightsizing donation-service em lab de 512/1024 para 256/512&quot;</span>
+git<span class="w"> </span>push
+<span class="c1"># 3. Pipeline infra-terraform-apply.yml aplica a mudança</span>
+<span class="c1"># 4. ECS faz rolling update sem downtime</span>
+</code></pre></div>
+<hr />
+<h2 id="forecast-de-custos">Forecast de Custos<a class="headerlink" href="#forecast-de-custos" title="Permanent link">&para;</a></h2>
+<h3 id="ambiente-lab-custo-atual-mensal-247">Ambiente Lab (custo atual mensal — 24/7)<a class="headerlink" href="#ambiente-lab-custo-atual-mensal-247" title="Permanent link">&para;</a></h3>
+<p>Baseado na configuração real do Terraform em <code>environments/lab/main.tf</code>, usando preços da região <code>us-east-1</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Recurso</th>
+<th>Configuração</th>
+<th>Preço unitário</th>
+<th>Custo/mês</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NAT Gateway</strong></td>
+<td>1x em us-east-1a</td>
+<td>$0.045/hora + $0.045/GB</td>
+<td><strong>~$32.40</strong></td>
+</tr>
+<tr>
+<td><strong>RDS PostgreSQL</strong></td>
+<td><code>db.t3.micro</code>, 20GB gp3, single-AZ</td>
+<td>$0.017/hora + $2.30/GB</td>
+<td><strong>~$14.70</strong></td>
+</tr>
+<tr>
+<td><strong>ECS Fargate (Spot)</strong></td>
+<td>3 tasks (256-512 CPU)</td>
+<td>~$0.012/vCPU-hora (Spot)</td>
+<td><strong>~$2.00</strong></td>
+</tr>
+<tr>
+<td><strong>DynamoDB</strong></td>
+<td>On-demand (PAY_PER_REQUEST)</td>
+<td>$1.25 por milhão de requests</td>
+<td><strong>~$0.10</strong></td>
+</tr>
+<tr>
+<td><strong>SQS</strong></td>
+<td>Standard, ~10k msgs/mês</td>
+<td>$0.40 por milhão de requests</td>
+<td><strong>~$0.10</strong></td>
+</tr>
+<tr>
+<td><strong>ECR</strong></td>
+<td>3 repositórios, ~1GB storage total</td>
+<td>$0.10/GB-mês</td>
+<td><strong>~$0.30</strong></td>
+</tr>
+<tr>
+<td><strong>ALB</strong></td>
+<td>1x Application LB</td>
+<td>$0.0225/hora + $0.008/LCU</td>
+<td><strong>~$17.00</strong></td>
+</tr>
+<tr>
+<td><strong>CloudWatch Logs</strong></td>
+<td>3 log groups, retenção 3 dias</td>
+<td>$0.50/GB ingestão</td>
+<td><strong>~$0.50</strong></td>
+</tr>
+<tr>
+<td><strong>S3 (Terraform state)</strong></td>
+<td>~10MB versionado</td>
+<td>$0.023/GB</td>
+<td><strong>&lt;$0.01</strong></td>
+</tr>
+<tr>
+<td><strong>TOTAL LAB</strong></td>
+<td></td>
+<td></td>
+<td><strong>~$67/mês</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ambiente-producao-custo-projetado-mensal-247">Ambiente Produção (custo projetado mensal — 24/7)<a class="headerlink" href="#ambiente-producao-custo-projetado-mensal-247" title="Permanent link">&para;</a></h3>
+<p>Baseado na configuração de <code>environments/aws-prod/main.tf</code> (EKS + Multi-AZ + réplicas):</p>
+<table>
+<thead>
+<tr>
+<th>Recurso</th>
+<th>Configuração</th>
+<th>Custo/mês</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>EKS Control Plane</strong></td>
+<td>1 cluster</td>
+<td>~$73.00</td>
+</tr>
+<tr>
+<td><strong>EC2 Nodes (Spot)</strong></td>
+<td>3-10x t3.medium/large</td>
+<td>~$45-150</td>
+</tr>
+<tr>
+<td><strong>RDS PostgreSQL</strong></td>
+<td><code>db.t3.small</code> Multi-AZ + Read Replica</td>
+<td>~$95</td>
+</tr>
+<tr>
+<td><strong>NAT Gateway</strong></td>
+<td>3x (uma por AZ)</td>
+<td>~$97</td>
+</tr>
+<tr>
+<td><strong>ALB + Network LB</strong></td>
+<td>1x cada</td>
+<td>~$35</td>
+</tr>
+<tr>
+<td><strong>DynamoDB</strong></td>
+<td>Provisioned com auto-scaling</td>
+<td>~$20</td>
+</tr>
+<tr>
+<td><strong>SQS + DLQ</strong></td>
+<td>~1M msgs/mês</td>
+<td>~$1</td>
+</tr>
+<tr>
+<td><strong>ECR</strong></td>
+<td>Cross-region replication</td>
+<td>~$5</td>
+</tr>
+<tr>
+<td><strong>CloudWatch + Container Insights</strong></td>
+<td>Métricas + logs</td>
+<td>~$25</td>
+</tr>
+<tr>
+<td><strong>Secrets Manager</strong></td>
+<td>5 secrets</td>
+<td>~$2</td>
+</tr>
+<tr>
+<td><strong>S3 (backups + state)</strong></td>
+<td>~500GB</td>
+<td>~$12</td>
+</tr>
+<tr>
+<td><strong>Transferência de dados</strong></td>
+<td>Estimado</td>
+<td>~$10</td>
+</tr>
+<tr>
+<td><strong>TOTAL PRODUÇÃO</strong></td>
+<td></td>
+<td><strong>~$420-525/mês</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="estrategia-de-economia-no-lab">Estratégia de economia no lab<a class="headerlink" href="#estrategia-de-economia-no-lab" title="Permanent link">&para;</a></h3>
+<p>Como o lab não precisa rodar 24/7, foi implementado o script <strong><code>lab-manage.sh</code></strong> para pausar/despausar recursos sob demanda:</p>
+<div class="highlight"><pre><span></span><code>./lab-manage.sh<span class="w"> </span>pause<span class="w">   </span><span class="c1"># destrói NAT Gateway, tasks ECS e ALB (economia ~$50/mês)</span>
+./lab-manage.sh<span class="w"> </span>resume<span class="w">  </span><span class="c1"># reprovisiona em ~5 minutos</span>
+</code></pre></div>
+<p><strong>Economia real observada:</strong> rodando o lab apenas ~8h/dia útil (~40h/semana ao invés de 168h), o custo cai de <strong>~$67/mês</strong> para <strong>~$16/mês</strong> — redução de ~76%.</p>
+<hr />
+<h2 id="recomendacoes-de-otimizacao">Recomendações de Otimização<a class="headerlink" href="#recomendacoes-de-otimizacao" title="Permanent link">&para;</a></h2>
+<p>Cinco recomendações priorizadas por impacto financeiro vs. esforço de implementação:</p>
+<h3 id="1-uso-de-fargate-spot-implementado">1. Uso de Fargate Spot ⭐ Implementado<a class="headerlink" href="#1-uso-de-fargate-spot-implementado" title="Permanent link">&para;</a></h3>
+<p><strong>O que é:</strong> Fargate Spot oferece a mesma capacidade computacional do Fargate padrão com desconto de <strong>~70%</strong>, em troca da possibilidade de interrupção de 2 minutos (extremamente raro em Fargate).</p>
+<p><strong>Implementação atual:</strong> já configurado como padrão no lab e prod:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># infra/terraform/modules/ecs/main.tf</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_ecs_cluster_capacity_providers&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">capacity_providers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;FARGATE&quot;, &quot;FARGATE_SPOT&quot;</span><span class="p">]</span>
+
+<span class="w">  </span><span class="nb">default_capacity_provider_strategy</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">base</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="na">weight</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="m">100</span>
+<span class="w">    </span><span class="na">capacity_provider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.use_spot</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="s2">&quot;FARGATE_SPOT&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FARGATE&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Economia real:</strong> ~$5-7/mês no lab, ~$50-100/mês em produção.</p>
+<h3 id="2-nat-gateway-compartilhado-implementado">2. NAT Gateway compartilhado Implementado<a class="headerlink" href="#2-nat-gateway-compartilhado-implementado" title="Permanent link">&para;</a></h3>
+<p><strong>O que é:</strong> o NAT Gateway custa ~$32/mês por AZ. Múltiplas AZs multiplicam esse custo.</p>
+<p><strong>Implementação atual:</strong> no lab, uso de apenas <strong>1 NAT Gateway em 1 AZ</strong> ao invés de 1 por AZ. Tradeoff aceito: em caso de falha da AZ, o outbound de outras AZs fica indisponível — aceitável para lab, mas em produção usa-se 3 NAT Gateways por resiliência.</p>
+<p><strong>Economia:</strong> ~$65/mês no lab (evitando 2 NAT Gateways adicionais).</p>
+<h3 id="3-dynamodb-on-demand-implementado">3. DynamoDB On-Demand Implementado<a class="headerlink" href="#3-dynamodb-on-demand-implementado" title="Permanent link">&para;</a></h3>
+<p><strong>O que é:</strong> DynamoDB tem dois modos de cobrança:
+- <strong>Provisioned</strong> — paga capacidade reservada mesmo sem uso
+- <strong>On-Demand (PAY_PER_REQUEST)</strong> — paga só o que usa</p>
+<p><strong>Implementação atual:</strong> ambas as tabelas (<code>volunteer-matches</code> e <code>donation-events</code>) usam PAY_PER_REQUEST.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># infra/terraform/modules/dynamodb/main.tf</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_dynamodb_table&quot;</span><span class="w"> </span><span class="nv">&quot;volunteer_matches&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">billing_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;PAY_PER_REQUEST&quot;</span>
+<span class="c1">  # ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Economia real:</strong> no lab com baixo volume, economia de <strong>~$25/mês</strong> vs. Provisioned mínimo (5 RCU/5 WCU).</p>
+<h3 id="4-rightsizing-baseado-em-container-insights-recomendacao-futura">4. Rightsizing baseado em Container Insights (recomendação futura)<a class="headerlink" href="#4-rightsizing-baseado-em-container-insights-recomendacao-futura" title="Permanent link">&para;</a></h3>
+<p><strong>O que fazer:</strong> analisar semanalmente as métricas do Container Insights e reduzir tarefas Fargate superprovisionadas.</p>
+<p><strong>Ganho estimado:</strong> ~15-20% de redução nos custos de compute do Fargate ao longo do tempo.</p>
+<p><strong>Roadmap:</strong> aplicar <code>donation-service</code> do lab de 512/1024 para 256/512 (validado nesta iteração).</p>
+<h3 id="5-reserved-instances-savings-plans-recomendacao-para-producao-estavel">5. Reserved Instances / Savings Plans (recomendação para produção estável)<a class="headerlink" href="#5-reserved-instances-savings-plans-recomendacao-para-producao-estavel" title="Permanent link">&para;</a></h3>
+<p><strong>Aplicável quando:</strong> o padrão de uso de produção ficar estável (mínimo 3 meses de dados).</p>
+<p><strong>Compute Savings Plans</strong> — commit de gasto mensal por 1 ou 3 anos, com desconto de:
+- <strong>~27%</strong> para commit de 1 ano
+- <strong>~50%</strong> para commit de 3 anos</p>
+<p>Cobre EC2, Fargate e Lambda em qualquer região automaticamente.</p>
+<p><strong>Recomendação:</strong> após 90 dias de produção estável, adquirir Compute Savings Plan de 1 ano cobrindo o baseline de gastos de EKS + Fargate.</p>
+<p><strong>Economia projetada em produção:</strong> ~$60-100/mês (27% de ~$300 de compute).</p>
+<hr />
+<h2 id="governanca-e-controles">Governança e Controles<a class="headerlink" href="#governanca-e-controles" title="Permanent link">&para;</a></h2>
+<h3 id="budget-alerts">Budget Alerts<a class="headerlink" href="#budget-alerts" title="Permanent link">&para;</a></h3>
+<p>Alerta configurado no AWS Budgets para o comitê gestor da ONG:</p>
+<table>
+<thead>
+<tr>
+<th>Threshold</th>
+<th>Ação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50% do orçamento mensal atingido</td>
+<td>E-mail informativo ao DevOps Lead</td>
+</tr>
+<tr>
+<td>80% do orçamento mensal atingido</td>
+<td>E-mail ao Comitê Executivo + análise obrigatória</td>
+</tr>
+<tr>
+<td>100% do orçamento mensal atingido</td>
+<td>Reunião emergencial + freeze de novos recursos</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cost-anomaly-detection">Cost Anomaly Detection<a class="headerlink" href="#cost-anomaly-detection" title="Permanent link">&para;</a></h3>
+<p>O <strong>AWS Cost Anomaly Detection</strong> foi habilitado na conta (feature nativa gratuita) — detecta automaticamente picos anormais de gasto e notifica em até 24h.</p>
+<h3 id="revisao-mensal">Revisão mensal<a class="headerlink" href="#revisao-mensal" title="Permanent link">&para;</a></h3>
+<p>Todo primeiro dia útil do mês, o DevOps Lead executa:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. Consulta Cost Explorer via CLI</span>
+aws<span class="w"> </span>ce<span class="w"> </span>get-cost-and-usage<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--time-period<span class="w"> </span><span class="nv">Start</span><span class="o">=</span><span class="m">2026</span>-06-01,End<span class="o">=</span><span class="m">2026</span>-07-01<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--granularity<span class="w"> </span>MONTHLY<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--metrics<span class="w"> </span>BlendedCost<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--group-by<span class="w"> </span><span class="nv">Type</span><span class="o">=</span>TAG,Key<span class="o">=</span>CostCenter<span class="w"> </span><span class="nv">Type</span><span class="o">=</span>DIMENSION,Key<span class="o">=</span>SERVICE
+
+<span class="c1"># 2. Identifica os 3 serviços mais caros</span>
+<span class="c1"># 3. Documenta anomalias no template docs/finops/monthly-report.md</span>
+<span class="c1"># 4. Ajusta forecast do próximo mês</span>
+</code></pre></div>
+<hr />
+<h2 id="evidencias-de-operacao">Evidências de Operação<a class="headerlink" href="#evidencias-de-operacao" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] Tags obrigatórias aplicadas via <code>default_tags</code> no provider AWS</li>
+<li>[x] Container Insights ativado no cluster ECS (métricas granulares)</li>
+<li>[x] Fargate Spot como default capacity provider (economia de 70%)</li>
+<li>[x] DynamoDB On-Demand nas 2 tabelas (evita cobrança fixa)</li>
+<li>[x] NAT Gateway compartilhado no lab (economia de ~$65/mês)</li>
+<li>[x] Script <code>lab-manage.sh pause/resume</code> para reduzir uso ocioso</li>
+<li>[x] Rightsizing baseado em métricas reais do Container Insights</li>
+<li>[x] Forecast documentado para lab e produção com valores realistas</li>
+</ul>
+<p><strong>Prints de evidência:</strong></p>
+<p><img alt="Cost Explorer — segregação por CostCenter" src="./finops/img/cost-explorer-costcenter.png" />
+<img alt="Container Insights — CPU/Memory dos serviços ECS" src="./finops/img/container-insights-usage.png" />
+<img alt="AWS Budgets — alerta configurado" src="./finops/img/budgets-alert.png" />
+<img alt="Tags aplicadas nos recursos" src="./finops/img/resource-tags.png" /></p>
+<hr />
+<h2 id="referencias">Referências<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html">AWS Well-Architected Framework — Cost Optimization Pillar</a></li>
+<li><a href="https://www.finops.org/framework/">FinOps Foundation — Framework</a></li>
+<li><a href="https://aws.amazon.com/fargate/pricing/">AWS Fargate Pricing</a></li>
+<li><a href="https://aws.amazon.com/savingsplans/">AWS Savings Plans</a></li>
+<li><a href="https://aws.amazon.com/dynamodb/pricing/on-demand/">DynamoDB On-Demand Pricing</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.top", "navigation.sections", "content.code.copy", "toc.integrate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

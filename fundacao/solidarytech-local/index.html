@@ -1,0 +1,2014 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)">
+      
+      
+        <meta name="author" content="Juliano da Silva Lopes">
+      
+      
+      
+        <link rel="prev" href="../docker/">
+      
+      
+        <link rel="next" href="../lab-automatizado/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Execução Local (Docker Compose) - SolidaryTech — Hackathon Fase 5</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#solidarytech-guia-de-execucao-local-com-docker-compose" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-header__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolidaryTech — Hackathon Fase 5
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Execução Local (Docker Compose)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cronograma/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cronograma
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../00-fundacao-devops/" class="md-tabs__link">
+          
+  
+  
+  Fundação DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../01-sre/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../02-finops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FinOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../03-itsm-aiops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ITSM e AIOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../04-dr-seguranca/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DR e Segurança
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-nav__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    SolidaryTech — Hackathon Fase 5
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundação DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fundação DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-fundacao-devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../terraform-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containerização (Docker)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral-da-arquitetura-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visão Geral da Arquitetura Local
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-1-pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 1 — Pré-requisitos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 1 — Pré-requisitos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-instalar-o-docker-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 — Instalar o Docker Desktop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-instalar-o-go-apenas-para-o-passo-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 — Instalar o Go (apenas para o Passo 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-2-clonar-o-projeto-e-entender-a-estrutura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 2 — Clonar o projeto e entender a estrutura
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 2 — Clonar o projeto e entender a estrutura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-clonar-o-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 — Clonar o repositório
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-estrutura-esperada-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 — Estrutura esperada do projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-3-gerar-o-arquivo-gosum-donation-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 3 — Gerar o arquivo go.sum (donation-service)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-4-configurar-variaveis-de-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 4 — Configurar variáveis de ambiente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 4 — Configurar variáveis de ambiente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-criar-o-arquivo-env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 — Criar o arquivo .env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-ajuste-necessario-no-volunteer-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 — Ajuste necessário no volunteer-service
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-5-criar-o-docker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 5 — Criar o docker-compose.yml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-6-subir-o-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 6 — Subir o ambiente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 6 — Subir o ambiente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-primeiro-build-e-start-pode-levar-alguns-minutos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 — Primeiro build e start (pode levar alguns minutos)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-rodar-em-background-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 — Rodar em background (opcional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-nas-proximas-vezes-sem-rebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 — Nas próximas vezes (sem rebuild)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-7-validar-e-testar-os-servicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 7 — Validar e testar os serviços
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 7 — Validar e testar os serviços">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-verificar-se-todos-os-containers-estao-saudaveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 — Verificar se todos os containers estão saudáveis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-testar-os-health-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 — Testar os health checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-testar-o-fluxo-completo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 — Testar o fluxo completo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-conectar-ao-banco-de-dados-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 — Conectar ao banco de dados (opcional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-inspecionar-o-localstack-opcional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 — Inspecionar o LocalStack (opcional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-problemas-comuns-e-solucoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 — Problemas comuns e soluções
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passo-8-encerrar-o-ambiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passo 8 — Encerrar o ambiente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passo 8 — Encerrar o ambiente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-parar-os-containers-mantem-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 — Parar os containers (mantém dados)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-parar-e-remover-todos-os-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 — Parar e remover todos os dados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-rebuild-apos-mudancas-no-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 — Rebuild após mudanças no código
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-remover-imagens-locais-limpeza-completa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 — Remover imagens locais (limpeza completa)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencia-rapida-de-comandos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referência rápida de comandos
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab-automatizado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Automatizado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-finops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-itsm-aiops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-dr-seguranca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DR e Segurança
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="solidarytech-guia-de-execucao-local-com-docker-compose">SolidaryTech — Guia de Execução Local com Docker Compose<a class="headerlink" href="#solidarytech-guia-de-execucao-local-com-docker-compose" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Este guia detalha como qualquer pessoa, independente do sistema operacional, pode rodar a plataforma SolidaryTech completa em sua máquina usando Docker Compose — sem precisar instalar Go, Python, PostgreSQL ou qualquer outra dependência manualmente.</p>
+</blockquote>
+<hr />
+<h2 id="indice">Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#passo-1--pré-requisitos">Pré-requisitos</a></li>
+<li><a href="#passo-2--clonar-o-projeto-e-entender-a-estrutura">Clonar o projeto e entender a estrutura</a></li>
+<li><a href="#passo-3--gerar-o-arquivo-gosum-donation-service">Gerar o arquivo go.sum</a></li>
+<li><a href="#passo-4--configurar-variáveis-de-ambiente">Configurar variáveis de ambiente</a></li>
+<li><a href="#passo-5--criar-o-docker-composeyml">Criar o docker-compose.yml</a></li>
+<li><a href="#passo-6--subir-o-ambiente">Subir o ambiente</a></li>
+<li><a href="#passo-7--validar-e-testar-os-serviços">Validar e testar os serviços</a></li>
+<li><a href="#passo-8--encerrar-o-ambiente">Encerrar o ambiente</a></li>
+</ol>
+<hr />
+<h2 id="visao-geral-da-arquitetura-local">Visão Geral da Arquitetura Local<a class="headerlink" href="#visao-geral-da-arquitetura-local" title="Permanent link">&para;</a></h2>
+<p>Antes de começar, entenda o que vai rodar na sua máquina:</p>
+<div class="highlight"><pre><span></span><code>┌───────────────────────────────────────────────────────────┐
+│                   Docker Compose (local)                  │
+│                                                           │
+│  ┌───────────────┐  ┌──────────────────┐  ┌─────────────┐ │
+│  │  ngo-service  │  │ donation-service │  │ volunteer-  │ │
+│  │  Python/Flask │  │      Go          │  │   service   │ │
+│  │  porta: 8081  │  │  porta: 8082     │  │ Python/Flask│ │
+│  └──────┬────────┘  └───────┬──────────┘  │ porta: 8083 │ │
+│         │                   │             └──────┬──────┘ │
+│         │                   │                    │        │
+│  ┌──────▼───────────────────▼──┐  ┌─────────────▼──────┐  │
+│  │   PostgreSQL 15             │  │    LocalStack      │  │
+│  │   porta: 5432               │  │    porta: 4566     │  │
+│  │   - banco: ngo_db           │  │    - DynamoDB      │  │
+│  │   - banco: donation_db      │  │    - SQS           │  │
+│  └─────────────────────────────┘  └────────────────────┘  │
+└───────────────────────────────────────────────────────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Serviço</th>
+<th>Tecnologia</th>
+<th>Banco de dados</th>
+<th>Porta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ngo-service</code></td>
+<td>Python / Flask</td>
+<td>PostgreSQL (<code>ngo_db</code>)</td>
+<td>8081</td>
+</tr>
+<tr>
+<td><code>donation-service</code></td>
+<td>Go</td>
+<td>PostgreSQL (<code>donation_db</code>) + SQS</td>
+<td>8082</td>
+</tr>
+<tr>
+<td><code>volunteer-service</code></td>
+<td>Python / Flask</td>
+<td>DynamoDB (LocalStack)</td>
+<td>8083</td>
+</tr>
+<tr>
+<td><code>postgres</code></td>
+<td>PostgreSQL 15</td>
+<td>—</td>
+<td>5432</td>
+</tr>
+<tr>
+<td><code>localstack</code></td>
+<td>LocalStack 3</td>
+<td>—</td>
+<td>4566</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>LocalStack</strong> é uma ferramenta que simula serviços AWS (DynamoDB, SQS) localmente, sem precisar de conta AWS nem gerar custos.</p>
+</blockquote>
+<hr />
+<h2 id="passo-1-pre-requisitos">Passo 1 — Pré-requisitos<a class="headerlink" href="#passo-1-pre-requisitos" title="Permanent link">&para;</a></h2>
+<p>Você precisa ter instalado apenas duas ferramentas: <strong>Docker</strong> e <strong>Go</strong> (somente para gerar um arquivo de lock). Nada mais.</p>
+<h3 id="11-instalar-o-docker-desktop">1.1 — Instalar o Docker Desktop<a class="headerlink" href="#11-instalar-o-docker-desktop" title="Permanent link">&para;</a></h3>
+<p>O Docker Desktop inclui tanto o <code>docker</code> quanto o <code>docker compose</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Sistema Operacional</th>
+<th>Link de instalação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>macOS</strong> (Intel ou Apple Silicon)</td>
+<td>https://docs.docker.com/desktop/install/mac-install/</td>
+</tr>
+<tr>
+<td><strong>Windows</strong> (WSL2 recomendado)</td>
+<td>https://docs.docker.com/desktop/install/windows-install/</td>
+</tr>
+<tr>
+<td><strong>Linux (Ubuntu/Debian)</strong></td>
+<td>https://docs.docker.com/desktop/install/linux-install/</td>
+</tr>
+</tbody>
+</table>
+<p>Após instalar, abra o <strong>Docker Desktop</strong> e aguarde o ícone da baleia ficar verde na barra de tarefas/menu.</p>
+<p><strong>Verificar se funcionou:</strong></p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>--version
+<span class="c1"># Esperado: Docker version 25.x.x ou superior</span>
+
+docker<span class="w"> </span>compose<span class="w"> </span>version
+<span class="c1"># Esperado: Docker Compose version v2.x.x ou superior</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Windows:</strong> certifique-se de usar o <strong>WSL2</strong> como backend (configuração padrão do Docker Desktop). Todos os comandos a seguir devem ser executados no terminal do WSL2 (Ubuntu), não no PowerShell.</p>
+</blockquote>
+<h3 id="12-instalar-o-go-apenas-para-o-passo-3">1.2 — Instalar o Go (apenas para o Passo 3)<a class="headerlink" href="#12-instalar-o-go-apenas-para-o-passo-3" title="Permanent link">&para;</a></h3>
+<p>O Go é necessário apenas para gerar o arquivo <code>go.sum</code> do <code>donation-service</code>. Após isso, não é mais necessário — o Docker cuida de tudo.</p>
+<table>
+<thead>
+<tr>
+<th>Sistema Operacional</th>
+<th>Comando</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>macOS</strong></td>
+<td><code>brew install go</code> (requer <a href="https://brew.sh">Homebrew</a>)</td>
+</tr>
+<tr>
+<td><strong>Linux</strong></td>
+<td><code>sudo apt install golang-go</code> (Ubuntu/Debian)</td>
+</tr>
+<tr>
+<td><strong>Windows</strong></td>
+<td>Baixe o instalador em https://go.dev/dl/</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verificar se funcionou:</strong></p>
+<div class="highlight"><pre><span></span><code>go<span class="w"> </span>version
+<span class="c1"># Esperado: go version go1.21.x ou superior</span>
+</code></pre></div>
+<hr />
+<h2 id="passo-2-clonar-o-projeto-e-entender-a-estrutura">Passo 2 — Clonar o projeto e entender a estrutura<a class="headerlink" href="#passo-2-clonar-o-projeto-e-entender-a-estrutura" title="Permanent link">&para;</a></h2>
+<h3 id="21-clonar-o-repositorio">2.1 — Clonar o repositório<a class="headerlink" href="#21-clonar-o-repositorio" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sua-org/solidarytech.git
+<span class="nb">cd</span><span class="w"> </span>solidarytech
+</code></pre></div>
+<h3 id="22-estrutura-esperada-do-projeto">2.2 — Estrutura esperada do projeto<a class="headerlink" href="#22-estrutura-esperada-do-projeto" title="Permanent link">&para;</a></h3>
+<p>Após clonar, a estrutura de pastas deve ser exatamente esta:</p>
+<div class="highlight"><pre><span></span><code>solidarytech/
+│
+├── ngo-service/
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   ├── .dockerignore
+│   └── db/
+│       └── init.sql          ← Script SQL que cria a tabela `ngos`
+│
+├── donation-service/
+│   ├── main.go
+│   ├── go.mod
+│   ├── go.sum                ← Será gerado no Passo 3 (pode não existir ainda)
+│   ├── Dockerfile
+│   ├── .dockerignore
+│   └── db/
+│       └── init.sql          ← Script SQL que cria a tabela `donations`
+│
+├── volunteer-service/
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   ├── .dockerignore
+│   └── db/                   ← (DynamoDB não usa SQL; tabela criada via CLI)
+│
+├── docker-compose.yml        ← Será criado no Passo 5
+└── .env                      ← Será criado no Passo 4
+</code></pre></div>
+<blockquote>
+<p>Se alguma pasta ou arquivo estiver faltando, revise o clone antes de continuar.</p>
+</blockquote>
+<hr />
+<h2 id="passo-3-gerar-o-arquivo-gosum-donation-service">Passo 3 — Gerar o arquivo <code>go.sum</code> (donation-service)<a class="headerlink" href="#passo-3-gerar-o-arquivo-gosum-donation-service" title="Permanent link">&para;</a></h2>
+<p>O <code>go.sum</code> é o arquivo de lock do Go — ele garante que as dependências baixadas são exatamente as esperadas (verificação de integridade). Ele precisa ser gerado uma única vez localmente.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Entre na pasta do donation-service</span>
+<span class="nb">cd</span><span class="w"> </span>donation-service
+
+<span class="c1"># Gera/atualiza o go.sum com base no go.mod</span>
+go<span class="w"> </span>mod<span class="w"> </span>tidy
+
+<span class="c1"># Volte para a raiz do projeto</span>
+<span class="nb">cd</span><span class="w"> </span>..
+</code></pre></div>
+<p><strong>Como confirmar que funcionou:</strong></p>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>donation-service/go.sum
+<span class="c1"># Deve exibir: donation-service/go.sum</span>
+</code></pre></div>
+<blockquote>
+<p>✅ Após esse passo, o <code>go.sum</code> pode (e deve) ser commitado no repositório para que outros membros do time não precisem repeti-lo.</p>
+</blockquote>
+<hr />
+<h2 id="passo-4-configurar-variaveis-de-ambiente">Passo 4 — Configurar variáveis de ambiente<a class="headerlink" href="#passo-4-configurar-variaveis-de-ambiente" title="Permanent link">&para;</a></h2>
+<p>As variáveis de ambiente controlam como cada serviço se conecta aos bancos de dados e serviços AWS simulados. Para o ambiente local, criaremos um único arquivo <code>.env</code> na raiz do projeto.</p>
+<h3 id="41-criar-o-arquivo-env">4.1 — Criar o arquivo <code>.env</code><a class="headerlink" href="#41-criar-o-arquivo-env" title="Permanent link">&para;</a></h3>
+<p>Na <strong>raiz do projeto</strong> (<code>solidarytech/</code>), crie o arquivo <code>.env</code> com o conteúdo abaixo:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Execute este comando para criar o arquivo automaticamente</span>
+cat<span class="w"> </span>&gt;<span class="w"> </span>.env<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+<span class="s"># ─── PostgreSQL ────────────────────────────────────────────────</span>
+<span class="s">POSTGRES_USER=solidary</span>
+<span class="s">POSTGRES_PASSWORD=solidary123</span>
+<span class="s">POSTGRES_DB=postgres</span>
+
+<span class="s"># ─── ngo-service ───────────────────────────────────────────────</span>
+<span class="s">NGO_DATABASE_URL=postgres://solidary:solidary123@postgres:5432/ngo_db</span>
+
+<span class="s"># ─── donation-service ──────────────────────────────────────────</span>
+<span class="s">DONATION_DATABASE_URL=postgres://solidary:solidary123@postgres:5432/donation_db</span>
+<span class="s">AWS_SQS_URL=http://localstack:4566/000000000000/solidary-donations</span>
+
+<span class="s"># ─── volunteer-service ─────────────────────────────────────────</span>
+<span class="s">AWS_DYNAMODB_TABLE=SolidaryTechVolunteers</span>
+
+<span class="s"># ─── AWS (simulado pelo LocalStack) ────────────────────────────</span>
+<span class="s">AWS_REGION=us-east-1</span>
+<span class="s">AWS_ACCESS_KEY_ID=test</span>
+<span class="s">AWS_SECRET_ACCESS_KEY=test</span>
+<span class="s">AWS_ENDPOINT_URL=http://localstack:4566</span>
+<span class="s">EOF</span>
+</code></pre></div>
+<p>Ou, se preferir, crie o arquivo manualmente com qualquer editor de texto (VS Code, Nano, Notepad++, etc.) e cole o conteúdo acima.</p>
+<blockquote>
+<p>⚠️ <strong>Importante:</strong> o arquivo <code>.env</code> nunca deve ser enviado ao repositório. Ele já está listado no <code>.gitignore</code> por padrão. As credenciais acima (<code>solidary123</code>, <code>test</code>) são apenas para uso local — <strong>nunca as utilize em produção</strong>.</p>
+</blockquote>
+<h3 id="42-ajuste-necessario-no-volunteer-service">4.2 — Ajuste necessário no <code>volunteer-service</code><a class="headerlink" href="#42-ajuste-necessario-no-volunteer-service" title="Permanent link">&para;</a></h3>
+<p>O <code>boto3</code> (SDK Python da AWS) não respeita a variável <code>AWS_ENDPOINT_URL</code> automaticamente em todas as versões. É necessário ajustar o <code>volunteer-service/app.py</code> para passar o endpoint do LocalStack explicitamente:</p>
+<p>Localize este trecho no <code>volunteer-service/app.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Trecho ORIGINAL (linha ~20)</span>
+<span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s2">&quot;dynamodb&quot;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">AWS_REGION</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">DYNAMODB_TABLE</span><span class="p">)</span>
+</code></pre></div>
+<p>Substitua por:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Trecho AJUSTADO para suporte ao LocalStack</span>
+<span class="n">endpoint_url</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;AWS_ENDPOINT_URL&quot;</span><span class="p">)</span>  <span class="c1"># None em produção, URL do LocalStack em dev</span>
+
+<span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span>
+    <span class="s2">&quot;dynamodb&quot;</span><span class="p">,</span>
+    <span class="n">region_name</span><span class="o">=</span><span class="n">AWS_REGION</span><span class="p">,</span>
+    <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span>  <span class="c1"># Se None, boto3 conecta nos endpoints reais da AWS</span>
+<span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">DYNAMODB_TABLE</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>✅ Esse ajuste é seguro para produção: quando <code>AWS_ENDPOINT_URL</code> não está definida (ambiente AWS real), o <code>boto3</code> conecta normalmente nos endpoints reais da AWS.</p>
+</blockquote>
+<hr />
+<h2 id="passo-5-criar-o-docker-composeyml">Passo 5 — Criar o <code>docker-compose.yml</code><a class="headerlink" href="#passo-5-criar-o-docker-composeyml" title="Permanent link">&para;</a></h2>
+<p>Na <strong>raiz do projeto</strong> (<code>solidarytech/</code>), crie o arquivo <code>docker-compose.yml</code> com o conteúdo abaixo:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker-compose.yml</span>
+<span class="c1"># Orquestra todos os serviços da plataforma SolidaryTech para execução local.</span>
+
+<span class="nt">services</span><span class="p">:</span>
+
+<span class="w">  </span><span class="c1"># ─────────────────────────────────────────────────────────────────</span>
+<span class="w">  </span><span class="c1"># INFRAESTRUTURA</span>
+<span class="w">  </span><span class="c1"># ─────────────────────────────────────────────────────────────────</span>
+
+<span class="w">  </span><span class="nt">postgres</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15-alpine</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidary-postgres</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${POSTGRES_USER}</span>
+<span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${POSTGRES_PASSWORD}</span>
+<span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${POSTGRES_DB}</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;5432:5432&quot;</span><span class="w">                  </span><span class="c1"># Permite acesso externo (ex: DBeaver, TablePlus)</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres_data:/var/lib/postgresql/data</span><span class="w">   </span><span class="c1"># Dados persistem entre restarts</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD-SHELL&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;pg_isready</span><span class="nv"> </span><span class="s">-U</span><span class="nv"> </span><span class="s">${POSTGRES_USER}&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+<span class="w">  </span><span class="nt">localstack</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localstack/localstack:3</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidary-localstack</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;4566:4566&quot;</span><span class="w">                  </span><span class="c1"># Endpoint único para todos os serviços AWS simulados</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">SERVICES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dynamodb,sqs</span>
+<span class="w">      </span><span class="nt">DEFAULT_REGION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_REGION}</span>
+<span class="w">      </span><span class="nt">PERSISTENCE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">                 </span><span class="c1"># Mantém dados entre restarts do container</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localstack_data:/var/lib/localstack</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD-SHELL&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;curl</span><span class="nv"> </span><span class="s">-sf</span><span class="nv"> </span><span class="s">http://localhost:4566/_localstack/health</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">grep</span><span class="nv"> </span><span class="s">-q</span><span class="nv"> </span><span class="s">&#39;\&quot;dynamodb\&quot;:</span><span class="nv"> </span><span class="s">\&quot;running\&quot;&#39;&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20s</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+<span class="w">  </span><span class="c1"># ─────────────────────────────────────────────────────────────────</span>
+<span class="w">  </span><span class="c1"># INICIALIZAÇÃO DOS BANCOS DE DADOS</span>
+<span class="w">  </span><span class="c1"># Rodam uma única vez para criar tabelas e dados de seed.</span>
+<span class="w">  </span><span class="c1"># ─────────────────────────────────────────────────────────────────</span>
+
+<span class="w">  </span><span class="nt">db-init</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15-alpine</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidary-db-init</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">postgres</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">PGPASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${POSTGRES_PASSWORD}</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./ngo-service/db/init.sql:/docker-entrypoint-initdb.d/01-init-ngo.sql:ro</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./donation-service/db/init.sql:/docker-entrypoint-initdb.d/02-init-donation.sql:ro</span>
+<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">      </span><span class="no">sh -c &quot;</span>
+<span class="w">        </span><span class="no">echo &#39;→ Criando banco ngo_db...&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">psql -h postgres -U ${POSTGRES_USER} -d postgres -c &#39;CREATE DATABASE ngo_db;&#39; || echo &#39;ngo_db já existe.&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">echo &#39;→ Criando banco donation_db...&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">psql -h postgres -U ${POSTGRES_USER} -d postgres -c &#39;CREATE DATABASE donation_db;&#39; || echo &#39;donation_db já existe.&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">echo &#39;→ Aplicando schema ngo-service...&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">psql -h postgres -U ${POSTGRES_USER} -d ngo_db -f /docker-entrypoint-initdb.d/01-init-ngo.sql &amp;&amp;</span>
+<span class="w">        </span><span class="no">echo &#39;→ Aplicando schema donation-service...&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">psql -h postgres -U ${POSTGRES_USER} -d donation_db -f /docker-entrypoint-initdb.d/02-init-donation.sql &amp;&amp;</span>
+<span class="w">        </span><span class="no">echo &#39;✓ Bancos de dados inicializados com sucesso.&#39;</span>
+<span class="w">      </span><span class="no">&quot;</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on-failure</span>
+
+<span class="w">  </span><span class="nt">aws-init</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amazon/aws-cli:latest</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidary-aws-init</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">localstack</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">AWS_ACCESS_KEY_ID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_ACCESS_KEY_ID}</span>
+<span class="w">      </span><span class="nt">AWS_SECRET_ACCESS_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_SECRET_ACCESS_KEY}</span>
+<span class="w">      </span><span class="nt">AWS_DEFAULT_REGION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_REGION}</span>
+<span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">      </span><span class="no">sh -c &quot;</span>
+<span class="w">        </span><span class="no">echo &#39;→ Criando tabela DynamoDB...&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">aws --endpoint-url=http://localstack:4566 dynamodb create-table \</span>
+<span class="w">          </span><span class="no">--table-name ${AWS_DYNAMODB_TABLE} \</span>
+<span class="w">          </span><span class="no">--attribute-definitions AttributeName=volunteer_id,AttributeType=S \</span>
+<span class="w">          </span><span class="no">--key-schema AttributeName=volunteer_id,KeyType=HASH \</span>
+<span class="w">          </span><span class="no">--billing-mode PAY_PER_REQUEST || echo &#39;Tabela já existe.&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">echo &#39;→ Criando fila SQS...&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">aws --endpoint-url=http://localstack:4566 sqs create-queue \</span>
+<span class="w">          </span><span class="no">--queue-name solidary-donations || echo &#39;Fila já existe.&#39; &amp;&amp;</span>
+<span class="w">        </span><span class="no">echo &#39;✓ Recursos AWS (LocalStack) criados com sucesso.&#39;</span>
+<span class="w">      </span><span class="no">&quot;</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on-failure</span>
+
+<span class="w">  </span><span class="c1"># ─────────────────────────────────────────────────────────────────</span>
+<span class="w">  </span><span class="c1"># MICROSSERVIÇOS</span>
+<span class="w">  </span><span class="c1"># ─────────────────────────────────────────────────────────────────</span>
+
+<span class="w">  </span><span class="nt">ngo-service</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./ngo-service</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidarytech/ngo-service:local</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidary-ngo-service</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8081:8081&quot;</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">PORT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8081&quot;</span>
+<span class="w">      </span><span class="nt">DATABASE_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${NGO_DATABASE_URL}</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">postgres</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span>
+<span class="w">      </span><span class="nt">db-init</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_completed_successfully</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD-SHELL&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;python</span><span class="nv"> </span><span class="s">-c</span><span class="nv"> </span><span class="s">\&quot;import</span><span class="nv"> </span><span class="s">urllib.request;</span><span class="nv"> </span><span class="s">urllib.request.urlopen(&#39;http://localhost:8081/health&#39;)\&quot;&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+<span class="w">  </span><span class="nt">donation-service</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./donation-service</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidarytech/donation-service:local</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidary-donation-service</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8082:8082&quot;</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">PORT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8082&quot;</span>
+<span class="w">      </span><span class="nt">DATABASE_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DONATION_DATABASE_URL}</span>
+<span class="w">      </span><span class="nt">AWS_REGION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_REGION}</span>
+<span class="w">      </span><span class="nt">AWS_SQS_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_SQS_URL}</span>
+<span class="w">      </span><span class="nt">AWS_ACCESS_KEY_ID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_ACCESS_KEY_ID}</span>
+<span class="w">      </span><span class="nt">AWS_SECRET_ACCESS_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_SECRET_ACCESS_KEY}</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">postgres</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span>
+<span class="w">      </span><span class="nt">db-init</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_completed_successfully</span>
+<span class="w">      </span><span class="nt">localstack</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span>
+<span class="w">      </span><span class="nt">aws-init</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_completed_successfully</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+<span class="w">  </span><span class="nt">volunteer-service</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./volunteer-service</span>
+<span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidarytech/volunteer-service:local</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">solidary-volunteer-service</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8083:8083&quot;</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">PORT</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8083&quot;</span>
+<span class="w">      </span><span class="nt">AWS_REGION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_REGION}</span>
+<span class="w">      </span><span class="nt">AWS_DYNAMODB_TABLE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_DYNAMODB_TABLE}</span>
+<span class="w">      </span><span class="nt">AWS_ACCESS_KEY_ID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_ACCESS_KEY_ID}</span>
+<span class="w">      </span><span class="nt">AWS_SECRET_ACCESS_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_SECRET_ACCESS_KEY}</span>
+<span class="w">      </span><span class="nt">AWS_ENDPOINT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${AWS_ENDPOINT_URL}</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">localstack</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span>
+<span class="w">      </span><span class="nt">aws-init</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_completed_successfully</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD-SHELL&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;python</span><span class="nv"> </span><span class="s">-c</span><span class="nv"> </span><span class="s">\&quot;import</span><span class="nv"> </span><span class="s">urllib.request;</span><span class="nv"> </span><span class="s">urllib.request.urlopen(&#39;http://localhost:8083/health&#39;)\&quot;&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">postgres_data</span><span class="p">:</span><span class="w">       </span><span class="c1"># Dados do PostgreSQL persistem entre `docker compose down` e `up`</span>
+<span class="w">  </span><span class="nt">localstack_data</span><span class="p">:</span><span class="w">     </span><span class="c1"># Dados do LocalStack (DynamoDB, SQS) persistem entre restarts</span>
+</code></pre></div>
+<hr />
+<h2 id="passo-6-subir-o-ambiente">Passo 6 — Subir o ambiente<a class="headerlink" href="#passo-6-subir-o-ambiente" title="Permanent link">&para;</a></h2>
+<p>Com tudo configurado, o ambiente sobe com um único comando.</p>
+<h3 id="61-primeiro-build-e-start-pode-levar-alguns-minutos">6.1 — Primeiro build e start (pode levar alguns minutos)<a class="headerlink" href="#61-primeiro-build-e-start-pode-levar-alguns-minutos" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Na raiz do projeto (solidarytech/)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div>
+<p>O que acontece em ordem:
+1. Docker faz o <strong>build</strong> das 3 imagens (Python e Go)
+2. <strong>PostgreSQL</strong> e <strong>LocalStack</strong> sobem e aguardam o health check passar
+3. <strong><code>db-init</code></strong> cria os bancos <code>ngo_db</code> e <code>donation_db</code> e aplica os schemas
+4. <strong><code>aws-init</code></strong> cria a tabela DynamoDB <code>SolidaryTechVolunteers</code> e a fila SQS
+5. Os <strong>3 microsserviços</strong> sobem e ficam prontos para receber requisições</p>
+<p>Você saberá que está tudo pronto quando ver logs parecidos com:</p>
+<div class="highlight"><pre><span></span><code>solidary-ngo-service       | [INFO] Listening at: http://0.0.0.0:8081
+solidary-donation-service  | donation-service rodando na porta 8082
+solidary-volunteer-service | [INFO] Listening at: http://0.0.0.0:8083
+</code></pre></div>
+<h3 id="62-rodar-em-background-opcional">6.2 — Rodar em background (opcional)<a class="headerlink" href="#62-rodar-em-background-opcional" title="Permanent link">&para;</a></h3>
+<p>Se não quiser o terminal preso com os logs, use a flag <code>-d</code> (detached):</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build<span class="w"> </span>-d
+</code></pre></div>
+<p>Para ver os logs quando estiver em background:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Todos os serviços</span>
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f
+
+<span class="c1"># Um serviço específico</span>
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>ngo-service
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>donation-service
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>volunteer-service
+</code></pre></div>
+<h3 id="63-nas-proximas-vezes-sem-rebuild">6.3 — Nas próximas vezes (sem rebuild)<a class="headerlink" href="#63-nas-proximas-vezes-sem-rebuild" title="Permanent link">&para;</a></h3>
+<p>Após o primeiro <code>--build</code>, nas execuções seguintes você não precisa rebuildar (a menos que mude o código):</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>up
+</code></pre></div>
+<hr />
+<h2 id="passo-7-validar-e-testar-os-servicos">Passo 7 — Validar e testar os serviços<a class="headerlink" href="#passo-7-validar-e-testar-os-servicos" title="Permanent link">&para;</a></h2>
+<h3 id="71-verificar-se-todos-os-containers-estao-saudaveis">7.1 — Verificar se todos os containers estão saudáveis<a class="headerlink" href="#71-verificar-se-todos-os-containers-estao-saudaveis" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>ps
+</code></pre></div>
+<p>A coluna <strong>STATUS</strong> deve mostrar <code>running (healthy)</code> para todos os serviços principais:</p>
+<div class="highlight"><pre><span></span><code>NAME                         STATUS
+solidary-postgres            running (healthy)
+solidary-localstack          running (healthy)
+solidary-ngo-service         running (healthy)
+solidary-donation-service    running
+solidary-volunteer-service   running (healthy)
+</code></pre></div>
+<blockquote>
+<p>O <code>donation-service</code> usa imagem <code>distroless</code> (sem shell), portanto não tem health check configurável via Docker — mas estará funcionando se o log mostrar a porta ativa.</p>
+</blockquote>
+<h3 id="72-testar-os-health-checks">7.2 — Testar os health checks<a class="headerlink" href="#72-testar-os-health-checks" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:8081/health
+<span class="c1"># {&quot;service&quot;: &quot;ngo-service&quot;, &quot;status&quot;: &quot;ok&quot;}</span>
+
+curl<span class="w"> </span>http://localhost:8082/health
+<span class="c1"># {&quot;service&quot;:&quot;donation-service&quot;,&quot;status&quot;:&quot;ok&quot;}</span>
+
+curl<span class="w"> </span>http://localhost:8083/health
+<span class="c1"># {&quot;service&quot;: &quot;volunteer-service&quot;, &quot;status&quot;: &quot;ok&quot;}</span>
+</code></pre></div>
+<h3 id="73-testar-o-fluxo-completo">7.3 — Testar o fluxo completo<a class="headerlink" href="#73-testar-o-fluxo-completo" title="Permanent link">&para;</a></h3>
+<p>Execute os comandos abaixo em ordem para testar o fluxo real da plataforma:</p>
+<p><strong>1. Listar ONGs (já vêm com dados de seed):</strong></p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:8081/ngos
+</code></pre></div>
+<p>Resposta esperada:
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Educa Mais&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info@educamais.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cause&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Educação&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;city&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;São Paulo&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Anjos de Patas&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;contato@anjosdepatas.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cause&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Proteção Animal&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;city&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Osasco&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></p>
+<p><strong>2. Criar uma nova ONG:</strong></p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8081/ngos<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;name&quot;: &quot;Instituto Esperança&quot;,</span>
+<span class="s1">    &quot;email&quot;: &quot;contato@esperanca.org&quot;,</span>
+<span class="s1">    &quot;cause&quot;: &quot;Fome&quot;,</span>
+<span class="s1">    &quot;city&quot;: &quot;Porto Alegre&quot;</span>
+<span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>Resposta esperada (<code>201 Created</code>):
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Instituto Esperança&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;contato@esperanca.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cause&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fome&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;city&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Porto Alegre&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>3. Registrar uma doação:</strong></p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8082/donations<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;ngo_id&quot;: 1,</span>
+<span class="s1">    &quot;amount&quot;: 150.00,</span>
+<span class="s1">    &quot;donor_name&quot;: &quot;João Silva&quot;</span>
+<span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>Resposta esperada (<code>201 Created</code>):
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ngo_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;donor_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;João Silva&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APPROVED&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>4. Listar doações:</strong></p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:8082/donations
+</code></pre></div>
+<p><strong>5. Cadastrar um voluntário:</strong></p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8083/volunteers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">    &quot;name&quot;: &quot;Maria Costa&quot;,</span>
+<span class="s1">    &quot;email&quot;: &quot;maria@email.com&quot;,</span>
+<span class="s1">    &quot;ngo_id&quot;: 1</span>
+<span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>Resposta esperada (<code>201 Created</code>):
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;volunteer_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid-gerado&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maria Costa&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;maria@email.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;ngo_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;registered_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>6. Buscar voluntários de uma ONG:</strong></p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:8083/volunteers/1
+</code></pre></div>
+<h3 id="74-conectar-ao-banco-de-dados-opcional">7.4 — Conectar ao banco de dados (opcional)<a class="headerlink" href="#74-conectar-ao-banco-de-dados-opcional" title="Permanent link">&para;</a></h3>
+<p>Se quiser inspecionar os dados diretamente no PostgreSQL:</p>
+<p><strong>Via terminal:</strong>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>solidary-postgres<span class="w"> </span>psql<span class="w"> </span>-U<span class="w"> </span>solidary<span class="w"> </span>-d<span class="w"> </span>ngo_db
+
+<span class="c1"># Dentro do psql:</span>
+<span class="se">\d</span>t<span class="w">              </span>--<span class="w"> </span>lista<span class="w"> </span>as<span class="w"> </span>tabelas
+SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>ngos<span class="p">;</span>
+<span class="se">\q</span><span class="w">               </span>--<span class="w"> </span>sair
+</code></pre></div></p>
+<p><strong>Via ferramenta gráfica (DBeaver, TablePlus, pgAdmin):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host</td>
+<td><code>localhost</code></td>
+</tr>
+<tr>
+<td>Porta</td>
+<td><code>5432</code></td>
+</tr>
+<tr>
+<td>Usuário</td>
+<td><code>solidary</code></td>
+</tr>
+<tr>
+<td>Senha</td>
+<td><code>solidary123</code></td>
+</tr>
+<tr>
+<td>Banco</td>
+<td><code>ngo_db</code> ou <code>donation_db</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="75-inspecionar-o-localstack-opcional">7.5 — Inspecionar o LocalStack (opcional)<a class="headerlink" href="#75-inspecionar-o-localstack-opcional" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Listar tabelas DynamoDB criadas</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>solidary-localstack<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>awslocal<span class="w"> </span>dynamodb<span class="w"> </span>list-tables
+
+<span class="c1"># Ver itens na tabela de voluntários</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>solidary-localstack<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>awslocal<span class="w"> </span>dynamodb<span class="w"> </span>scan<span class="w"> </span>--table-name<span class="w"> </span>SolidaryTechVolunteers
+
+<span class="c1"># Listar filas SQS</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>solidary-localstack<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>awslocal<span class="w"> </span>sqs<span class="w"> </span>list-queues
+</code></pre></div>
+<h3 id="76-problemas-comuns-e-solucoes">7.6 — Problemas comuns e soluções<a class="headerlink" href="#76-problemas-comuns-e-solucoes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Causa provável</th>
+<th>Solução</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>connection refused</code> em qualquer porta</td>
+<td>Container ainda subindo</td>
+<td>Aguarde 30–60s e tente novamente</td>
+</tr>
+<tr>
+<td><code>ngo_db does not exist</code></td>
+<td><code>db-init</code> falhou</td>
+<td><code>docker compose logs db-init</code> para ver o erro</td>
+</tr>
+<tr>
+<td><code>volunteer-service</code> não conecta no DynamoDB</td>
+<td><code>AWS_ENDPOINT_URL</code> não foi lido pelo boto3</td>
+<td>Confirme o ajuste no <code>app.py</code> do Passo 4.2</td>
+</tr>
+<tr>
+<td><code>go.sum</code> não encontrado no build</td>
+<td>Passo 3 não foi executado</td>
+<td>Rode <code>go mod tidy</code> dentro de <code>donation-service/</code></td>
+</tr>
+<tr>
+<td>Porta já em uso (<code>bind: address already in use</code>)</td>
+<td>Outro processo usando a porta</td>
+<td>Pare o processo local: <code>lsof -i :8081</code> e <code>kill -9 &lt;PID&gt;</code></td>
+</tr>
+<tr>
+<td>LocalStack health check falhando</td>
+<td>LocalStack demora para iniciar</td>
+<td>Normal no primeiro boot; aguarde ou aumente o <code>start_period</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="passo-8-encerrar-o-ambiente">Passo 8 — Encerrar o ambiente<a class="headerlink" href="#passo-8-encerrar-o-ambiente" title="Permanent link">&para;</a></h2>
+<h3 id="81-parar-os-containers-mantem-dados">8.1 — Parar os containers (mantém dados)<a class="headerlink" href="#81-parar-os-containers-mantem-dados" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>down
+</code></pre></div>
+<p>Os volumes (<code>postgres_data</code>, <code>localstack_data</code>) são preservados. Na próxima vez que subir com <code>docker compose up</code>, os dados ainda estarão lá.</p>
+<h3 id="82-parar-e-remover-todos-os-dados">8.2 — Parar e remover todos os dados<a class="headerlink" href="#82-parar-e-remover-todos-os-dados" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
+</code></pre></div>
+<p>Use isso quando quiser começar do zero (limpa os volumes de banco de dados).</p>
+<h3 id="83-rebuild-apos-mudancas-no-codigo">8.3 — Rebuild após mudanças no código<a class="headerlink" href="#83-rebuild-apos-mudancas-no-codigo" title="Permanent link">&para;</a></h3>
+<p>Se você alterar qualquer arquivo de código (<code>.py</code>, <code>.go</code>) ou dependências (<code>requirements.txt</code>, <code>go.mod</code>), é necessário rebuildar a imagem do serviço afetado:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Rebuilda e reinicia apenas o serviço alterado</span>
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build<span class="w"> </span>ngo-service
+
+<span class="c1"># Ou rebuilda todos</span>
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div>
+<h3 id="84-remover-imagens-locais-limpeza-completa">8.4 — Remover imagens locais (limpeza completa)<a class="headerlink" href="#84-remover-imagens-locais-limpeza-completa" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Remove containers, volumes, redes e imagens criadas pelo compose</span>
+docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v<span class="w"> </span>--rmi<span class="w"> </span><span class="nb">local</span>
+
+<span class="c1"># Limpeza geral do Docker (remove tudo não utilizado)</span>
+docker<span class="w"> </span>system<span class="w"> </span>prune<span class="w"> </span>-af<span class="w"> </span>--volumes
+</code></pre></div>
+<blockquote>
+<p>⚠️ O comando <code>docker system prune</code> remove <strong>todas</strong> as imagens e volumes não utilizados no seu Docker, não apenas os do SolidaryTech.</p>
+</blockquote>
+<hr />
+<h2 id="referencia-rapida-de-comandos">Referência rápida de comandos<a class="headerlink" href="#referencia-rapida-de-comandos" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Subir tudo com build</span>
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+
+<span class="c1"># Subir em background</span>
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># Ver status dos containers</span>
+docker<span class="w"> </span>compose<span class="w"> </span>ps
+
+<span class="c1"># Ver logs em tempo real</span>
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f
+
+<span class="c1"># Ver logs de um serviço</span>
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>ngo-service
+
+<span class="c1"># Reiniciar um serviço</span>
+docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>volunteer-service
+
+<span class="c1"># Parar (mantém dados)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>down
+
+<span class="c1"># Parar e apagar dados</span>
+docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
+</code></pre></div>
+<hr />
+<blockquote>
+<p>Dúvidas ou problemas? Abra uma issue no repositório ou consulte a documentação completa de containerização em <code>CONTAINERIZATION.md</code>.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.sections", "content.code.copy", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

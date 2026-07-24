@@ -1,0 +1,1363 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação técnica do projeto SolidaryTech (POSTECH DCLT — Fase 5)">
+      
+      
+        <meta name="author" content="Juliano da Silva Lopes">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>SolidaryTech — New Relic: - SolidaryTech — Hackathon Fase 5</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#solidarytech-new-relic" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-header__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SolidaryTech — Hackathon Fase 5
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SolidaryTech — New Relic:
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="cyan" data-md-color-accent="teal"  aria-label="Mudar para modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cronograma/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Cronograma
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../00-fundacao-devops/" class="md-tabs__link">
+          
+  
+  
+  Fundação DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../01-sre/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SRE
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../02-finops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FinOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../03-itsm-aiops/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ITSM e AIOps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../04-dr-seguranca/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DR e Segurança
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SolidaryTech — Hackathon Fase 5" class="md-nav__button md-logo" aria-label="SolidaryTech — Hackathon Fase 5" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    SolidaryTech — Hackathon Fase 5
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cronograma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundação DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fundação DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-fundacao-devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fundacao/infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fundacao/terraform-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infraestrutura (Terraform - Parte 2)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fundacao/deploy-infra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy na AWS (Lab)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fundacao/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Containerização (Docker)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fundacao/solidarytech-local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execução Local (Docker Compose)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fundacao/lab-automatizado/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Automatizado
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-finops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FinOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-itsm-aiops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ITSM e AIOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-dr-seguranca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DR e Segurança
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="solidarytech-new-relic">SolidaryTech — New Relic:<a class="headerlink" href="#solidarytech-new-relic" title="Permanent link">&para;</a></h1>
+<h3 id="validacao-de-logs-queries-nrql-e-dashboards-sre">Validação de Logs, Queries NRQL e Dashboards SRE<a class="headerlink" href="#validacao-de-logs-queries-nrql-e-dashboards-sre" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Troubleshooting de telemetria chegando no New Relic, construção das queries NRQL dos SLIs e criação do dashboard SRE com Golden Metrics para o <code>donation-service</code> (Hot Path).</p>
+</blockquote>
+<hr />
+<h2 id="indice">Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#1-verificar-se-os-dados-estão-chegando">Verificar se os dados estão chegando</a></li>
+<li><a href="#2-queries-nrql--diagnóstico-rápido">Queries NRQL — Diagnóstico rápido</a></li>
+<li><a href="#3-queries-nrql--slis-do-donation-service">Queries NRQL — SLIs do donation-service</a></li>
+<li><a href="#4-queries-nrql--golden-metrics-dos-3-serviços">Queries NRQL — Golden Metrics dos 3 serviços</a></li>
+<li><a href="#5-montar-o-dashboard-sre">Montar o Dashboard SRE</a></li>
+<li><a href="#6-configurar-alertas">Configurar Alertas</a></li>
+<li><a href="#7-troubleshooting">Troubleshooting</a></li>
+</ol>
+<hr />
+<h2 id="1-verificar-se-os-dados-estao-chegando">1. Verificar se os dados estão chegando<a class="headerlink" href="#1-verificar-se-os-dados-estao-chegando" title="Permanent link">&para;</a></h2>
+<h3 id="11-apm-services-traces">1.1 — APM Services (Traces)<a class="headerlink" href="#11-apm-services-traces" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Acesse <strong><a href="https://one.newrelic.com">one.newrelic.com</a></strong></li>
+<li>Menu esquerdo → <strong>APM &amp; Services</strong></li>
+<li>Deve ver os 3 serviços listados:</li>
+<li><code>ngo-service</code></li>
+<li><code>donation-service</code></li>
+<li><code>volunteer-service</code></li>
+</ol>
+<blockquote>
+<p>Se os serviços não aparecerem após 5 minutos de tráfego, vá para a seção <a href="#8-troubleshooting">Troubleshooting</a>.</p>
+</blockquote>
+<hr />
+<h3 id="12-gerar-trafego-para-ter-dados">1.2 — Gerar tráfego para ter dados<a class="headerlink" href="#12-gerar-trafego-para-ter-dados" title="Permanent link">&para;</a></h3>
+<p>Antes de verificar qualquer coisa no New Relic, deve gere tráfego real nos 3 serviços:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">ALB</span><span class="o">=</span><span class="k">$(</span><span class="nb">cd</span><span class="w"> </span>infra/terraform/environments/lab<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>terraform<span class="w"> </span>output<span class="w"> </span>-raw<span class="w"> </span>alb_dns_name<span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ALB: </span><span class="nv">$ALB</span><span class="s2">&quot;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Health checks (aparecem como transações no APM)</span>
+<span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">10</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">ALB</span><span class="si">}</span><span class="s2">/health&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+<span class="w">  </span>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">ALB</span><span class="si">}</span><span class="s2">/ngos&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+<span class="w">  </span>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">ALB</span><span class="si">}</span><span class="s2">/donations&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+<span class="w">  </span>curl<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">ALB</span><span class="si">}</span><span class="s2">/volunteers/1&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+<span class="k">done</span>
+</code></pre></div>
+<h2 id="criar-dados-reais-curl-s-x-post-httpalbngos-h-content-type-applicationjson-d-nameong-teste-nremailnrtesteorgcauseeducacaocitysp-curl-s-x-post-httpalbdonations-h-content-type-applicationjson-d-ngo_id1amount25000donor_nameteste-new-relic-curl-s-x-post-httpalbvolunteers-h-content-type-applicationjson-d-namevoluntario-nremailvolnrcomngo_id1-echo-trafego-gerado-aguarde-2-minutos-e-verifique-o-new-relic"><div class="highlight"><pre><span></span><code><span class="c1"># Criar dados reais</span>
+curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">ALB</span><span class="si">}</span><span class="s2">/ngos&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;ONG Teste NR&quot;,&quot;email&quot;:&quot;nr@teste.org&quot;,&quot;cause&quot;:&quot;Educação&quot;,&quot;city&quot;:&quot;SP&quot;}&#39;</span>
+
+curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">ALB</span><span class="si">}</span><span class="s2">/donations&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;ngo_id&quot;:1,&quot;amount&quot;:250.00,&quot;donor_name&quot;:&quot;Teste New Relic&quot;}&#39;</span>
+
+curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://</span><span class="si">${</span><span class="nv">ALB</span><span class="si">}</span><span class="s2">/volunteers&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;Voluntário NR&quot;,&quot;email&quot;:&quot;vol@nr.com&quot;,&quot;ngo_id&quot;:1}&#39;</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Tráfego gerado. Aguarde 2 minutos e verifique o New Relic.&quot;</span>
+</code></pre></div><a class="headerlink" href="#criar-dados-reais-curl-s-x-post-httpalbngos-h-content-type-applicationjson-d-nameong-teste-nremailnrtesteorgcauseeducacaocitysp-curl-s-x-post-httpalbdonations-h-content-type-applicationjson-d-ngo_id1amount25000donor_nameteste-new-relic-curl-s-x-post-httpalbvolunteers-h-content-type-applicationjson-d-namevoluntario-nremailvolnrcomngo_id1-echo-trafego-gerado-aguarde-2-minutos-e-verifique-o-new-relic" title="Permanent link">&para;</a></h2>
+<h3 id="13-query-de-verificacao-inicial-no-query-builder">1.3 — Query de verificação inicial no Query Builder<a class="headerlink" href="#13-query-de-verificacao-inicial-no-query-builder" title="Permanent link">&para;</a></h3>
+<p><strong>New Relic → Query your data (ícone de gráfico no menu)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Verificar se algum dado chegou nos últimos 30 minutos</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span><span class="w"> </span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span><span class="w"> </span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="n">minutes</span><span class="w"> </span><span class="n">ago</span><span class="w"> </span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+</code></pre></div>
+<p><strong>Resultado esperado:</strong></p>
+<table>
+<thead>
+<tr>
+<th>appName</th>
+<th>count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ngo-service</td>
+<td>&gt; 0</td>
+</tr>
+<tr>
+<td>donation-service</td>
+<td>&gt; 0</td>
+</tr>
+<tr>
+<td>volunteer-service</td>
+<td>&gt; 0</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-queries-nrql-diagnostico-rapido">2. Queries NRQL — Diagnóstico rápido<a class="headerlink" href="#2-queries-nrql-diagnostico-rapido" title="Permanent link">&para;</a></h2>
+<p>Use estas queries no <strong>Query Builder</strong> para confirmar que a instrumentação OTel está funcionando.</p>
+<h3 id="21-ver-todas-as-transacoes-recentes">2.1 — Ver todas as transações recentes<a class="headerlink" href="#21-ver-todas-as-transacoes-recentes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">appName</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="n">httpResponseCode</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">50</span>
+</code></pre></div>
+<h3 id="22-verificar-atributos-otel-enviados">2.2 — Verificar atributos OTel enviados<a class="headerlink" href="#22-verificar-atributos-otel-enviados" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Confirma que os atributos de resource estão chegando</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">uniques</span><span class="p">(</span><span class="n">service</span><span class="p">.</span><span class="n">namespace</span><span class="p">),</span><span class="w"> </span><span class="n">uniques</span><span class="p">(</span><span class="n">deployment</span><span class="p">.</span><span class="n">environment</span><span class="p">),</span><span class="w"> </span><span class="n">uniques</span><span class="p">(</span><span class="n">appName</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+<p><strong>Esperado:</strong>
+- <code>service.namespace</code> = <code>solidarytech</code>
+- <code>deployment.environment</code> = <code>lab</code></p>
+<h3 id="23-throughput-por-servico-requisicoesmin">2.3 — Throughput por serviço (requisições/min)<a class="headerlink" href="#23-throughput-por-servico-requisicoesmin" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">rate</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">minute</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;req/min&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">minute</span>
+</code></pre></div>
+<h3 id="24-erros-recentes">2.4 — Erros recentes<a class="headerlink" href="#24-erros-recentes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">appName</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">errorMessage</span><span class="p">,</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="p">,</span><span class="w"> </span><span class="k">timestamp</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">TransactionError</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span>
+</code></pre></div>
+<h3 id="25-verificar-spans-traces-distribuidos">2.5 — Verificar spans (traces distribuídos)<a class="headerlink" href="#25-verificar-spans-traces-distribuidos" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Span</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+<hr />
+<h2 id="3-queries-nrql-slis-do-donation-service">3. Queries NRQL — SLIs do <code>donation-service</code><a class="headerlink" href="#3-queries-nrql-slis-do-donation-service" title="Permanent link">&para;</a></h2>
+<p>O <code>donation-service</code> é o <strong>Hot Path</strong> da plataforma. Os SLIs e SLOs definidos são:</p>
+<table>
+<thead>
+<tr>
+<th>SLI</th>
+<th>Definição</th>
+<th>SLO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Latência</strong></td>
+<td>% de requisições <code>POST /donations</code> com duração &lt; 500ms</td>
+<td>95% em janela de 28 dias</td>
+</tr>
+<tr>
+<td><strong>Taxa de Erro</strong></td>
+<td>% de requisições com HTTP status &lt; 500</td>
+<td>99,9% em janela de 28 dias</td>
+</tr>
+</tbody>
+</table>
+<h3 id="31-sli-latencia-janela-de-28-dias-para-o-slo-oficial">3.1 — SLI Latência (janela de 28 dias — para o SLO oficial)<a class="headerlink" href="#31-sli-latencia-janela-de-28-dias-para-o-slo-oficial" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;SLI Latência (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%donations%&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+<h3 id="32-sli-taxa-de-erro-janela-de-28-dias-para-o-slo-oficial">3.2 — SLI Taxa de Erro (janela de 28 dias — para o SLO oficial)<a class="headerlink" href="#32-sli-taxa-de-erro-janela-de-28-dias-para-o-slo-oficial" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;SLI Taxa de Sucesso (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%donations%&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+<h3 id="33-sli-latencia-em-tempo-real-ultimas-24h-para-o-dashboard">3.3 — SLI Latência em tempo real (últimas 24h — para o dashboard)<a class="headerlink" href="#33-sli-latencia-em-tempo-real-ultimas-24h-para-o-dashboard" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Latência SLI&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<h3 id="34-error-budget-consumido">3.4 — Error Budget consumido<a class="headerlink" href="#34-error-budget-consumido" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Error Budget = 0,1% do total de requests no mês</span>
+<span class="c1">-- Esta query mostra o % do budget já consumido</span>
+
+<span class="k">SELECT</span>
+<span class="w">  </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Erro Real (%)&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Budget Total (%)&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">((</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Budget Consumido (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+<h3 id="35-latencia-percentilica-do-donation-service">3.5 — Latência percentílica do donation-service<a class="headerlink" href="#35-latencia-percentilica-do-donation-service" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w">  </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p50 (ms)&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">)</span><span class="w">  </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p95 (ms)&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">)</span><span class="w">  </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p99 (ms)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Referência de SLO:</strong> p95 deve ser &lt; 500ms. Se a linha p95 cruzar a marca de 0.5s no gráfico, o SLO está sendo violado.</p>
+</blockquote>
+<hr />
+<h2 id="4-queries-nrql-golden-metrics-dos-3-servicos">4. Queries NRQL — Golden Metrics dos 3 serviços<a class="headerlink" href="#4-queries-nrql-golden-metrics-dos-3-servicos" title="Permanent link">&para;</a></h2>
+<p>As 4 Golden Metrics de SRE (Google SRE Book): <strong>Latência, Tráfego, Erros e Saturação</strong>.</p>
+<h3 id="41-latencia-p50p95p99-por-servico">4.1 — LATÊNCIA — p50/p95/p99 por serviço<a class="headerlink" href="#41-latencia-p50p95p99-por-servico" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p50&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p95&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p99&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<h3 id="42-trafego-requisicoes-por-minuto">4.2 — TRÁFEGO — Requisições por minuto<a class="headerlink" href="#42-trafego-requisicoes-por-minuto" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">rate</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">minute</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Requisições/min&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">minute</span>
+</code></pre></div>
+<h3 id="43-erros-taxa-de-erro-por-servico">4.3 — ERROS — Taxa de erro por serviço<a class="headerlink" href="#43-erros-taxa-de-erro-por-servico" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">  </span><span class="n">filter</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Erros 5xx&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">filter</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">400</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Erros 4xx&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Total&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Taxa de Erro 5xx (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<h3 id="44-saturacao-cpu-e-memoria-via-ecs-container-insights">4.4 — SATURAÇÃO — CPU e Memória via ECS Container Insights<a class="headerlink" href="#44-saturacao-cpu-e-memoria-via-ecs-container-insights" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- CPU utilização dos containers ECS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">cpuUtilized</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;CPU (units)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">EcsContainerSample</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">clusterName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;solidarytech-lab&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">containerName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Memória utilizada</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">memoryUtilized</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Memória (MB)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">EcsContainerSample</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">clusterName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;solidarytech-lab&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">containerName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="o">`</span><span class="n">aws</span><span class="p">.</span><span class="n">ecs</span><span class="p">.</span><span class="n">CPUUtilization</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;CPU %&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Metric</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="o">`</span><span class="n">aws</span><span class="p">.</span><span class="n">ecs</span><span class="p">.</span><span class="n">ClusterName</span><span class="o">`</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;solidarytech-lab&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="o">`</span><span class="n">aws</span><span class="p">.</span><span class="n">ecs</span><span class="p">.</span><span class="n">ServiceName</span><span class="o">`</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<h3 id="45-apdex-por-servico-satisfacao-do-usuario">4.5 — Apdex por serviço (satisfação do usuário)<a class="headerlink" href="#45-apdex-por-servico-satisfacao-do-usuario" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Apdex com threshold de 500ms (T=0.5)</span>
+<span class="c1">-- Satisfeito: &lt; 0.5s | Tolerável: 0.5–2.0s | Frustrado: &gt; 2.0s</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">apdex</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Apdex&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+<h3 id="46-top-endpoints-por-latencia">4.6 — Top endpoints por latência<a class="headerlink" href="#46-top-endpoints-por-latencia" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Latência Média (s)&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Calls&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span><span class="p">,</span><span class="w"> </span><span class="n">name</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+<h3 id="47-valor-total-de-doacoes-processadas">4.7 — Valor total de doações processadas<a class="headerlink" href="#47-valor-total-de-doacoes-processadas" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Rastreia o volume financeiro via atributos customizados</span>
+<span class="c1">-- (requer instrumentação adicional no donation-service para enviar o amount)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Doações Processadas&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%POST%donations%&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">hour</span>
+</code></pre></div>
+<hr />
+<h2 id="5-montar-o-dashboard-sre">5. Montar o Dashboard SRE<a class="headerlink" href="#5-montar-o-dashboard-sre" title="Permanent link">&para;</a></h2>
+<h3 id="51-criar-o-dashboard">5.1 — Criar o dashboard<a class="headerlink" href="#51-criar-o-dashboard" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>New Relic → Dashboards → + Create a dashboard</strong></li>
+<li>Nome: <strong><code>SolidaryTech</code></strong></li>
+<li>Visibilidade: <strong>FREE PLAN</strong> — Não é possível compartilhar o link público.</li>
+<li>Clique em <strong>Create</strong></li>
+</ol>
+<h3 id="52-widgets">5.2 — Widgets<a class="headerlink" href="#52-widgets" title="Permanent link">&para;</a></h3>
+<hr />
+<h4 id="secao-1-slo-status-linha-do-topo-visao-executiva">SEÇÃO 1: SLO Status (linha do topo — visão executiva)<a class="headerlink" href="#secao-1-slo-status-linha-do-topo-visao-executiva" title="Permanent link">&para;</a></h4>
+<p><strong>Widget 1 — SLO Latência (Gauge/Billboard)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;SLO Latência&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%donations%&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+- Tipo: <strong>Billboard</strong>
+- Threshold verde: ≥ 95 | amarelo: ≥ 90 | vermelho: &lt; 90</p>
+<p><strong>Widget 2 — SLO Taxa de Sucesso (Gauge/Billboard)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;SLO Sucesso&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+- Tipo: <strong>Billboard</strong>
+- Threshold verde: ≥ 99.9 | amarelo: ≥ 99 | vermelho: &lt; 99</p>
+<p><strong>Widget 3 — Error Budget Restante (Billboard)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">((</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Budget Restante (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">days</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+- Tipo: <strong>Billboard</strong>
+- Threshold verde: &gt; 0.05 | amarelo: &gt; 0 | vermelho: ≤ 0</p>
+<hr />
+<h4 id="secao-2-golden-metrics-em-tempo-real">SEÇÃO 2: Golden Metrics em tempo real<a class="headerlink" href="#secao-2-golden-metrics-em-tempo-real" title="Permanent link">&para;</a></h4>
+<p><strong>Widget 4 — Latência p50/p95/p99 (Line Chart)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p50&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p95&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">percentile</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;p99&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+- Tipo: <strong>Line</strong></p>
+<p><strong>Widget 5 — Tráfego — Req/min por serviço (Area Chart)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">rate</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">minute</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;req/min&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">minute</span>
+</code></pre></div>
+- Tipo: <strong>Area</strong></p>
+<p><strong>Widget 6 — Taxa de Erro 5xx (Line Chart)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Erro 5xx (%)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+- Tipo: <strong>Line</strong>
+- Marcar linha de referência em 0.1%</p>
+<p><strong>Widget 7 — Saturação CPU ECS (Line Chart)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="o">`</span><span class="n">aws</span><span class="p">.</span><span class="n">ecs</span><span class="p">.</span><span class="n">CPUUtilization</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;CPU %&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Metric</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="o">`</span><span class="n">aws</span><span class="p">.</span><span class="n">ecs</span><span class="p">.</span><span class="n">ClusterName</span><span class="o">`</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;solidarytech-lab&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="o">`</span><span class="n">aws</span><span class="p">.</span><span class="n">ecs</span><span class="p">.</span><span class="n">ServiceName</span><span class="o">`</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+- Tipo: <strong>Line</strong></p>
+<hr />
+<h4 id="secao-3-analise-de-erros-e-detalhes">SEÇÃO 3: Análise de erros e detalhes<a class="headerlink" href="#secao-3-analise-de-erros-e-detalhes" title="Permanent link">&para;</a></h4>
+<p><strong>Widget 8 — Erros recentes (Table)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">appName</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">errorMessage</span><span class="p">,</span><span class="w"> </span><span class="n">httpResponseCode</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">TransactionError</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span>
+</code></pre></div>
+- Tipo: <strong>Table</strong></p>
+<p><strong>Widget 9 — Top endpoints por latência (Bar Chart)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Latência Média (s)&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span><span class="p">,</span><span class="w"> </span><span class="n">name</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+- Tipo: <strong>Bar</strong></p>
+<p><strong>Widget 10 — Apdex (Gauge)</strong>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">apdex</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Apdex&#39;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">hours</span><span class="w"> </span><span class="n">ago</span>
+<span class="n">TIMESERIES</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span>
+</code></pre></div>
+- Tipo: <strong>Line</strong> com threshold em 0.9</p>
+<hr />
+<h2 id="6-configurar-alertas">6. Configurar Alertas<a class="headerlink" href="#6-configurar-alertas" title="Permanent link">&para;</a></h2>
+<h3 id="61-criar-alert-policy">6.1 — Criar Alert Policy<a class="headerlink" href="#61-criar-alert-policy" title="Permanent link">&para;</a></h3>
+<p><strong>New Relic → Alerts → Alert Policies → New alert policy</strong></p>
+<ul>
+<li>Nome: <code>SolidaryTech — SRE Alerts</code></li>
+<li>Notification preference: <strong>By condition and policy</strong></li>
+</ul>
+<h3 id="62-condicao-1-slo-de-latencia-violado">6.2 — Condição 1: SLO de Latência violado<a class="headerlink" href="#62-condicao-1-slo-de-latencia-violado" title="Permanent link">&para;</a></h3>
+<p><strong>+ New alert condition → NRQL</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%donations%&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+<ul>
+<li>Threshold: <code>Static</code></li>
+<li>Critical quando valor <strong>cair abaixo de</strong> <code>95</code> por <code>5 minutos</code></li>
+<li>Nome: <code>donation-service — SLO Latência violado</code></li>
+</ul>
+<h3 id="63-condicao-2-taxa-de-erro-acima-do-budget">6.3 — Condição 2: Taxa de Erro acima do budget<a class="headerlink" href="#63-condicao-2-taxa-de-erro-acima-do-budget" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">percentage</span><span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">httpResponseCode</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">500</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">minutes</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+<ul>
+<li>Threshold: <code>Static</code></li>
+<li>Critical quando valor <strong>subir acima de</strong> <code>0.1</code> por <code>5 minutos</code></li>
+<li>Warning quando <strong>acima de</strong> <code>0.05</code> por <code>5 minutos</code></li>
+<li>Nome: <code>donation-service — Error Budget burn rate alto</code></li>
+</ul>
+<h3 id="64-condicao-3-servico-sem-dados-ausencia-de-sinal">6.4 — Condição 3: Serviço sem dados (ausência de sinal)<a class="headerlink" href="#64-condicao-3-servico-sem-dados-ausencia-de-sinal" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">Transaction</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">appName</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">FACET</span><span class="w"> </span><span class="n">appName</span>
+</code></pre></div>
+<ul>
+<li>Threshold: <code>Loss of signal</code></li>
+<li>Sinalizar ausência após <code>5 minutos</code> sem dados</li>
+<li>Nome: <code>SolidaryTech — Serviço sem dados</code></li>
+</ul>
+<h3 id="65-configurar-notificacao-por-e-mail">6.5 — Configurar notificação por e-mail<a class="headerlink" href="#65-configurar-notificacao-por-e-mail" title="Permanent link">&para;</a></h3>
+<p><strong>Alerts → Notification Channels → + New notification channel</strong>
+- Tipo: <strong>Email</strong>
+- E-mail: seu e-mail
+- Associar à policy <code>SolidaryTech — SRE Alerts</code></p>
+<hr />
+<h2 id="7-troubleshooting">7. Troubleshooting<a class="headerlink" href="#7-troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="servicos-nao-aparecem-no-apm">Serviços não aparecem no APM<a class="headerlink" href="#servicos-nao-aparecem-no-apm" title="Permanent link">&para;</a></h3>
+<p><strong>Verificar se as variáveis OTel estão na task definition:</strong></p>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>ecs<span class="w"> </span>describe-task-definition<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--task-definition<span class="w"> </span>solidarytech-lab-ngo-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;taskDefinition.containerDefinitions[0].environment&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>table
+</code></pre></div>
+<p>Deve conter: <code>OTEL_EXPORTER_OTLP_ENDPOINT</code>, <code>OTEL_EXPORTER_OTLP_HEADERS</code>, <code>OTEL_SERVICE_NAME</code>.</p>
+<p><strong>Verificar logs do container</strong></p>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>logs<span class="w"> </span>tail<span class="w"> </span>/ecs/solidarytech/lab/ngo-service<span class="w"> </span>--since<span class="w"> </span>15m<span class="w"> </span>--follow
+</code></pre></div>
+<p>Procure por linhas como:
+<div class="highlight"><pre><span></span><code>opentelemetry.sdk - INFO - Tracing enabled
+</code></pre></div>
+Se aparecer <code>Connection refused</code> ou <code>Failed to export</code>, a <code>OTEL_EXPORTER_OTLP_HEADERS</code> está errada (license key inválida).</p>
+<hr />
+<h3 id="spans-chegam-mas-apm-nao-mostra-servico">Spans chegam mas APM não mostra serviço<a class="headerlink" href="#spans-chegam-mas-apm-nao-mostra-servico" title="Permanent link">&para;</a></h3>
+<p>O New Relic leva até <strong>5 minutos</strong> para criar a entidade do serviço na primeira vez. Se após 10 minutos de tráfego ainda não aparecer:</p>
+<ol>
+<li>Vá em <strong>New Relic → All Entities</strong> e busque por <code>ngo-service</code></li>
+<li>Se aparecer como entidade mas não no APM, clique nela e verifique o tipo — pode ter sido registrado como <code>Service (OpenTelemetry)</code> em vez de <code>APM</code></li>
+<li>Query alternativa no Query Builder:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Span</span><span class="w"> </span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ngo-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;donation-service&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;volunteer-service&#39;</span><span class="p">)</span>
+<span class="n">SINCE</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="n">minutes</span><span class="w"> </span><span class="n">ago</span><span class="w"> </span><span class="n">FACET</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+<hr />
+<h3 id="dados-aparecem-no-query-builder-mas-nao-no-dashboard">Dados aparecem no Query Builder mas não no dashboard<a class="headerlink" href="#dados-aparecem-no-query-builder-mas-nao-no-dashboard" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Verifique se o <strong>Account ID</strong> do dashboard é o mesmo da sua conta</li>
+<li>Abra cada widget e clique em <strong>Edit</strong> → <strong>Run</strong> para confirmar que a query retorna dados</li>
+<li>Se usar <code>EcsContainerSample</code> e não retornar dados, substitua pela query de <code>Metric</code> com <code>aws.ecs.*</code></li>
+</ul>
+<hr />
+<h3 id="license-key-incorreta">License key incorreta<a class="headerlink" href="#license-key-incorreta" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Verificar qual key está configurada na task definition</span>
+aws<span class="w"> </span>ecs<span class="w"> </span>describe-task-definition<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--task-definition<span class="w"> </span>solidarytech-lab-ngo-service<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s1">&#39;taskDefinition.containerDefinitions[0].environment[?name==`OTEL_EXPORTER_OTLP_HEADERS`].value&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>text
+</code></pre></div>
+<p>A saída deve ser <code>api-key=INGEST-...</code>. Se estiver vazia ou com valor errado, re-aplique o Terraform:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TF_VAR_newrelic_license_key</span><span class="o">=</span><span class="s1">&#39;SUA_LICENSE_KEY_CORRETA&#39;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">TF_VAR_db_password</span><span class="o">=</span><span class="s1">&#39;SUA_SENHA&#39;</span>
+<span class="nb">cd</span><span class="w"> </span>infra/terraform/environments/lab
+terraform<span class="w"> </span>apply<span class="w"> </span>-target<span class="o">=</span>module.ecs<span class="w"> </span>-auto-approve
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.sections", "content.code.copy", "toc.integrate", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
