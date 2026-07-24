@@ -272,6 +272,8 @@ resource "aws_ecs_service" "services" {
 - [x] Circuit Breaker do ECS ativo em produção (`lab`)
 - [x] Alertas configurados e testados
 
+Documentação detalhada, disponível em aqui: [New Relic - Passo a passo](./sre/new-relic.md).
+
 ### Referências
 
 - [Google SRE Book — Cap. 4: Service Level Objectives](https://sre.google/sre-book/service-level-objectives/)

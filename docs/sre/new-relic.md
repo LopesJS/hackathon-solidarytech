@@ -1,6 +1,8 @@
-# 📊 SolidaryTech — New Relic: Validação de Logs, Queries NRQL e Dashboards SRE
+# SolidaryTech — New Relic: 
 
-> Guia completo para verificar se a telemetria está chegando no New Relic, construir as queries NRQL dos SLIs e montar o dashboard SRE com Golden Metrics para o `donation-service` (Hot Path).
+### Validação de Logs, Queries NRQL e Dashboards SRE
+
+> Troubleshooting de telemetria chegando no New Relic, construção das queries NRQL dos SLIs e criação do dashboard SRE com Golden Metrics para o `donation-service` (Hot Path).
 
 ---
 
@@ -12,8 +14,7 @@
 4. [Queries NRQL — Golden Metrics dos 3 serviços](#4-queries-nrql--golden-metrics-dos-3-serviços)
 5. [Montar o Dashboard SRE](#5-montar-o-dashboard-sre)
 6. [Configurar Alertas](#6-configurar-alertas)
-7. [Preencher docs/01-sre.md](#7-preencher-docs01-sremd)
-8. [Troubleshooting](#8-troubleshooting)
+7. [Troubleshooting](#7-troubleshooting)
 
 ---
 
@@ -23,21 +24,25 @@
 
 1. Acesse **[one.newrelic.com](https://one.newrelic.com)**
 2. Menu esquerdo → **APM & Services**
-3. Você deve ver os 3 serviços listados:
+3. Deve ver os 3 serviços listados:
    - `ngo-service`
    - `donation-service`
    - `volunteer-service`
 
 > Se os serviços não aparecerem após 5 minutos de tráfego, vá para a seção [Troubleshooting](#8-troubleshooting).
 
+---
+
 ### 1.2 — Gerar tráfego para ter dados
 
-Antes de verificar qualquer coisa no New Relic, gere tráfego real nos 3 serviços:
+Antes de verificar qualquer coisa no New Relic, deve gere tráfego real nos 3 serviços:
 
 ```bash
 ALB=$(cd infra/terraform/environments/lab && terraform output -raw alb_dns_name)
 echo "ALB: $ALB"
+```
 
+```bash
 # Health checks (aparecem como transações no APM)
 for i in $(seq 1 10); do
   curl -s "http://${ALB}/health" > /dev/null
@@ -45,7 +50,9 @@ for i in $(seq 1 10); do
   curl -s "http://${ALB}/donations" > /dev/null
   curl -s "http://${ALB}/volunteers/1" > /dev/null
 done
+```
 
+```bash
 # Criar dados reais
 curl -s -X POST "http://${ALB}/ngos" \
   -H "Content-Type: application/json" \
@@ -61,6 +68,7 @@ curl -s -X POST "http://${ALB}/volunteers" \
 
 echo "Tráfego gerado. Aguarde 2 minutos e verifique o New Relic."
 ```
+---
 
 ### 1.3 — Query de verificação inicial no Query Builder
 
@@ -283,7 +291,6 @@ FACET containerName
 TIMESERIES 5 minutes
 ```
 
-> Se `EcsContainerSample` não retornar dados, use CloudWatch Container Insights no console AWS ou as métricas via `Metric`:
 
 ```sql
 SELECT average(`aws.ecs.CPUUtilization`) AS 'CPU %'
@@ -339,13 +346,12 @@ TIMESERIES 1 hour
 ### 5.1 — Criar o dashboard
 
 1. **New Relic → Dashboards → + Create a dashboard**
-2. Nome: **`SRE — SolidaryTech — Golden Metrics`**
-3. Permissão: **Public (read)** — para compartilhar o link na documentação
+2. Nome: **`SolidaryTech`**
+3. Visibilidade: **FREE PLAN** — Não é possível compartilhar o link público.
 4. Clique em **Create**
 
-### 5.2 — Adicionar os widgets (ordem recomendada)
+### 5.2 — Widgets
 
-Adicione os widgets na seguinte ordem clicando em **+ Add widget** em cada seção:
 
 ---
 
@@ -470,14 +476,6 @@ TIMESERIES 5 minutes
 
 ---
 
-### 5.3 — Salvar e obter o link
-
-1. Clique em **Save** no canto superior direito
-2. Clique nos **...** do dashboard → **Get shareable link**
-3. Copie o link e cole em `docs/01-sre.md`
-
----
-
 ## 6. Configurar Alertas
 
 ### 6.1 — Criar Alert Policy
@@ -539,51 +537,8 @@ FACET appName
 
 ---
 
-## 7. Preencher `docs/01-sre.md`
 
-Após validar tudo no New Relic, atualize o arquivo com as evidências reais:
-
-```markdown
-# 1. SRE — Confiabilidade e Golden Metrics
-
-## SLIs e SLOs do `donation-service`
-
-| SLI (indicador) | Métrica base | SLO (objetivo) | Status atual |
-|---|---|---|---|
-| Latência | % de POST /donations com duração < 500ms | 95% em 28 dias | [valor real]% |
-| Taxa de erro | % de requisições com HTTP status < 500 | 99,9% em 28 dias | [valor real]% |
-
-## SLA
-
-O SLA da plataforma é derivado dos SLOs acima. Com SLO de 99,9% de sucesso em 28 dias,
-o Error Budget corresponde a **0,1% das requisições** — equivalente a aproximadamente
-**43,2 minutos de indisponibilidade total** no período.
-
-## Dashboard SRE
-
-- [x] Dashboard criado no New Relic
-- Link: [SRE — SolidaryTech — Golden Metrics](<LINK_DO_DASHBOARD>)
-- [x] Golden Metrics visíveis (latência p50/p95/p99, tráfego, erros, saturação CPU)
-- [x] Consumo do Error Budget visível
-
-**Print do dashboard:**
-![Dashboard SRE](./assets/images/dashboard-sre.png)
-
-## MTTR
-
-- [x] Detecção automática: New Relic Alerts com condições NRQL sobre `TransactionError`
-- [x] Alertas configurados: policy `SolidaryTech — SRE Alerts` com 3 condições
-- [x] Tempo médio estimado de resposta:
-  - Detecção: < 5 min (polling NRQL a cada 1 min)
-  - Notificação: < 1 min (e-mail imediato)
-  - Diagnóstico: < 10 min (traces no APM + logs no CloudWatch)
-  - Recovery via rollback: < 3 min (circuit breaker ECS + pipeline CI)
-  - **MTTR estimado: < 20 minutos**
-```
-
----
-
-## 8. Troubleshooting
+## 7. Troubleshooting
 
 ### Serviços não aparecem no APM
 
@@ -598,7 +553,7 @@ aws ecs describe-task-definition \
 
 Deve conter: `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_HEADERS`, `OTEL_SERVICE_NAME`.
 
-**Verificar logs do container no CloudWatch:**
+**Verificar logs do container**
 
 ```bash
 aws logs tail /ecs/solidarytech/lab/ngo-service --since 15m --follow
