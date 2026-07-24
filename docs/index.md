@@ -24,20 +24,20 @@ A SolidaryTech é uma plataforma que conecta ONGs, doadores e voluntários. O de
 
 ## Links importantes
 
-- Vídeo de demonstração:
+- Vídeo de Demonstração:
 - Github do Projeto: [github.com/LopesJS/hackathon-solidarytech](https://github.com/LopesJS/hackathon-solidarytech) 
-- Repositório base do desafio: [github.com/dougls/hackathon-DCLT](https://github.com/dougls/hackathon-DCLT)
+
 
 ## Como navegar nesta documentação
 
-| Seção | Conteúdo |
-|-------|----------|
-| [Cronograma](cronograma.md) | Planejamento e datas do projeto |
-| [0. Fundação DevOps](00-fundacao-devops.md) | Docker, Kubernetes, Terraform, CI/CD, GitOps, Observabilidade |
-| [1. SRE](01-sre.md) | SLIs, SLOs, dashboard e MTTR |
-| [2. FinOps](02-finops.md) | Tagging, rightsizing e forecast de custos |
-| [3. ITSM e AIOps](03-itsm-aiops.md) | Gestão preditiva de incidentes |
-| [4. DR e Segurança](04-dr-seguranca.md) | PCN, RTO/RPO e estratégia de disaster recovery |
+| Seção                                        | Conteúdo                                                       |
+|----------------------------------------------|----------------------------------------------------------------|
+| [Cronograma](cronograma.md)                  | Planejamento e datas do projeto                                |
+| [0. Fundação DevOps](00-fundacao-devops.md)  | Docker, Kubernetes, Terraform, CI/CD, GitOps, Observabilidade  |
+| [1. SRE](01-sre.md)                          | SLIs, SLOs, dashboard e MTTR                                   |
+| [2. FinOps](02-finops.md)                    | Tagging, rightsizing e forecast de custos                      |
+| [3. ITSM e AIOps](03-itsm-aiops.md)          | Gestão preditiva de incidentes                                 |
+| [4. DR e Segurança](04-dr-seguranca.md)      | PCN, RTO/RPO e estratégia de disaster recovery                 |
 
 
 ## Arquitetura
